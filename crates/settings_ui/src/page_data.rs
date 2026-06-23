@@ -7117,7 +7117,7 @@ fn terminal_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Audible Bell",
-                description: "输出 BEL 字符（`\a`、`0x07`）时是否播放声音",
+                description: "输出 BEL 字符（`\\a`、`0x07`）时是否播放声音",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.bell"),
