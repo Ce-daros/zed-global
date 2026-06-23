@@ -267,11 +267,11 @@ impl PickerDelegate for OutlineViewDelegate {
     type ListItem = ListItem;
 
     fn name() -> &'static str {
-        "outline view"
+        "大纲视图"
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search buffer symbols...".into()
+        "搜索缓冲区符号...".into()
     }
 
     fn match_count(&self) -> usize {
@@ -553,7 +553,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "Initially opened outline view should have no highlights"
+            "初始打开的大纲视图不应有高亮"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -568,7 +568,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             vec![3, 4, 5, 6],
-            "Second struct's rows should be highlighted"
+            "第二个结构体的行应被高亮显示"
         );
         assert_single_caret_at_row(&editor, 1, cx);
 
@@ -577,7 +577,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             vec![1],
-            "First struct's row should be highlighted"
+            "第一个结构体的行应被高亮显示"
         );
         assert_single_caret_at_row(&editor, 1, cx);
 
@@ -586,7 +586,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "No rows should be highlighted after outline view is cancelled and closed"
+            "取消并关闭大纲视图后不应有任何行被高亮显示"
         );
         assert_single_caret_at_row(&editor, 1, cx);
 
@@ -595,7 +595,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "Reopened outline view should have no highlights"
+            "重新打开的大纲视图不应有高亮显示"
         );
         assert_single_caret_at_row(&editor, 1, cx);
 
@@ -612,7 +612,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "No rows should be highlighted after outline view is confirmed and closed"
+            "确认并关闭大纲视图后不应有任何行被高亮显示"
         );
         // On confirm, should place the caret on the first row of the highlighted rows range.
         assert_single_caret_at_row(&editor, expected_first_highlighted_row, cx);
@@ -1193,12 +1193,12 @@ mod tests {
         });
         assert!(
             selections.len() == 1,
-            "Expected one caret selection but got: {selections:?}"
+            "预期一个插入符选择，但得到：{selections:?}"
         );
         let selection = &selections[0];
         assert!(
             selection.start == selection.end,
-            "Expected a single caret selection, but got: {selection:?}"
+            "预期一个插入符选择，但得到：{selection:?}"
         );
         assert_eq!(selection.start.row, buffer_row);
     }

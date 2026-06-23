@@ -720,7 +720,7 @@ mod tests {
             assert_eq!(
                 spawn_in_terminal.label,
                 format!(
-                    "test label for 1234 and …{}",
+                    "test label for 1234 and â¦{}",
                     &long_value[long_value.len() - MAX_DISPLAY_VARIABLE_LENGTH..]
                 ),
                 "Human-readable label should have long substitutions trimmed"

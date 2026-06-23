@@ -1608,7 +1608,7 @@ fn render_completion_kind_letter(
 
 fn completion_kind_name(kind: CompletionItemKind) -> &'static str {
     match kind {
-        CompletionItemKind::TEXT => "Text",
+        CompletionItemKind::TEXT => "文本",
         CompletionItemKind::METHOD => "Method",
         CompletionItemKind::FUNCTION => "Function",
         CompletionItemKind::CONSTRUCTOR => "Constructor",
@@ -1624,16 +1624,16 @@ fn completion_kind_name(kind: CompletionItemKind) -> &'static str {
         CompletionItemKind::KEYWORD => "Keyword",
         CompletionItemKind::SNIPPET => "Snippet",
         CompletionItemKind::COLOR => "Color",
-        CompletionItemKind::FILE => "File",
+        CompletionItemKind::FILE => "文件",
         CompletionItemKind::REFERENCE => "Reference",
-        CompletionItemKind::FOLDER => "Folder",
-        CompletionItemKind::ENUM_MEMBER => "Enum Member",
+        CompletionItemKind::FOLDER => "文件夹",
+        CompletionItemKind::ENUM_MEMBER => "枚举成员",
         CompletionItemKind::CONSTANT => "Constant",
         CompletionItemKind::STRUCT => "Struct",
         CompletionItemKind::EVENT => "Event",
         CompletionItemKind::OPERATOR => "Operator",
-        CompletionItemKind::TYPE_PARAMETER => "Type Parameter",
-        _ => "Unknown",
+        CompletionItemKind::TYPE_PARAMETER => "类型参数",
+        _ => "未知",
     }
 }
 
@@ -1653,7 +1653,7 @@ fn completion_kind_letter(kind: CompletionItemKind) -> Option<&'static str> {
         CompletionItemKind::VALUE => "v",
         CompletionItemKind::ENUM => "e",
         CompletionItemKind::KEYWORD => "k",
-        CompletionItemKind::SNIPPET => "s",
+        CompletionItemKind::SNIPPET => " ",
         CompletionItemKind::COLOR => "c",
         CompletionItemKind::FILE => "F",
         CompletionItemKind::REFERENCE => "r",

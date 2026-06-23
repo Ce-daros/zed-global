@@ -403,24 +403,24 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                         if Some(leader_project_id) == self.project.read(cx).remote_id() {
                             is_in_unshared_view.then(|| {
                                 Label::new(format!(
-                                    "{} is in an unshared pane",
+                                    "{} 在一个未共享的窗格中",
                                     leader.user.github_login
                                 ))
                             })
                         } else {
                             leader_join_data = Some((leader_project_id, leader.user.legacy_id));
                             Some(Label::new(format!(
-                                "Follow {} to their active project",
+                                "跟随 {} 到他们的活动项目",
                                 leader.user.github_login,
                             )))
                         }
                     }
                     ParticipantLocation::UnsharedProject => Some(Label::new(format!(
-                        "{} is viewing an unshared Zed project",
+                        "{} 正在查看一个未共享的 Zed 项目",
                         leader.user.github_login
                     ))),
                     ParticipantLocation::External => Some(Label::new(format!(
-                        "{} is viewing a window outside of Zed",
+                        "{} 正在查看 Zed 之外的窗口",
                         leader.user.github_login
                     ))),
                 };
@@ -447,7 +447,7 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                                             cx,
                                         )
                                         .detach_and_prompt_err(
-                                            "Failed to join project",
+                                            "加入项目失败",
                                             window,
                                             cx,
                                             |error, _, _| Some(format!("{error:#}")),
@@ -725,7 +725,7 @@ impl PaneAxis {
                 Ok(None)
             }
         } else {
-            anyhow::bail!("Pane not found");
+            anyhow::bail!("未找到页面");
         }
     }
 
@@ -988,10 +988,10 @@ pub enum SplitDirection {
 impl std::fmt::Display for SplitDirection {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SplitDirection::Up => write!(f, "up"),
-            SplitDirection::Down => write!(f, "down"),
-            SplitDirection::Left => write!(f, "left"),
-            SplitDirection::Right => write!(f, "right"),
+            SplitDirection::Up => write!(f, "上"),
+            SplitDirection::Down => write!(f, "下"),
+            SplitDirection::Left => write!(f, "左"),
+            SplitDirection::Right => write!(f, "右"),
         }
     }
 }

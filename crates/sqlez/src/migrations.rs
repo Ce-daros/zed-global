@@ -14,7 +14,7 @@ use crate::connection::Connection;
 
 impl Connection {
     fn eager_exec(&self, sql: &str) -> anyhow::Result<()> {
-        let sql_str = CString::new(sql).context("Error creating cstr")?;
+        let sql_str = CString::new(sql).context("创建 cstr 时出错")?;
         unsafe {
             sqlite3_exec(
                 self.sqlite3,

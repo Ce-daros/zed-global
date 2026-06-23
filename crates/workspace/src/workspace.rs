@@ -918,7 +918,7 @@ impl ProjectItemRegistry {
             .rev()
             .find_map(|open_project_item| open_project_item(project, path, window, cx))
         else {
-            return Task::ready(Err(anyhow!("cannot open file {:?}", path.path)));
+            return Task::ready(Err(anyhow!("不能打开文件 {:?}", path.path)));
         };
         open_project_item
     }
@@ -3304,9 +3304,9 @@ impl Workspace {
                     let answer = cx.update(|window, cx| {
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to leave the current call?",
+                            "要离开当前通话吗？",
                             None,
-                            &["Close window and hang up", "Cancel"],
+                            &["Close window and hang up", "取消"],
                             cx,
                         )
                     })?;
@@ -3552,9 +3552,9 @@ impl Workspace {
                         );
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to save all changes in the following files?",
+                            "要保存以下文件中的所有更改吗？",
                             Some(&detail),
-                            &["Save all", "Discard all", "Cancel"],
+                            &["全部保存", "全部放弃", "取消"],
                             cx,
                         )
                     })?;
@@ -3856,7 +3856,7 @@ impl Workspace {
     ) {
         let project = self.project.read(cx);
         if project.is_via_collab() {
-            self.show_error("You cannot add folders to someone else's project", cx);
+            self.show_error("你不能向别人的项目添加文件夹。", cx);
             return;
         }
         let paths = self.prompt_for_open_path(
@@ -4334,7 +4334,7 @@ impl Workspace {
         if let Some(item) = self.active_item(cx) {
             item.item_focus_handle(cx).focus(window, cx);
         } else {
-            log::error!("Could not find a focus target when switching focus to the center panes",);
+            log::error!("切换到中央窗格时找不到可聚焦目标。",);
         }
     }
 
@@ -4659,7 +4659,7 @@ impl Workspace {
             self.last_active_center_pane.clone().unwrap_or_else(|| {
                 self.panes
                     .first()
-                    .expect("There must be an active pane")
+                    .expect("必须有一个活动窗格。")
                     .downgrade()
             })
         });
@@ -4807,7 +4807,7 @@ impl Workspace {
         let pane = self.last_active_center_pane.clone().unwrap_or_else(|| {
             self.panes
                 .first()
-                .expect("There must be an active pane")
+                .expect("必须有一个活动窗格。")
                 .downgrade()
         });
 
@@ -5219,7 +5219,7 @@ impl Workspace {
                 .unwrap_or_else(|| {
                     self.panes
                         .first()
-                        .expect("There must be an active pane")
+                        .expect("必须有一个活动窗格。")
                         .downgrade()
                 })
                 .upgrade()?;
@@ -5354,7 +5354,7 @@ impl Workspace {
                     item.item_focus_handle(cx).focus(window, cx);
                 } else {
                     log::error!(
-                        "Could not find a focus target when in switching focus in {direction} direction for a pane",
+                        "在向 {direction} 方向切换窗格焦点时找不到可聚焦目标。",
                     );
                 }
             }
@@ -5365,7 +5365,7 @@ impl Workspace {
                     if let Some(panel) = dock.active_panel() {
                         panel.panel_focus_handle(cx).focus(window, cx);
                     } else {
-                        log::error!("Could not find a focus target when in switching focus in {direction} direction for a {:?} dock", dock.position());
+                        log::error!("在向 {direction} 方向切换 {:?} 停靠区焦点时找不到可聚焦目标。", dock.position());
                     }
                 })
             }
@@ -5920,7 +5920,7 @@ impl Workspace {
                         let state = this
                             .follower_states
                             .get_mut(&leader_id)
-                            .context("following interrupted")?;
+                            .context("跟随已中断")?;
                         state.active_view_id = response
                             .active_view
                             .as_ref()
@@ -6033,7 +6033,7 @@ impl Workspace {
                     cx,
                 )
                 .detach_and_prompt_err(
-                    "Failed to join project",
+                    "加入项目失败",
                     window,
                     cx,
                     |error, _, _| Some(format!("{error:#}")),
@@ -6148,7 +6148,7 @@ impl Workspace {
         }
 
         if title.is_empty() {
-            title = "empty project".to_string();
+            title = "空项目".to_string();
         }
 
         let active_project_path = self.active_item(cx).and_then(|item| item.project_path(cx));
@@ -6367,7 +6367,7 @@ impl Workspace {
         update: proto::UpdateFollowers,
         cx: &mut AsyncWindowContext,
     ) -> Result<()> {
-        match update.variant.context("invalid update")? {
+        match update.variant.context("无效更新")? {
             proto::update_followers::Variant::CreateView(view) => {
                 let view_id = ViewId::from_proto(view.id.clone().context("invalid view id")?)?;
                 let should_add_view = this.update(cx, |this, _| {
@@ -6440,10 +6440,10 @@ impl Workspace {
         view: &proto::View,
         cx: &mut AsyncWindowContext,
     ) -> Result<()> {
-        let this = this.upgrade().context("workspace dropped")?;
+        let this = this.upgrade().context("工作区已丢弃")?;
 
         let Some(id) = view.id.clone() else {
-            anyhow::bail!("no id for view");
+            anyhow::bail!("无视图 ID");
         };
         let id = ViewId::from_proto(id)?;
         let panel_id = view.panel_id.and_then(proto::PanelId::from_i32);
@@ -6452,7 +6452,7 @@ impl Workspace {
             let state = this
                 .follower_states
                 .get(&leader_id.into())
-                .context("stopped following")?;
+                .context("已停止跟随")?;
             anyhow::Ok(state.pane().clone())
         })?;
         let existing_item = pane.update_in(cx, |pane, window, cx| {
@@ -7455,22 +7455,22 @@ impl Workspace {
             .on_action(cx.listener(|workspace, action: &Save, window, cx| {
                 workspace
                     .save_active_item(action.save_intent.unwrap_or(SaveIntent::Save), window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &FormatAndSave, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::FormatAndSave, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &SaveWithoutFormat, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::SaveWithoutFormat, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &SaveAs, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::SaveAs, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(
                 cx.listener(|workspace, _: &ActivatePreviousPane, window, cx| {
@@ -8312,7 +8312,7 @@ impl ParticipantLocation {
     pub fn from_proto(location: Option<proto::ParticipantLocation>) -> Result<Self> {
         match location
             .and_then(|l| l.variant)
-            .context("participant location was not provided")?
+            .context("参与者位置未提供")?
         {
             proto::participant_location::Variant::SharedProject(project) => {
                 Ok(Self::SharedProject {
@@ -8516,7 +8516,7 @@ fn notify_if_database_failed(window: WindowHandle<MultiWorkspace>, cx: &mut Asyn
                         |cx| {
                             cx.new(|cx| {
                                 MessageNotification::new("Failed to load the database file.", cx)
-                                    .primary_message("File an Issue")
+                                    .primary_message("提交问题")
                                     .primary_icon(IconName::Plus)
                                     .primary_on_click(|window, cx| {
                                         window.dispatch_action(Box::new(FileBugReport), cx)
@@ -8603,7 +8603,7 @@ impl Render for Workspace {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         static FIRST_PAINT: AtomicBool = AtomicBool::new(true);
         if FIRST_PAINT.swap(false, std::sync::atomic::Ordering::Relaxed) {
-            log::info!("Rendered first frame");
+            log::info!("已渲染第一帧");
         }
 
         let centered_layout = self.centered_layout
@@ -9256,7 +9256,7 @@ pub async fn restore_multiworkspace(
     let window_handle = match workspace_result {
         Ok(handle) => handle,
         Err(err) => {
-            log::error!("Failed to restore active workspace: {err:#}");
+            log::error!("恢复活动工作区失败：{err:#}");
 
             let mut fallback_handle = None;
             for key in &state.project_groups {
@@ -9281,7 +9281,7 @@ pub async fn restore_multiworkspace(
                         break;
                     }
                     Err(fallback_err) => {
-                        log::error!("Fallback project group also failed: {fallback_err:#}");
+                        log::error!("备用项目组也失败了：{fallback_err:#}");
                     }
                 }
             }
@@ -9380,7 +9380,7 @@ actions!(
         /// channel in the collab panel.
         ///
         /// If you want to open a specific channel, use `zed::OpenZedUrl` with a channel notes URL -
-        /// can be copied via "Copy link to section" in the context menu of the channel notes
+        /// can be copied via "复制到部分链接" in the context menu of the channel notes
         /// buffer. These URLs look like `https://zed.dev/channel/channel-name-CHANNEL_ID/notes`.
         OpenChannelNotes,
         /// Mutes your microphone.
@@ -9456,9 +9456,9 @@ async fn join_channel_internal(
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Warning,
-                        "Do you want to switch channels?",
-                        Some("Leaving this call will unshare your current project."),
-                        &["Yes, Join Channel", "Cancel"],
+                        "要切换频道吗？",
+                        Some("离开此次通话将取消共享当前项目。"),
+                        &["是，加入频道", "取消"],
                         cx,
                     )
                 })?
@@ -9479,7 +9479,7 @@ async fn join_channel_internal(
     // this loop will terminate within client::CONNECTION_TIMEOUT seconds.
     'outer: loop {
         let Some(status) = client_status.recv().await else {
-            anyhow::bail!("error connecting");
+            anyhow::bail!("连接错误");
         };
 
         match status {
@@ -9623,32 +9623,32 @@ pub fn join_channel(
                 active_window
                     .update(cx, |_, window, cx| {
                         let detail: SharedString = match err.error_code() {
-                            ErrorCode::SignedOut => "Please sign in to continue.".into(),
+                            ErrorCode::SignedOut => "请先登录继续。".into(),
                             ErrorCode::UpgradeRequired => concat!(
-                                "Your are running an unsupported version of Zed. ",
-                                "Please update to continue."
+                                "您正在运行不受支持的 Zed 版本。",
+                                "请更新后继续。"
                             )
                             .into(),
                             ErrorCode::NoSuchChannel => concat!(
-                                "No matching channel was found. ",
-                                "Please check the link and try again."
+                                "未找到匹配的频道。",
+                                "请检查链接后重试。"
                             )
                             .into(),
                             ErrorCode::Forbidden => concat!(
-                                "This channel is private, and you do not have access. ",
-                                "Please ask someone to add you and try again."
+                                "此频道为私密频道，您没有访问权限。",
+                                "请让别人添加你后再试。"
                             )
                             .into(),
                             ErrorCode::Disconnected => {
-                                "Please check your internet connection and try again.".into()
+                                "请检查您的互联网连接并重试。".into()
                             }
                             _ => format!("{}\n\nPlease try again.", err).into(),
                         };
                         window.prompt(
                             PromptLevel::Critical,
-                            "Failed to join channel",
+                            "加入频道失败",
                             Some(&detail),
-                            &["OK"],
+                            &["确定"],
                             cx,
                         )
                     })?
@@ -9682,7 +9682,7 @@ pub async fn get_any_active_multi_workspace(
         })
         .await?;
     }
-    activate_any_workspace_window(&mut cx).context("could not open zed")
+    activate_any_workspace_window(&mut cx).context("无法打开 Zed")
 }
 
 pub fn activate_any_workspace_window(cx: &mut AsyncApp) -> Option<WindowHandle<MultiWorkspace>> {
@@ -9926,7 +9926,7 @@ pub fn open_workspace_by_id(
     cx.spawn(async move |cx| {
         let serialized_workspace = db
             .workspace_for_id(workspace_id)
-            .with_context(|| format!("Workspace {workspace_id:?} not found"))?;
+            .with_context(|| format!("未找到工作区 {workspace_id:?}"))?;
 
         let centered_layout = serialized_workspace.centered_layout;
 
@@ -10140,7 +10140,7 @@ pub fn open_paths(
                 workspace.update(cx, |workspace, cx| {
                     for item in open_task.iter().flatten() {
                         if let Err(e) = item {
-                            workspace.show_error(format!("Error: {e}"), cx);
+                            workspace.show_error(format!("错误：{e}"), cx);
                         }
                     }
                 });
@@ -10191,10 +10191,10 @@ pub fn open_paths(
                     workspace.update(cx, |workspace, cx| {
                         workspace.show_notification(NotificationId::unique::<OpenInWsl>(), cx, move |cx| {
                             let display_path = util::markdown::MarkdownInlineCode(&path.to_string_lossy());
-                            let msg = format!("{display_path} is inside a WSL filesystem, some features may not work unless you open it with WSL remote");
+                            let msg = format!("{display_path} 位于 WSL 文件系统中，除非使用 WSL 远程打开，否则某些功能可能无法使用。");
                             cx.new(move |cx| {
                                 MessageNotification::new(msg, cx)
-                                    .primary_message("Open in WSL")
+                                    .primary_message("在 WSL 中打开")
                                     .primary_icon(IconName::FolderOpen)
                                     .primary_on_click(move |window, cx| {
                                         window.dispatch_action(Box::new(remote::OpenWslPath {
@@ -10282,7 +10282,7 @@ pub fn create_and_open_local_file(
                             })?
                             .await;
                         let item = items.pop().flatten();
-                        item.with_context(|| format!("path {path:?} is not a file"))?
+                        item.with_context(|| format!("路径 {path:?} 不是文件。"))?
                     })
                 })
             })?
@@ -10431,7 +10431,7 @@ async fn open_remote_project_inner(
     }
 
     if project_paths_to_open.is_empty() {
-        return Err(project_path_errors.pop().context("no paths given")?);
+        return Err(project_path_errors.pop().context("未提供路径")?);
     }
 
     let workspace = window.update(cx, |multi_workspace, window, cx| {
@@ -10473,7 +10473,7 @@ async fn open_remote_project_inner(
         for error in project_path_errors {
             if error.error_code() == proto::ErrorCode::DevServerProjectPathDoesNotExist {
                 if let Some(path) = error.error_tag("path") {
-                    workspace.show_error(format!("'{path}' does not exist"), cx)
+                    workspace.show_error(format!("'{path}' 不存在"), cx)
                 }
             } else {
                 workspace.show_error(format!("{error}"), cx)
@@ -10621,9 +10621,9 @@ pub fn reload(cx: &mut App) {
             .update(cx, |_, window, cx| {
                 window.prompt(
                     PromptLevel::Info,
-                    "Are you sure you want to restart?",
+                    "您确定要重启吗？",
                     None,
-                    &["Restart", "Cancel"],
+                    &["重启", "取消"],
                     cx,
                 )
             })
@@ -11081,7 +11081,7 @@ pub fn remote_workspace_position_from_db(
         let remote_connection_id = db
             .get_or_create_remote_connection(connection_options)
             .await
-            .context("fetching serialized ssh project")?;
+            .context("正在获取序列化的 SSH 项目")?;
         let serialized_workspace = db.remote_workspace_for_roots(&paths, remote_connection_id);
 
         let (window_bounds, display) = if let Some(bounds) = window_bounds_env_override() {
@@ -11359,7 +11359,7 @@ mod tests {
 
         // Remove a project folder
         project.update(cx, |project, cx| project.remove_worktree(worktree_id, cx));
-        assert_eq!(cx.window_title().as_deref(), Some("root2 — one.txt"));
+        assert_eq!(cx.window_title().as_deref(), Some("root2 â one.txt"));
     }
 
     #[gpui::test]
@@ -11479,7 +11479,7 @@ mod tests {
             w.prepare_to_close(CloseIntent::CloseWindow, window, cx)
         });
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Cancel"); // cancel save all
+        cx.simulate_prompt_answer("取消"); // cancel save all
         cx.executor().run_until_parked();
         assert!(!cx.has_pending_prompt());
         assert!(!task.await.unwrap());
@@ -11562,7 +11562,7 @@ mod tests {
             .unwrap();
 
         // User cancels the save prompt from workspace B
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         // Window should still exist because workspace B's close was cancelled
@@ -11634,7 +11634,7 @@ mod tests {
             .unwrap();
 
         // Cancel the prompt — user stays on workspace B.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
         let removed = remove_task.await.unwrap();
         assert!(!removed, "removal should have been cancelled");
@@ -11661,7 +11661,7 @@ mod tests {
         cx.run_until_parked();
 
         // Accept the save prompt.
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.run_until_parked();
         let removed = remove_task.await.unwrap();
         assert!(removed, "removal should have succeeded");
@@ -11755,7 +11755,7 @@ mod tests {
             "closing a no-folder workspace with a dirty serializable item should prompt, \
              since the workspace will not be reachable after close"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         assert!(task.await.unwrap());
@@ -11829,7 +11829,7 @@ mod tests {
             "replacing a workspace with a dirty serializable item should prompt, \
              since the workspace will be detached afterwards"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         assert!(task.await.unwrap());
@@ -11908,7 +11908,7 @@ mod tests {
             "a save/discard prompt should be shown for the dirty scratch item \
              when its serialization fails"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         // Preparing to close succeeds, even though serialization failed.
@@ -11970,7 +11970,7 @@ mod tests {
         cx.executor().run_until_parked();
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
 
         cx.executor().run_until_parked();
 
@@ -12127,7 +12127,7 @@ mod tests {
 
         // With best-effort close, cancelling item 1 keeps it open but items 4
         // and (3,4) still close since their entries exist in left pane.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         close.await;
 
         right_pane.read_with(cx, |pane, _| {
@@ -12161,7 +12161,7 @@ mod tests {
         // But we can only save whole items, so saving (2,3) for entry 3 includes 2.
         // assert!(!details.contains("2.txt"));
 
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         cx.executor().run_until_parked();
         close.await;
 

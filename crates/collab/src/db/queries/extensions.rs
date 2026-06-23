@@ -136,7 +136,7 @@ impl Database {
                 .filter(extension::Column::ExternalId.eq(extension_id))
                 .one(&*tx)
                 .await?
-                .with_context(|| format!("no such extension: {extension_id}"))?;
+                .with_context(|| format!("无此扩展: {extension_id}"))?;
 
             let extensions = [extension];
             let mut versions = self

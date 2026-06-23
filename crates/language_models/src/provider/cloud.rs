@@ -55,7 +55,7 @@ impl CloudLlmTokenProvider for ClientTokenProvider {
         let llm_api_token = self.llm_api_token.clone();
         Box::pin(async move {
             let organization_id =
-                organization_id.ok_or_else(|| anyhow!("No organization selected."))?;
+                organization_id.ok_or_else(|| anyhow!("未选择组织。"))?;
             client
                 .cached_llm_token(&llm_api_token, organization_id)
                 .await
@@ -70,7 +70,7 @@ impl CloudLlmTokenProvider for ClientTokenProvider {
         let llm_api_token = self.llm_api_token.clone();
         Box::pin(async move {
             let organization_id =
-                organization_id.ok_or_else(|| anyhow!("No organization selected."))?;
+                organization_id.ok_or_else(|| anyhow!("未选择组织。"))?;
             client
                 .refresh_llm_token(&llm_api_token, organization_id)
                 .await
@@ -347,7 +347,7 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
                         | client::Status::Connected { .. }
                 ) {
                     return Err(AuthenticateError::Other(anyhow!(
-                        "sign-in did not complete: {current_status:?}"
+                        "登录未完成：{current_status:?}"
                     )));
                 }
                 futures::select_biased! {
@@ -386,7 +386,7 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
     }
 
     fn authentication_error_message(&self) -> SharedString {
-        "Failed to sign in with your Zed account (401).".into()
+        "使用你的 Zed 账户登录失败（401）。".into()
     }
 
     fn missing_credentials_error_message(&self) -> SharedString {

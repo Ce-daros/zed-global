@@ -407,7 +407,7 @@ async fn load_direnv_environment(
 
     if !direnv_output.status.success() {
         bail!(
-            "Loading direnv environment failed ({}), stderr: {}",
+            "加载 direnv 环境失败（{}），stderr：{}",
             direnv_output.status,
             String::from_utf8_lossy(&direnv_output.stderr)
         );

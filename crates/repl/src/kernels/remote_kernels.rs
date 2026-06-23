@@ -52,7 +52,7 @@ pub async fn launch_remote_kernel(
     if !response.status().is_success() {
         let mut body = String::new();
         response.into_body().read_to_string(&mut body).await?;
-        anyhow::bail!("Failed to launch kernel: {body}");
+        anyhow::bail!("启动内核失败：{body}");
     }
 
     let mut body = String::new();
@@ -79,7 +79,7 @@ pub async fn list_remote_kernelspecs(
 
     anyhow::ensure!(
         response.status().is_success(),
-        "Failed to fetch kernel specs: {}",
+        "获取内核规范失败： {}",
         response.status()
     );
     let mut body = response.into_body();
@@ -100,7 +100,7 @@ pub async fn list_remote_kernelspecs(
         })
         .collect::<Vec<RemoteKernelSpecification>>();
 
-    anyhow::ensure!(!remote_kernelspecs.is_empty(), "No kernel specs found");
+    anyhow::ensure!(!remote_kernelspecs.is_empty(), "未找到内核规范");
     Ok(remote_kernelspecs)
 }
 
@@ -206,7 +206,7 @@ impl RemoteRunningKernel {
                                     .ok();
                             }
                             Err(e) => {
-                                log::error!("Error receiving message: {:?}", e);
+                                log::error!("接收消息出错：{:?}", e);
                             }
                         }
                     }
@@ -293,7 +293,7 @@ impl RunningKernel for RemoteRunningKernel {
 
             anyhow::ensure!(
                 response.status().is_success(),
-                "Failed to shutdown kernel: {}",
+                "关闭内核失败：{}",
                 response.status()
             );
             Ok(())

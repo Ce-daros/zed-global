@@ -712,7 +712,7 @@ impl fmt::Debug for TerminalBackendEvent {
             Self::CursorBlinkingChange => f.write_str("CursorBlinkingChange"),
             Self::Wakeup => f.write_str("Wakeup"),
             Self::Bell => f.write_str("Bell"),
-            Self::Exit => f.write_str("Exit"),
+            Self::Exit => f.write_str("退出"),
             Self::ChildExit(status) => write!(f, "ChildExit({status})"),
         }
     }

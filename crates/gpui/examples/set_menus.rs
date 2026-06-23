@@ -18,7 +18,7 @@ impl Render for SetMenus {
             .items_center()
             .text_xl()
             .text_color(gpui::black())
-            .child("Set Menus Example")
+            .child("设置菜单示例")
     }
 }
 
@@ -93,7 +93,7 @@ impl Global for AppState {}
 fn set_app_menus(cx: &mut App) {
     let app_state = cx.global::<AppState>();
     cx.set_menus([Menu::new("set_menus").items([
-        MenuItem::os_submenu("Services", SystemMenuType::Services),
+        MenuItem::os_submenu("服务", SystemMenuType::Services),
         MenuItem::separator(),
         MenuItem::action("Disabled Item", gpui::NoAction).disabled(true),
         MenuItem::submenu(Menu::new("Disabled Submenu").disabled(true)),
@@ -108,7 +108,7 @@ fn set_app_menus(cx: &mut App) {
             ]),
         ),
         MenuItem::separator(),
-        MenuItem::action("Quit", Quit),
+        MenuItem::action("退出", Quit),
     ])]);
 }
 

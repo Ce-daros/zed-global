@@ -101,14 +101,14 @@ impl ExtensionBuilder {
 
         if extension_dir.is_relative() {
             bail!(
-                "extension dir {} is not an absolute path",
+                "扩展目录 {} 不是绝对路径",
                 extension_dir.display()
             );
         }
 
         fs.create_dir(&self.cache_dir)
             .await
-            .context("failed to create cache dir")?;
+            .context("创建缓存目录失败")?;
 
         let (tx, mut rx) = oneshot::channel();
 
@@ -128,12 +128,12 @@ impl ExtensionBuilder {
         let rust_compilation_task =
             (extension_manifest.lib.kind == Some(ExtensionLibraryKind::Rust)).then(|| {
                 async {
-                    log::info!("compiling Rust extension {}", extension_dir.display());
+                    log::info!("正在编译 Rust 扩展 {}", extension_dir.display());
                     self.compile_rust_extension(extension_dir, extension_manifest, tx, &options)
                         .await
-                        .context("failed to compile Rust extension")?;
+                        .context("编译 Rust 扩展失败")?;
 
-                    log::info!("compiled Rust extension {}", extension_dir.display());
+                    log::info!("已编译 Rust 扩展 {}", extension_dir.display());
                     Ok(())
                 }
                 .boxed()
@@ -840,7 +840,7 @@ mod tests {
             serde_json::json!({
                 "extension.toml": indoc! {r#"
                     id = "test-manifest"
-                    name = "Test Manifest"
+                    name = "测试清单"
                     version = "0.0.1"
                     schema_version = 1
 
@@ -878,7 +878,7 @@ mod tests {
             serde_json::json!({
                 "extension.toml": indoc! {r#"
                     id = "test-manifest"
-                    name = "Test Manifest"
+                    name = "测试清单"
                     version = "0.0.1"
                     schema_version = 1
 

@@ -269,7 +269,7 @@ impl SearchState {
                     let trimmed_text = context_text[left_whitespaces_count..].to_owned();
                     debug_assert_eq!(
                         trimmed_text, search_data.context_text,
-                        "Highlighted text that does not match the buffer text"
+                        "高亮文本与缓冲区文本不匹配"
                     );
                 }
             }),
@@ -680,7 +680,7 @@ impl OutlinePanel {
                 let kvp = cx.update(|_, cx| KeyValueStore::global(cx))?;
                 cx.background_spawn(async move { kvp.read_kvp(&serialization_key) })
                     .await
-                    .context("loading outline panel")
+                    .context("加载大纲面板")
                     .log_err()
                     .flatten()
                     .map(|panel| serde_json::from_str::<SerializedOutlinePanel>(&panel))
@@ -710,7 +710,7 @@ impl OutlinePanel {
         cx.new(|cx| {
             let filter_editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Search buffer symbols…", window, cx);
+                editor.set_placeholder_text("搜索缓冲区符号…", window, cx);
                 editor
             });
             let filter_update_subscription = cx.subscribe_in(
@@ -729,7 +729,7 @@ impl OutlinePanel {
                 &workspace
                     .weak_handle()
                     .upgrade()
-                    .expect("have a &mut Workspace"),
+                    .expect("有一个 &mut 工作区"),
                 window,
                 move |outline_panel, workspace, event, window, cx| {
                     if let workspace::Event::ActiveItemChanged = event {
@@ -1455,17 +1455,17 @@ impl OutlinePanel {
                     ui::utils::reveal_in_file_manager_label(false),
                     Box::new(RevealInFileManager),
                 )
-                .action("Open in Terminal", Box::new(OpenInTerminal))
+                .action("在终端中打开", Box::new(OpenInTerminal))
                 .when(is_unfoldable, |menu| {
-                    menu.action("Unfold Directory", Box::new(UnfoldDirectory))
+                    menu.action("展开文件夹", Box::new(UnfoldDirectory))
                 })
                 .when(is_foldable, |menu| {
-                    menu.action("Fold Directory", Box::new(FoldDirectory))
+                    menu.action("折叠文件夹", Box::new(FoldDirectory))
                 })
                 .separator()
-                .action("Copy Path", Box::new(zed_actions::workspace::CopyPath))
+                .action("复制路径", Box::new(zed_actions::workspace::CopyPath))
                 .action(
-                    "Copy Relative Path",
+                    "复制相对路径",
                     Box::new(zed_actions::workspace::CopyRelativePath),
                 )
         });
@@ -2266,7 +2266,7 @@ impl OutlinePanel {
         let buffer_snapshot = self.buffer_snapshot_for_id(range.context.start.buffer_id, cx)?;
         let excerpt_range = range.context.to_point(&buffer_snapshot);
         Some(format!(
-            "Lines {}- {}",
+            "行 {}- {}",
             excerpt_range.start.row + 1,
             excerpt_range.end.row + 1,
         ))
@@ -2422,9 +2422,9 @@ impl OutlinePanel {
                             .map(|icon| icon.color(color).into_any_element());
                             (icon, file_name(path.as_std_path()))
                         }
-                        None => (None, "Untitled".to_string()),
+                        None => (None, "未命名".to_string()),
                     },
-                    None => (None, "Unknown buffer".to_string()),
+                    None => (None, "未知缓冲区".to_string()),
                 };
                 (
                     ElementId::from(external_file.buffer_id.to_proto() as usize),
@@ -4622,9 +4622,9 @@ impl OutlinePanel {
     ) -> impl IntoElement {
         let contents = if self.cached_entries.is_empty() {
             let header = if query.is_some() {
-                "No matches for query"
+                "无匹配项"
             } else {
-                "No outlines available"
+                "无可用大纲"
             };
 
             v_flex()
@@ -4647,7 +4647,7 @@ impl OutlinePanel {
                     h_flex()
                         .gap_1()
                         .justify_center()
-                        .child(Label::new("Toggle Panel With").color(Color::Muted))
+                        .child(Label::new("切换面板").color(Color::Muted))
                         .child({
                             let key_binding = match self.position(window, cx) {
                                 DockPosition::Left => {
@@ -4817,9 +4817,9 @@ impl OutlinePanel {
 
     fn render_filter_footer(&mut self, pinned: bool, cx: &mut Context<Self>) -> Div {
         let (pin_button_id, icon, icon_tooltip) = if pinned {
-            ("unpin_button", IconName::Unpin, "Unpin Outline")
+            ("unpin_button", IconName::Unpin, "取消固定大纲")
         } else {
-            ("pin_button", IconName::Pin, "Pin Active Outline")
+            ("pin_button", IconName::Pin, "固定活动大纲")
         };
 
         let has_query = self.query(cx).is_some();
@@ -4847,7 +4847,7 @@ impl OutlinePanel {
                         this.child(
                             IconButton::new("clear_filter", IconName::Close)
                                 .shape(IconButtonShape::Square)
-                                .tooltip(Tooltip::text("Clear Filter"))
+                                .tooltip(Tooltip::text("清除筛选"))
                                 .on_click(cx.listener(|outline_panel, _, window, cx| {
                                     outline_panel.filter_editor.update(cx, |editor, cx| {
                                         editor.set_text("", window, cx);
@@ -4877,7 +4877,7 @@ impl OutlinePanel {
         dir_entry: &GitEntry,
     ) -> HashSet<BufferId> {
         if !dir_entry.is_dir() {
-            debug_panic!("buffers_inside_directory called on a non-directory entry {dir_entry:?}");
+            debug_panic!("buffers_inside_directory 被调用在非目录条目 {dir_entry:?} 上");
             return HashSet::default();
         }
 
@@ -4955,7 +4955,7 @@ fn file_name(path: &Path) -> String {
 
 impl Panel for OutlinePanel {
     fn persistent_name() -> &'static str {
-        "Outline Panel"
+        "大纲面板"
     }
 
     fn panel_key() -> &'static str {
@@ -4994,7 +4994,7 @@ impl Panel for OutlinePanel {
     }
 
     fn icon_tooltip(&self, _window: &Window, _: &App) -> Option<&'static str> {
-        Some("Outline Panel")
+        Some("大纲面板")
     }
 
     fn toggle_action(&self) -> Box<dyn Action> {
@@ -5383,7 +5383,7 @@ mod tests {
                 .read(cx)
                 .items()
                 .find_map(|item| item.downcast::<ProjectSearchView>())
-                .expect("Project search view expected to appear after new search event trigger")
+                .expect("项目搜索视图预期在新搜索事件触发后出现")
         });
 
         let query = "param_names_for_lifetime_elision_hints";
@@ -5612,7 +5612,7 @@ mod tests {
                 .read(cx)
                 .items()
                 .find_map(|item| item.downcast::<ProjectSearchView>())
-                .expect("Project search view expected to appear after new search event trigger")
+                .expect("项目搜索视图预期在新搜索事件触发后出现")
         });
 
         let query = "param_names_for_lifetime_elision_hints";
@@ -5745,7 +5745,7 @@ mod tests {
                 .read(cx)
                 .items()
                 .find_map(|item| item.downcast::<ProjectSearchView>())
-                .expect("Project search view expected to appear after new search event trigger")
+                .expect("项目搜索视图预期在新搜索事件触发后出现")
         });
 
         let query = "param_names_for_lifetime_elision_hints";
@@ -5806,7 +5806,7 @@ mod tests {
         let active_editor = outline_panel.read_with(cx, |outline_panel, _| {
             outline_panel
                 .active_editor()
-                .expect("should have an active editor open")
+                .expect("需要有一个活动编辑器打开")
         });
         let initial_outline_selection =
             "search: match config.«param_names_for_lifetime_elision_hints» {";
@@ -5824,7 +5824,7 @@ mod tests {
             assert_eq!(
                 selected_row_text(&active_editor, cx),
                 clear_outline_metadata(initial_outline_selection),
-                "Should place the initial editor selection on the corresponding search result"
+                "应将初始编辑器选择放置在相应的搜索结果上"
             );
 
             outline_panel.select_next(&SelectNext, window, cx);
@@ -5851,7 +5851,7 @@ mod tests {
             assert_eq!(
                 selected_row_text(&active_editor, cx),
                 clear_outline_metadata(navigated_outline_selection),
-                "Should still have the initial caret position after SelectNext calls"
+                "在调用 SelectNext 后应仍然保持初始插入符位置"
             );
         });
 
@@ -5862,7 +5862,7 @@ mod tests {
             assert_eq!(
                 selected_row_text(&active_editor, cx),
                 clear_outline_metadata(navigated_outline_selection),
-                "After opening, should move the caret to the opened outline entry's position"
+                "打开后，应将插入符移动到打开的大纲条目的位置"
             );
         });
 
@@ -5888,7 +5888,7 @@ mod tests {
             assert_eq!(
                 selected_row_text(&active_editor, cx),
                 clear_outline_metadata(next_navigated_outline_selection),
-                "Should again preserve the selection after another SelectNext call"
+                "在另一次调用 SelectNext 后应再次保留选择"
             );
         });
 
@@ -5901,12 +5901,12 @@ mod tests {
         let new_active_editor = outline_panel.read_with(cx, |outline_panel, _| {
             outline_panel
                 .active_editor()
-                .expect("should have an active editor open")
+                .expect("需要有一个活动编辑器打开")
         });
         outline_panel.update(cx, |outline_panel, cx| {
             assert_ne!(
                 active_editor, new_active_editor,
-                "After opening an excerpt, new editor should be open"
+                "打开摘录后，应打开新的编辑器"
             );
             assert_eq!(
                 display_entries(
@@ -5922,7 +5922,7 @@ outline: fn hints_lifetimes_named  <==== selected"
             assert_eq!(
                 selected_row_text(&new_active_editor, cx),
                 clear_outline_metadata(next_navigated_outline_selection),
-                "When opening the excerpt, should navigate to the place corresponding the outline entry"
+                "打开摘录时，应导航到与大纲条目对应的位置"
             );
         });
     }
@@ -5987,7 +5987,7 @@ outline: fn hints_lifetimes_named  <==== selected"
                 .read(cx)
                 .items()
                 .find_map(|item| item.downcast::<ProjectSearchView>())
-                .expect("Project search view expected to appear after new search event trigger")
+                .expect("项目搜索视图预期在新搜索事件触发后出现")
         });
 
         let query = "aaa";
@@ -6148,9 +6148,9 @@ struct OutlineEntryExcerpt {
                 )
             })
             .await
-            .expect("Failed to open Rust source file")
+            .expect("打开 Rust 源文件失败")
             .downcast::<Editor>()
-            .expect("Should open an editor for Rust source file");
+            .expect("需要为 Rust 源文件打开一个编辑器");
 
         cx.executor()
             .advance_clock(UPDATE_DEBOUNCE + Duration::from_millis(100));
@@ -6508,7 +6508,7 @@ outline: struct OutlineEntryExcerpt
                 .read(cx)
                 .items()
                 .find_map(|item| item.downcast::<ProjectSearchView>())
-                .expect("Project search view expected to appear after new search event trigger")
+                .expect("项目搜索视图预期在新搜索事件触发后出现")
         });
 
         let query = "static";
@@ -6622,7 +6622,7 @@ outline: struct OutlineEntryExcerpt
         outline_panel.update_in(cx, |outline_panel, window, cx| {
             outline_panel
                 .active_editor()
-                .expect("Should have an active editor")
+                .expect("需要有一个活动编辑器")
                 .update(cx, |editor, cx| {
                     editor.toggle_fold(&editor::actions::ToggleFold, window, cx)
                 });
@@ -6655,7 +6655,7 @@ outline: struct OutlineEntryExcerpt
         outline_panel.update_in(cx, |outline_panel, window, cx| {
             outline_panel
                 .active_editor()
-                .expect("Should have an active editor")
+                .expect("需要有一个活动编辑器")
                 .update(cx, |editor, cx| {
                     editor.toggle_fold(&editor::actions::ToggleFold, window, cx)
                 });
@@ -6760,7 +6760,7 @@ outline: struct OutlineEntryExcerpt
             })
             .unwrap()
             .await
-            .expect("Failed to load outline panel");
+            .expect("加载大纲面板失败");
 
         window
             .update(cx, |multi_workspace, window, cx| {
@@ -6779,7 +6779,7 @@ outline: struct OutlineEntryExcerpt
         workspace.update_in(cx, |workspace, _window, cx| {
             workspace
                 .panel::<OutlinePanel>(cx)
-                .expect("no outline panel")
+                .expect("无大纲面板")
         })
     }
 
@@ -6802,7 +6802,7 @@ outline: struct OutlineEntryExcerpt
             display_string += &match &entry.entry {
                 PanelEntry::Fs(entry) => match entry {
                     FsEntry::ExternalFile(_) => {
-                        panic!("Did not cover external files with tests")
+                        panic!("未使用测试覆盖外部文件")
                     }
                     FsEntry::Directory(directory) => {
                         let path = if let Some(worktree) = project
@@ -6842,7 +6842,7 @@ outline: struct OutlineEntryExcerpt
                 PanelEntry::Outline(outline_entry) => match outline_entry {
                     OutlineEntry::Excerpt(_) => continue,
                     OutlineEntry::Outline(outline_entry) => {
-                        format!("outline: {}", outline_entry.text)
+                        format!("大纲：{}", outline_entry.text)
                     }
                 },
                 PanelEntry::Search(search_entry) => {
@@ -7086,7 +7086,7 @@ outline: struct OutlineEntryExcerpt
     fn selected_row_text(editor: &Entity<Editor>, cx: &mut App) -> String {
         editor.update(cx, |editor, cx| {
             let selections = editor.selections.all::<language::Point>(&editor.display_snapshot(cx));
-            assert_eq!(selections.len(), 1, "Active editor should have exactly one selection after any outline panel interactions");
+            assert_eq!(selections.len(), 1, "任何大纲面板交互后，活动编辑器应有一个选择");
             let selection = selections.first().unwrap();
             let multi_buffer_snapshot = editor.buffer().read(cx).snapshot(cx);
             let line_start = language::Point::new(selection.start.row, 0);
@@ -7965,9 +7965,9 @@ search: | Field          | Meaning              «  »|"
                 )
             })
             .await
-            .expect("Failed to open Rust source file")
+            .expect("打开 Rust 源文件失败")
             .downcast::<Editor>()
-            .expect("Should open an editor for Rust source file");
+            .expect("需要为 Rust 源文件打开一个编辑器");
         let _fake_language_server = fake_language_servers.next().await.unwrap();
         cx.executor()
             .advance_clock(UPDATE_DEBOUNCE + Duration::from_millis(100));

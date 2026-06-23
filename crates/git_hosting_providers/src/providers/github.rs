@@ -116,7 +116,7 @@ impl Github {
         }
 
         Ok(Self::new(
-            "GitHub Self-Hosted",
+            "GitHub 自托管",
             Url::parse(&format!("https://{}", host))?,
         ))
     }
@@ -144,7 +144,7 @@ impl Github {
         let mut response = client
             .send(request.body(AsyncBody::default())?)
             .await
-            .with_context(|| format!("error fetching GitHub commit details at {:?}", url))?;
+            .with_context(|| format!("获取 GitHub 提交详情失败：{:?}", url))?;
 
         let mut body = Vec::new();
         response.body_mut().read_to_end(&mut body).await?;
@@ -152,7 +152,7 @@ impl Github {
         if response.status().is_client_error() {
             let text = String::from_utf8_lossy(body.as_slice());
             bail!(
-                "status error {}, response: {text:?}",
+                "状态错误 {}，响应：{text:?}",
                 response.status().as_u16()
             );
         }
@@ -337,7 +337,7 @@ mod tests {
         let github = Github::from_remote_url(remote_url).unwrap();
 
         assert!(!github.supports_avatars());
-        assert_eq!(github.name, "GitHub Self-Hosted".to_string());
+        assert_eq!(github.name, "GitHub 自托管".to_string());
         assert_eq!(
             github.base_url,
             Url::parse("https://github.my-enterprise.com").unwrap()
@@ -350,7 +350,7 @@ mod tests {
         let github = Github::from_remote_url(remote_url).unwrap();
 
         assert!(!github.supports_avatars());
-        assert_eq!(github.name, "GitHub Self-Hosted".to_string());
+        assert_eq!(github.name, "GitHub 自托管".to_string());
         assert_eq!(
             github.base_url,
             Url::parse("https://github.my-enterprise.com").unwrap()
@@ -536,7 +536,7 @@ mod tests {
         };
 
         let github = Github::public_instance();
-        let message = "This does not contain a pull request";
+        let message = "不包含拉取请求";
         assert!(github.extract_pull_request(&remote, message).is_none());
 
         // Pull request number at end of first line
@@ -607,7 +607,7 @@ mod tests {
         );
 
         let base_url = Url::parse("https://github.zed.com").unwrap();
-        let github = Github::new("GitHub Self-Hosted", base_url);
+        let github = Github::new("GitHub 自托管", base_url);
         let url = github
             .build_create_pull_request_url(&remote, "feature/new-feature")
             .expect("should be able to build pull request url");

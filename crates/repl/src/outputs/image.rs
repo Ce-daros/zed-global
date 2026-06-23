@@ -55,7 +55,7 @@ impl ImageView {
             image::ImageFormat::Bmp => ImageFormat::Bmp,
             image::ImageFormat::Ico => ImageFormat::Ico,
             format => {
-                anyhow::bail!("unsupported image format {format:?}");
+                anyhow::bail!("不支持的图像格式 {format:?}");
             }
         };
 
@@ -162,7 +162,7 @@ mod tests {
         let encoded = encode_test_image(200, 120);
         let image_view = match ImageView::from(&encoded) {
             Ok(view) => view,
-            Err(error) => panic!("failed to decode image view: {error}"),
+            Err(error) => panic!("图像视图解码失败：{error}"),
         };
 
         let line_height = Pixels::from(10.0);
@@ -180,7 +180,7 @@ mod tests {
         let encoded = encode_test_image(200, 120);
         let image_view = match ImageView::from(&encoded) {
             Ok(view) => view,
-            Err(error) => panic!("failed to decode image view: {error}"),
+            Err(error) => panic!("图像视图解码失败：{error}"),
         };
 
         let line_height = Pixels::from(10.0);

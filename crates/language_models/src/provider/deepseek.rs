@@ -224,7 +224,7 @@ impl LanguageModelProvider for DeepSeekLanguageModelProvider {
                 crate::ApiKeyEditor::new(
                     state,
                     "https://platform.deepseek.com/api_keys",
-                    "Paste your DeepSeek API key",
+                    "粘贴你的 DeepSeek API 密钥",
                     |state, _cx| crate::api_key_status(&state.api_key_state),
                     |state, key, cx| state.update(cx, |state, cx| state.set_api_key(Some(key), cx)),
                     |state, cx| state.update(cx, |state, cx| state.set_api_key(None, cx)),
@@ -454,7 +454,7 @@ pub fn into_deepseek(
                         }
                     }
                     let content = if text_parts.is_empty() {
-                        "<Tool returned an empty string>".to_string()
+                        "<工具返回了空字符串>".to_string()
                     } else {
                         text_parts.join("\n")
                     };
@@ -559,7 +559,7 @@ impl DeepSeekEventMapper {
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.first() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
-                "Response contained no choices"
+                "响应中没有候选项"
             )))];
         };
 
@@ -652,7 +652,7 @@ impl DeepSeekEventMapper {
                 events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::ToolUse)));
             }
             Some(stop_reason) => {
-                log::error!("Unexpected DeepSeek stop_reason: {stop_reason:?}",);
+                log::error!("DeepSeek 出现意外的 stop_reason：{stop_reason:?}",);
                 events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::EndTurn)));
             }
             None => {}
@@ -737,43 +737,43 @@ impl Render for ConfigurationView {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let env_var_set = self.state.read(cx).api_key_state.is_from_env_var();
         let configured_card_label = if env_var_set {
-            format!("API key set in {API_KEY_ENV_VAR_NAME} environment variable")
+            format!("API 密钥已在 {API_KEY_ENV_VAR_NAME} 环境变量中设置")
         } else {
             let api_url = DeepSeekLanguageModelProvider::api_url(cx);
             if api_url == DEEPSEEK_API_URL {
-                "API key configured".to_string()
+                "API 密钥已配置".to_string()
             } else {
-                format!("API key configured for {}", api_url)
+                format!("已为 {} 配置 API 密钥", api_url)
             }
         };
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("加载凭据中..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use DeepSeek in Zed, you need an API key:"))
+                .child(Label::new("要在 Zed 中使用 DeepSeek，您需要一个 API 密钥："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Get your API key from the"))
+                                .child(Label::new("从以下位置获取你的 API 密钥："))
                                 .child(ButtonLink::new(
-                                    "DeepSeek console",
+                                    "DeepSeek 控制台",
                                     "https://platform.deepseek.com/api_keys",
                                 )),
                         )
                         .child(ListBulletItem::new(
-                            "Paste your API key below and hit enter to start using the assistant",
+                            "在下方粘贴您的 API 密钥并按回车键以开始使用助手",
                         )),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量并重启 Zed。"
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),

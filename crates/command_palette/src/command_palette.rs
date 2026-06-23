@@ -380,11 +380,11 @@ impl PickerDelegate for CommandPaletteDelegate {
     type ListItem = ListItem;
 
     fn name() -> &'static str {
-        "command palette"
+        "命令面板"
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Execute a command...".into()
+        "执行命令...".into()
     }
 
     fn select_history(
@@ -594,8 +594,8 @@ impl PickerDelegate for CommandPaletteDelegate {
         let action_ix = self.matches[self.selected_ix].candidate_id;
         let command = self.commands.swap_remove(action_ix);
         telemetry::event!(
-            "Action Invoked",
-            source = "command palette",
+            "操作已调用",
+            source = "命令面板",
             action = command.name
         );
         self.matches.clear();
@@ -658,7 +658,7 @@ impl PickerDelegate for CommandPaletteDelegate {
 
         let focus_handle = &self.previous_focus_handle;
         let keybinding_buttons = if keybind.has_binding(window) {
-            Button::new("change", "Change Keybinding…")
+            Button::new("change", "更改按键绑定…")
                 .key_binding(
                     KeyBinding::for_action_in(&menu::SecondaryConfirm, focus_handle, cx)
                         .map(|kb| kb.size(rems_from_px(12.))),
@@ -667,7 +667,7 @@ impl PickerDelegate for CommandPaletteDelegate {
                     window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx);
                 })
         } else {
-            Button::new("add", "Add Keybinding…")
+            Button::new("add", "添加按键绑定…")
                 .key_binding(
                     KeyBinding::for_action_in(&menu::SecondaryConfirm, focus_handle, cx)
                         .map(|kb| kb.size(rems_from_px(12.))),
@@ -687,7 +687,7 @@ impl PickerDelegate for CommandPaletteDelegate {
                 .border_color(cx.theme().colors().border_variant)
                 .child(keybinding_buttons)
                 .child(
-                    Button::new("run-action", "Run")
+                    Button::new("run-action", "运行")
                         .key_binding(
                             KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
@@ -770,7 +770,7 @@ pub fn humanize_action_name(name: &str) -> String {
 
 impl std::fmt::Debug for Command {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Command")
+        f.debug_struct("命令")
             .field("name", &self.name)
             .finish_non_exhaustive()
     }
@@ -1048,8 +1048,8 @@ mod tests {
                             "cmd-n": "workspace::NewFile",
                             "enter": "menu::Confirm",
                             "cmd-shift-p": "command_palette::Toggle",
-                            "up": "menu::SelectPrevious",
-                            "down": "menu::SelectNext"
+                            "上": "menu::SelectPrevious",
+                            "下": "menu::SelectNext"
                         }
                     }
                 ]"#,
@@ -1091,36 +1091,36 @@ mod tests {
             cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
-        let palette = open_palette_with_history(&workspace, &["backspace", "select all"], cx);
+        let palette = open_palette_with_history(&workspace, &["backspace", "全选"], cx);
 
         // Query should be empty initially
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "");
         });
 
-        // Press up - should load most recent query "select all"
-        cx.simulate_keystrokes("up");
+        // Press up - should load most recent query "全选"
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select all");
+            assert_eq!(palette.query(cx), "全选");
         });
 
         // Press up again - should load "backspace"
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "backspace");
         });
 
-        // Press down - should go back to "select all"
-        cx.simulate_keystrokes("down");
+        // Press down - should go back to "全选"
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select all");
+            assert_eq!(palette.query(cx), "全选");
         });
 
         // Press down again - should clear query (exit history mode)
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "");
@@ -1138,7 +1138,7 @@ mod tests {
         let palette = open_palette_with_history(&workspace, &["backspace"], cx);
 
         // Press up to enter history mode
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "backspace");
@@ -1173,14 +1173,14 @@ mod tests {
         });
 
         // Press down - should navigate to next suggestion (not history)
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, _| {
             assert_eq!(palette.delegate.selected_ix, 1);
         });
 
         // Press up - should go back to first suggestion
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, _| {
             assert_eq!(palette.delegate.selected_ix, 0);
@@ -1188,7 +1188,7 @@ mod tests {
 
         // Press up again at top - should enter history mode and show previous query
         // that matches the "editor" prefix
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "editor: open");
@@ -1205,7 +1205,7 @@ mod tests {
 
         let palette = open_palette_with_history(
             &workspace,
-            &["open file", "select all", "select line", "backspace"],
+            &["打开文件", "全选", "选中行", "backspace"],
             cx,
         );
 
@@ -1213,36 +1213,36 @@ mod tests {
         cx.simulate_input("sel");
         cx.background_executor.run_until_parked();
 
-        // Press up - should get "select line" (most recent matching "sel")
-        cx.simulate_keystrokes("up");
+        // Press up - should get "选中行" (most recent matching "sel")
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select line");
+            assert_eq!(palette.query(cx), "选中行");
         });
 
-        // Press up again - should get "select all" (next matching "sel")
-        cx.simulate_keystrokes("up");
+        // Press up again - should get "全选" (next matching "sel")
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select all");
+            assert_eq!(palette.query(cx), "全选");
         });
 
-        // Press up again - should stay at "select all" (no more matches for "sel")
-        cx.simulate_keystrokes("up");
+        // Press up again - should stay at "全选" (no more matches for "sel")
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select all");
+            assert_eq!(palette.query(cx), "全选");
         });
 
-        // Press down - should go back to "select line"
-        cx.simulate_keystrokes("down");
+        // Press down - should go back to "选中行"
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
-            assert_eq!(palette.query(cx), "select line");
+            assert_eq!(palette.query(cx), "选中行");
         });
 
         // Press down again - should return to original prefix "sel"
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "sel");
@@ -1258,14 +1258,14 @@ mod tests {
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
         let palette =
-            open_palette_with_history(&workspace, &["open file", "backspace", "select all"], cx);
+            open_palette_with_history(&workspace, &["打开文件", "backspace", "全选"], cx);
 
         // Type "xyz" as a prefix that doesn't match anything
         cx.simulate_input("xyz");
         cx.background_executor.run_until_parked();
 
         // Press up - should stay at "xyz" (no matches)
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "xyz");
@@ -1283,42 +1283,42 @@ mod tests {
         let palette = open_palette_with_history(&workspace, &["alpha", "beta", "gamma"], cx);
 
         // With empty query, press up - should get "gamma" (most recent)
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "gamma");
         });
 
         // Press up - should get "beta"
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "beta");
         });
 
         // Press up - should get "alpha"
-        cx.simulate_keystrokes("up");
+        cx.simulate_keystrokes("上");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "alpha");
         });
 
         // Press down - should get "beta"
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "beta");
         });
 
         // Press down - should get "gamma"
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "gamma");
         });
 
         // Press down - should return to empty string (exit history mode)
-        cx.simulate_keystrokes("down");
+        cx.simulate_keystrokes("下");
         cx.background_executor.run_until_parked();
         palette.read_with(cx, |palette, cx| {
             assert_eq!(palette.query(cx), "");

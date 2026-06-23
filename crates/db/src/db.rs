@@ -184,7 +184,7 @@ pub async fn open_db<M: Migrator + 'static>(
     let connection = maybe!(async {
         if let Some(parent) = db_path.parent() {
             create_dir_all(parent)
-                .context("Could not create db directory")
+                .context("不能创建数据库目录")
                 .log_err()?;
         }
         open_main_db::<M>(&db_path).await

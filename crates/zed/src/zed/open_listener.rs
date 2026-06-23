@@ -96,7 +96,7 @@ impl std::fmt::Debug for OpenRequestKind {
             Self::AgentPanel {
                 external_source_prompt,
             } => f
-                .debug_struct("AgentPanel")
+                .debug_struct("代理面板")
                 .field("external_source_prompt", external_source_prompt)
                 .finish(),
             Self::SharedAgentThread { session_id } => f
@@ -314,7 +314,7 @@ impl OpenRequest {
         let port = url.port();
         anyhow::ensure!(
             self.open_paths.is_empty(),
-            "cannot open both local and ssh paths"
+            "不能同时打开本地和 ssh 路径"
         );
         let mut connection_options =
             RemoteSettings::get_global(cx).connection_options_for(host, port, username);
@@ -415,7 +415,7 @@ impl OpenListener {
     pub fn open(&self, request: RawOpenRequest) {
         self.0
             .unbounded_send(request)
-            .context("no listener for open requests")
+            .context("无打开请求的监听器")
             .log_err();
     }
 }
@@ -452,7 +452,7 @@ fn connect_to_cli(
     Box<dyn CliResponseSink>,
 )> {
     let handshake_tx = ipc::IpcSender::<IpcHandshake>::connect(server_name.to_string())
-        .context("error connecting to cli")?;
+        .context("连接到 cli 时出错")?;
     let (request_tx, request_rx) = ipc::channel::<CliRequest>()?;
     let (response_tx, response_rx) = ipc::channel::<CliResponse>()?;
 
@@ -461,7 +461,7 @@ fn connect_to_cli(
             requests: request_tx,
             responses: response_rx,
         })
-        .context("error sending ipc handshake")?;
+        .context("发送 ipc 握手时出错")?;
 
     let (async_request_tx, async_request_rx) = futures::channel::mpsc::unbounded::<CliRequest>();
     thread::spawn(move || {
@@ -911,7 +911,7 @@ async fn open_workspaces(
         }
     }
 
-    anyhow::ensure!(!errored, "failed to open a workspace");
+    anyhow::ensure!(!errored, "打开工作区失败");
 
     Ok(())
 }
@@ -1846,7 +1846,7 @@ mod tests {
             .update(cx, |multi_workspace, _, cx| {
                 multi_workspace.workspace().update(cx, |workspace, cx| {
                     let items = workspace.items(cx).collect::<Vec<_>>();
-                    assert_eq!(items.len(), 2, "Workspace should have two items");
+                    assert_eq!(items.len(), 2, "工作区应有两个条目");
                 });
             })
             .unwrap();
@@ -1870,7 +1870,7 @@ mod tests {
             .update(cx, |multi_workspace, _, cx| {
                 multi_workspace.workspace().update(cx, |workspace, cx| {
                     let items = workspace.items(cx).collect::<Vec<_>>();
-                    assert_eq!(items.len(), 1, "Workspace should have two items");
+                    assert_eq!(items.len(), 1, "工作区应有两个条目");
                 });
             })
             .unwrap();

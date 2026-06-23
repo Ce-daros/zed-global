@@ -274,7 +274,7 @@ impl State {
                     BedrockAuthMethod::NamedProfile => BedrockAuth::NamedProfile { profile_name },
                     BedrockAuthMethod::SingleSignOn => BedrockAuth::SingleSignOn { profile_name },
                     BedrockAuthMethod::ApiKey => {
-                        // ApiKey method means "use static credentials from keychain/env"
+                        // ApiKey method means "使用 keychain/env 中的静态凭据"
                         // Fall through to load them below
                         return self.load_static_credentials(cx);
                     }
@@ -357,10 +357,10 @@ impl State {
                 .ok_or(AuthenticateError::CredentialsNotFound)?;
 
             let credentials_str = String::from_utf8(credentials_bytes)
-                .with_context(|| format!("invalid {PROVIDER_NAME} credentials"))?;
+                .with_context(|| format!("无效的 {PROVIDER_NAME} 凭证"))?;
 
             let credentials: BedrockCredentials =
-                serde_json::from_str(&credentials_str).context("failed to parse credentials")?;
+                serde_json::from_str(&credentials_str).context("解析凭证失败")?;
 
             let auth = credentials
                 .into_auth()
@@ -606,9 +606,9 @@ impl BedrockModel {
 
                 anyhow::Ok(BedrockClient::new(&config))
             })
-            .context("initializing Bedrock client")?;
+            .context("正在初始化 Bedrock 客户端")?;
 
-        self.client.get().context("Bedrock client not initialized")
+        self.client.get().context("Bedrock 客户端未初始化")
     }
 
     fn stream_completion(
@@ -622,9 +622,9 @@ impl BedrockModel {
         let Ok(runtime_client) = self
             .get_or_init_client(cx)
             .cloned()
-            .context("Bedrock client not initialized")
+            .context("Bedrock 客户端未初始化")
         else {
-            return futures::future::ready(Err(BedrockError::Other(anyhow!("App state dropped"))))
+            return futures::future::ready(Err(BedrockError::Other(anyhow!("应用状态已删除"))))
                 .boxed();
         };
         let extra_headers = self.state.read_with(cx, |_, cx| {
@@ -782,7 +782,7 @@ impl LanguageModel for BedrockModel {
         let future = self.request_limiter.stream(async move {
             let response = request.await.map_err(|err| match err {
                 BedrockError::Validation(ref msg) => {
-                    if msg.contains("model identifier is invalid") {
+                    if msg.contains("模型标识符无效") {
                         LanguageModelCompletionError::Other(anyhow!(
                             "{display_name} is not available in {region}. \
                                  Try switching to a region where this model is supported."

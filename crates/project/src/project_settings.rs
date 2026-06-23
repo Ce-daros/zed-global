@@ -1043,7 +1043,7 @@ impl SettingsObserver {
     ) -> anyhow::Result<()> {
         let kind = match envelope.payload.kind {
             Some(kind) => proto::LocalSettingsKind::from_i32(kind)
-                .with_context(|| format!("unknown kind {kind}"))?,
+                .with_context(|| format!("未知类型 {kind}"))?,
             None => proto::LocalSettingsKind::Settings,
         };
 

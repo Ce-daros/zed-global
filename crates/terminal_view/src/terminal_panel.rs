@@ -40,7 +40,7 @@ use workspace::{
 use anyhow::{Result, anyhow};
 use zed_actions::assistant::InlineAssist;
 
-const TERMINAL_PANEL_KEY: &str = "TerminalPanel";
+const TERMINAL_PANEL_KEY: &str = "终端面板";
 
 actions!(
     terminal_panel,
@@ -158,7 +158,7 @@ impl TerminalPanel {
                         PopoverMenu::new("terminal-tab-bar-popover-menu")
                             .trigger_with_tooltip(
                                 IconButton::new("plus", IconName::Plus).icon_size(IconSize::Small),
-                                Tooltip::text("New…"),
+                                Tooltip::text("新建…"),
                             )
                             .anchor(Anchor::TopRight)
                             .with_handle(pane.new_item_context_menu_handle.clone())
@@ -167,14 +167,14 @@ impl TerminalPanel {
                                 let menu = ContextMenu::build(window, cx, |menu, _, _| {
                                     menu.context(focus_handle.clone())
                                         .action(
-                                            "New Terminal",
+                                            "新建终端",
                                             workspace::NewTerminal::default().boxed_clone(),
                                         )
                                         // We want the focus to go back to terminal panel once task modal is dismissed,
                                         // hence we focus that first. Otherwise, we'd end up without a focused element, as
                                         // context menu will be gone the moment we spawn the modal.
                                         .action(
-                                            "Spawn Task",
+                                            "生成任务",
                                             zed_actions::Spawn::modal().boxed_clone(),
                                         )
                                 });
@@ -188,7 +188,7 @@ impl TerminalPanel {
                             .trigger_with_tooltip(
                                 IconButton::new("terminal-pane-split", IconName::Split)
                                     .icon_size(IconSize::Small),
-                                Tooltip::text("Split Pane"),
+                                Tooltip::text("分割窗格"),
                             )
                             .anchor(Anchor::TopRight)
                             .with_handle(pane.split_item_context_menu_handle.clone())
@@ -199,10 +199,10 @@ impl TerminalPanel {
                                             split_context.clone(),
                                             |menu, split_context| menu.context(split_context),
                                         )
-                                        .action("Split Right", SplitRight::default().boxed_clone())
-                                        .action("Split Left", SplitLeft::default().boxed_clone())
-                                        .action("Split Up", SplitUp::default().boxed_clone())
-                                        .action("Split Down", SplitDown::default().boxed_clone())
+                                        .action("向右拆分", SplitRight::default().boxed_clone())
+                                        .action("向左拆分", SplitLeft::default().boxed_clone())
+                                        .action("向上拆分", SplitUp::default().boxed_clone())
+                                        .action("向下拆分", SplitDown::default().boxed_clone())
                                     })
                                     .into()
                                 }
@@ -219,7 +219,7 @@ impl TerminalPanel {
                             }))
                             .tooltip(move |_window, cx| {
                                 Tooltip::for_action(
-                                    if zoomed { "Zoom Out" } else { "Zoom In" },
+                                    if zoomed { "缩小" } else { "放大" },
                                     &ToggleZoom,
                                     cx,
                                 )
@@ -550,13 +550,13 @@ impl TerminalPanel {
         cx: &mut Context<Self>,
     ) -> Task<Result<WeakEntity<Terminal>>> {
         let Some(workspace) = self.workspace.upgrade() else {
-            return Task::ready(Err(anyhow!("failed to read workspace")));
+            return Task::ready(Err(anyhow!("读取工作区失败")));
         };
 
         let project = workspace.read(cx).project().read(cx);
 
         if project.is_via_collab() {
-            return Task::ready(Err(anyhow!("cannot spawn tasks as a guest")));
+            return Task::ready(Err(anyhow!("访客无法创建任务")));
         }
 
         let remote_client = project.remote_client();
@@ -761,7 +761,7 @@ impl TerminalPanel {
     ) -> Task<Result<WeakEntity<Terminal>>> {
         if !is_enabled_in_workspace(workspace, cx) {
             return Task::ready(Err(anyhow!(
-                "terminal not yet supported for remote projects"
+                "远程项目暂不支持终端"
             )));
         }
         let project = workspace.project().downgrade();
@@ -795,7 +795,7 @@ impl TerminalPanel {
         let workspace = self.workspace.clone();
         cx.spawn_in(window, async move |terminal_panel, cx| {
             if workspace.update(cx, |workspace, cx| !is_enabled_in_workspace(workspace, cx))? {
-                anyhow::bail!("terminal not yet supported for remote projects");
+                anyhow::bail!("远程项目暂不支持终端");
             }
             let pane = terminal_panel.update(cx, |terminal_panel, _| {
                 terminal_panel.pending_terminals_to_add += 1;
@@ -874,7 +874,7 @@ impl TerminalPanel {
 
         cx.spawn_in(window, async move |terminal_panel, cx| {
             if workspace.update(cx, |workspace, cx| !is_enabled_in_workspace(workspace, cx))? {
-                anyhow::bail!("terminal not yet supported for collaborative projects");
+                anyhow::bail!("协作项目暂不支持终端");
             }
             let pane = terminal_panel.update(cx, |terminal_panel, _| {
                 terminal_panel.pending_terminals_to_add += 1;
@@ -1032,7 +1032,7 @@ impl TerminalPanel {
                                 cx,
                             );
 
-                            anyhow::ensure!(did_activate, "Failed to retrieve terminal pane");
+                            anyhow::ensure!(did_activate, "获取终端窗格失败");
 
                             anyhow::Ok(())
                         })??;
@@ -1307,9 +1307,9 @@ impl Render for FailedToSpawnTerminal {
             .menu(move |window, cx| {
                 Some(ContextMenu::build(window, cx, |context_menu, _, _| {
                     context_menu
-                        .action("Open Settings", zed_actions::OpenSettings.boxed_clone())
+                        .action("打开设置", zed_actions::OpenSettings.boxed_clone())
                         .action(
-                            "Edit settings.json",
+                            "编辑 settings.json",
                             zed_actions::OpenSettingsFile.boxed_clone(),
                         )
                 }))
@@ -1333,7 +1333,7 @@ impl Render for FailedToSpawnTerminal {
                     .items_center()
                     .justify_center()
                     .text_center()
-                    .child(Label::new("Failed to spawn terminal"))
+                    .child(Label::new("创建终端失败"))
                     .child(
                         Label::new(self.error.to_string())
                             .size(LabelSize::Small)
@@ -1342,7 +1342,7 @@ impl Render for FailedToSpawnTerminal {
                     )
                     .child(SplitButton::new(
                         ButtonLike::new("open-settings-ui")
-                            .child(Label::new("Edit Settings").size(LabelSize::Small))
+                            .child(Label::new("编辑设置").size(LabelSize::Small))
                             .on_click(|_, window, cx| {
                                 window.dispatch_action(zed_actions::OpenSettings.boxed_clone(), cx);
                             }),
@@ -1358,7 +1358,7 @@ impl workspace::Item for FailedToSpawnTerminal {
     type Event = ();
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        SharedString::new_static("Failed to spawn terminal")
+        SharedString::new_static("创建终端失败")
     }
 }
 
@@ -1634,7 +1634,7 @@ impl Panel for TerminalPanel {
     }
 
     fn persistent_name() -> &'static str {
-        "TerminalPanel"
+        "终端面板"
     }
 
     fn panel_key() -> &'static str {
@@ -1652,7 +1652,7 @@ impl Panel for TerminalPanel {
     }
 
     fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
-        Some("Terminal Panel")
+        Some("终端面板")
     }
 
     fn toggle_action(&self) -> Box<dyn gpui::Action> {
@@ -1718,7 +1718,7 @@ impl Render for InlineAssistTabBarButton {
                 window.dispatch_action(InlineAssist::default().boxed_clone(), cx);
             }))
             .tooltip(move |_window, cx| {
-                Tooltip::for_action_in("Inline Assist", &InlineAssist::default(), &focus_handle, cx)
+                Tooltip::for_action_in("内联助手", &InlineAssist::default(), &focus_handle, cx)
             })
     }
 }
@@ -1795,7 +1795,7 @@ mod tests {
 
         assert_eq!(
             item_count, 5,
-            "Terminal panel should bypass max_tabs limit and have all 5 terminals"
+            "终端面板应忽略 max_tabs 限制，并保留全部 5 个终端"
         );
     }
 
@@ -1992,11 +1992,11 @@ mod tests {
         assert_eq!(
             panel_items_after,
             panel_items_before + 1,
-            "Terminal should be added to the panel when no center terminal is focused"
+            "未聚焦中央终端时，应将终端加入面板"
         );
         assert_eq!(
             center_items_after, center_items_before,
-            "Center pane should not gain a new terminal"
+            "中央窗格不应新增终端"
         );
     }
 
@@ -2084,7 +2084,7 @@ mod tests {
         assert_eq!(
             center_items_after,
             center_items_before + 1,
-            "New terminal should be added to the center pane"
+            "新终端应添加到中央窗格"
         );
         assert_eq!(
             panel_items_after, panel_items_before,
@@ -2161,11 +2161,11 @@ mod tests {
         assert_eq!(
             panel_items_after,
             panel_items_before + 1,
-            "New terminal should be added to the panel when panel is focused"
+            "聚焦面板时，新终端应添加到面板"
         );
         assert_eq!(
             center_items_after, center_items_before,
-            "Center pane should not gain a new terminal"
+            "中央窗格不应新增终端"
         );
     }
 
@@ -2342,11 +2342,11 @@ mod tests {
         assert_eq!(
             panel_items_after,
             panel_items_before + 1,
-            "New terminal should go to panel when panel is focused, even if center has a terminal"
+            "即使中央窗格已有终端，面板聚焦时新终端也应进入面板"
         );
         assert_eq!(
             center_items_after, center_items_before,
-            "Center pane should not gain a new terminal when panel is focused"
+            "面板聚焦时，中央窗格不应新增终端"
         );
     }
 

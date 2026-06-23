@@ -249,7 +249,7 @@ impl LanguageModelProvider for MistralLanguageModelProvider {
                 crate::ApiKeyEditor::new(
                     state,
                     "https://console.mistral.ai/api-keys",
-                    "Paste your Mistral API key",
+                    "粘贴你的 Mistral API 密钥",
                     |state, _cx| crate::api_key_status(&state.api_key_state),
                     |state, key, cx| state.update(cx, |state, cx| state.set_api_key(Some(key), cx)),
                     |state, cx| state.update(cx, |state, cx| state.set_api_key(None, cx)),
@@ -619,7 +619,7 @@ impl MistralEventMapper {
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.first() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
-                "Response contained no choices"
+                "响应中没有候选项"
             )))];
         };
 
@@ -719,7 +719,7 @@ impl MistralEventMapper {
                     events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::ToolUse)));
                 }
                 unexpected => {
-                    log::error!("Unexpected Mistral stop_reason: {unexpected:?}");
+                    log::error!("Mistral 出现意外的 stop_reason：{unexpected:?}");
                     events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::EndTurn)));
                 }
             }
@@ -736,7 +736,7 @@ impl MistralEventMapper {
         for (_, tool_call) in self.tool_calls_by_index.drain() {
             if tool_call.id.is_empty() || tool_call.name.is_empty() {
                 results.push(Err(LanguageModelCompletionError::from(anyhow!(
-                    "Received incomplete tool call: missing id or name"
+                    "收到不完整的工具调用：缺少 id 或 name"
                 ))));
                 continue;
             }
@@ -794,7 +794,7 @@ impl ConfigurationView {
             let state = state.clone();
             async move |this, cx| {
                 if let Some(task) = Some(state.update(cx, |state, cx| state.authenticate(cx))) {
-                    // We don't log an error, because "not signed in" is also an error.
+                    // We don't log an error, because "未登录" is also an error.
                     let _ = task.await;
                 }
 
@@ -854,41 +854,41 @@ impl Render for ConfigurationView {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let env_var_set = self.state.read(cx).api_key_state.is_from_env_var();
         let configured_card_label = if env_var_set {
-            format!("API key set in {API_KEY_ENV_VAR_NAME} environment variable")
+            format!("API 密钥已在 {API_KEY_ENV_VAR_NAME} 环境变量中设置")
         } else {
             let api_url = MistralLanguageModelProvider::api_url(cx);
             if api_url == MISTRAL_API_URL {
-                "API key configured".to_string()
+                "API 密钥已配置".to_string()
             } else {
-                format!("API key configured for {}", api_url)
+                format!("已为 {} 配置 API 密钥", api_url)
             }
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials...")).into_any()
+            div().child(Label::new("加载凭据中...")).into_any()
         } else if self.should_render_api_key_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with Mistral, you need to add an API key. Follow these steps:"))
+                .child(Label::new("要让 Zed 的代理使用 Mistral，你需要添加 API 密钥。请按以下步骤操作："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("Mistral's console", "https://console.mistral.ai/api-keys"))
+                                .child(Label::new("通过访问创建一个"))
+                                .child(ButtonLink::new("Mistral 的控制台", "https://console.mistral.ai/api-keys"))
                         )
                         .child(
-                            ListBulletItem::new("Ensure your Mistral account has credits")
+                            ListBulletItem::new("确保您的 Mistral 账户有余额")
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the assistant")
+                            ListBulletItem::new("在下方粘贴您的 API 密钥并按回车键以开始使用助手")
                         ),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量并重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )
@@ -973,7 +973,7 @@ mod tests {
         let events = mapper.map_event(tool_call_chunk(None, None, None, Some("tool_calls")));
 
         let Ok(LanguageModelCompletionEvent::ToolUse(tool_use)) = &events[0] else {
-            panic!("Expected first event to be ToolUse, got: {:?}", events[0]);
+            panic!("期望第一个事件是 ToolUse，实际得到：{:?}", events[0]);
         };
 
         assert_eq!(tool_use.id.to_string(), "real_id_123");
@@ -987,7 +987,7 @@ mod tests {
             messages: vec![
                 LanguageModelRequestMessage {
                     role: Role::System,
-                    content: vec![MessageContent::Text("System prompt".into())],
+                    content: vec![MessageContent::Text("系统提示词".into())],
                     cache: false,
                     reasoning_details: None,
                 },
@@ -1034,7 +1034,7 @@ mod tests {
             messages: vec![LanguageModelRequestMessage {
                 role: Role::User,
                 content: vec![
-                    MessageContent::Text("What's in this image?".into()),
+                    MessageContent::Text("这张图里有什么？".into()),
                     MessageContent::Image(LanguageModelImage {
                         source: "base64data".into(),
                     }),
@@ -1072,7 +1072,7 @@ mod tests {
             assert_eq!(content.len(), 2);
             assert!(matches!(
                 &content[0],
-                mistral::MessagePart::Text { text } if text == "What's in this image?"
+                mistral::MessagePart::Text { text } if text == "这张图里有什么？"
             ));
             assert!(matches!(
                 &content[1],

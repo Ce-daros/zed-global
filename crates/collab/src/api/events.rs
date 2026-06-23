@@ -81,7 +81,7 @@ pub async fn post_events(
         })?;
 
     let Some(last_event) = request_body.events.last() else {
-        return Err(Error::http(StatusCode::BAD_REQUEST, "no events".into()))?;
+        return Err(Error::http(StatusCode::BAD_REQUEST, "无事件".into()))?;
     };
     let country_code = country_code_header.map(|h| h.to_string());
 

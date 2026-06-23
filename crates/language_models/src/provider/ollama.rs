@@ -384,7 +384,7 @@ impl OllamaLanguageModel {
                                     content: tool_result.text_contents(),
                                 })
                             }
-                            _ => unreachable!("Only tool result should be extracted"),
+                            _ => unreachable!("只应提取工具结果"),
                         }
                     }
                     if !msg.content.is_empty() {
@@ -653,7 +653,7 @@ struct ConfigurationView {
 
 impl ConfigurationView {
     pub fn new(state: Entity<State>, window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let api_key_editor = cx.new(|cx| InputField::new(window, cx, "63e02e...").label("API key"));
+        let api_key_editor = cx.new(|cx| InputField::new(window, cx, "63e02e...").label("API 密钥"));
 
         let api_url_editor = cx.new(|cx| {
             let input = InputField::new(window, cx, OLLAMA_API_URL).label("API URL");
@@ -662,7 +662,7 @@ impl ConfigurationView {
         });
 
         let context_window_editor = cx.new(|cx| {
-            let input = InputField::new(window, cx, "8192").label("Context Window");
+            let input = InputField::new(window, cx, "8192").label("上下文窗口");
             if let Some(context_window) = OllamaLanguageModelProvider::settings(cx).context_window {
                 input.set_text(&context_window.to_string(), window, cx);
             }

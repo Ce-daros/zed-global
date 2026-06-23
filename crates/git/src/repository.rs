@@ -40,7 +40,7 @@ use uuid::Uuid;
 
 pub use askpass::{AskPassDelegate, AskPassResult, AskPassSession};
 
-pub const REMOTE_CANCELLED_BY_USER: &str = "Operation cancelled by user";
+pub const REMOTE_CANCELLED_BY_USER: &str = "用户取消了操作";
 
 /// Format string used in graph log to get initial data for the git graph
 /// %H - Full commit hash
@@ -349,7 +349,7 @@ impl Worktree {
 
     pub fn directory_name(&self, main_worktree_path: Option<&Path>) -> String {
         if self.is_main {
-            return "main worktree".to_string();
+            return "主工作树".to_string();
         }
 
         let dir_name = self
@@ -608,7 +608,7 @@ impl FetchOptions {
 
     pub fn name(&self) -> SharedString {
         match self {
-            Self::All => "Fetch all remotes".into(),
+            Self::All => "获取所有远程".into(),
             Self::Remote(remote) => remote.name.clone(),
         }
     }
@@ -2834,7 +2834,7 @@ impl GitRepository for RealGitRepository {
                         "-p",
                         &head_sha,
                         "-m",
-                        "WIP staged",
+                        "WIP 已暂存",
                     ])
                     .await
                     .context("failed to create staged commit")?;
@@ -2852,7 +2852,7 @@ impl GitRepository for RealGitRepository {
                                 "-p",
                                 &staged_sha,
                                 "-m",
-                                "WIP unstaged",
+                                "WIP 未暂存",
                             ])
                             .await?;
                         Ok(sha)

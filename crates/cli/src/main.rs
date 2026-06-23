@@ -130,7 +130,7 @@ struct Args {
     system_specs: bool,
     /// Open the project in a dev container.
     ///
-    /// Automatically triggers "Reopen in Dev Container" if a `.devcontainer/`
+    /// Automatically triggers "在 Dev Container 中重新打开" if a `.devcontainer/`
     /// configuration is found in the project directory.
     #[arg(long)]
     dev_container: bool,
@@ -520,7 +520,7 @@ fn run() -> Result<()> {
     #[cfg(target_os = "linux")]
     let args = flatpak::set_bin_if_no_escape(args);
 
-    let app = Detect::detect(args.zed.as_deref()).context("Bundle detection")?;
+    let app = Detect::detect(args.zed.as_deref()).context("应用包检测")?;
 
     if let Some(shell) = &args.completions {
         let file_path = std::env::current_exe()?;
@@ -569,13 +569,13 @@ fn run() -> Result<()> {
             .arg(&script_path)
             .env("ZED_CHANNEL", &*release_channel::RELEASE_CHANNEL_NAME)
             .status()
-            .context("Failed to execute uninstall script")?;
+            .context("执行卸载脚本失败")?;
 
         std::process::exit(status.code().unwrap_or(1));
     }
 
     let (server, server_name) =
-        IpcOneShotServer::<IpcHandshake>::new().context("Handshake before Zed spawn")?;
+        IpcOneShotServer::<IpcHandshake>::new().context("Zed 启动前握手")?;
     let url = format!("zed-cli://{server_name}");
 
     let open_behavior = if args.new {
@@ -702,7 +702,7 @@ fn run() -> Result<()> {
             let exit_status = exit_status.clone();
             let user_data_dir_for_thread = user_data_dir.clone();
             move || {
-                let (_, handshake) = server.accept().context("Handshake after Zed spawn")?;
+                let (_, handshake) = server.accept().context("Zed 启动后握手")?;
                 let (tx, rx) = (handshake.requests, handshake.responses);
 
                 #[cfg(target_os = "windows")]
@@ -844,16 +844,16 @@ fn prompt_open_behavior() -> Option<cli::CliBehaviorSetting> {
     let blue = console::Style::new().blue();
     let items = [
         format!(
-            "Add to existing Zed window ({})",
+            "添加到现有 Zed 窗口 ({})",
             blue.apply_to("zed --existing")
         ),
-        format!("Open a new window ({})", blue.apply_to("zed --classic")),
+        format!("打开新窗口 ({})", blue.apply_to("zed --classic")),
     ];
 
     let prompt = format!(
         "Configure default behavior for {}\n{}",
         blue.apply_to("zed <path>"),
-        console::style("You can change this later in Zed settings"),
+        console::style("稍后可在 Zed 设置中更改"),
     );
 
     let selection = dialoguer::Select::new()
@@ -1082,7 +1082,7 @@ mod flatpak {
             && args.zed.is_none()
         {
             args.zed = Some("/app/libexec/zed-editor".into());
-            unsafe { env::set_var("ZED_UPDATE_EXPLANATION", "Please use flatpak to update zed") };
+            unsafe { env::set_var("ZED_UPDATE_EXPLANATION", "请使用 flatpak 更新 Zed") };
         }
         args
     }
@@ -1153,7 +1153,7 @@ mod windows {
                 false,
                 &HSTRING::from(format!("{}-Instance-Mutex", app_identifier())),
             )
-            .expect("Unable to create instance sync event")
+            .expect("无法创建实例同步事件")
         };
         let last_err = unsafe { GetLastError() };
         let _ = unsafe { CloseHandle(mutex) };
@@ -1314,7 +1314,7 @@ mod mac_os {
                     .canonicalize()
                     .with_context(|| format!("Args bundle path {bundle_path:?} canonicalization"))?
             } else {
-                locate_bundle().context("bundle autodiscovery")?
+                locate_bundle().context("应用包自动发现")?
             };
 
             match bundle_path.extension().and_then(|ext| ext.to_str()) {
@@ -1402,7 +1402,7 @@ mod mac_os {
 
                     command
                         .spawn()
-                        .with_context(|| format!("Spawning {command:?}"))?;
+                        .with_context(|| format!("正在启动 {command:?}"))?;
                 }
             }
 
@@ -1467,7 +1467,7 @@ mod mac_os {
             .output()?;
         if !app_path_output.status.success() {
             bail!(
-                "Could not determine app path for {}",
+                "无法确定 {} 的应用程序路径",
                 channel.display_name()
             );
         }

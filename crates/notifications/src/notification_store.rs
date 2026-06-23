@@ -155,7 +155,7 @@ impl NotificationStore {
         Some(cx.spawn(async move |this, cx| {
             let this = this
                 .upgrade()
-                .context("Notification store was dropped while loading notifications")?;
+                .context("通知存储在加载通知时被删除")?;
 
             let response = request.await?;
             this.update(cx, |this, _| this.loaded_all_notifications = response.done);

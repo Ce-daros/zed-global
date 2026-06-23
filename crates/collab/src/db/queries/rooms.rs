@@ -161,12 +161,12 @@ impl Database {
                 )
                 .one(&*tx)
                 .await?
-                .context("user is not in the room")?;
+                .context("用户不在房间里")?;
 
             let called_user_role = match caller.role.unwrap_or(ChannelRole::Member) {
                 ChannelRole::Admin | ChannelRole::Member => ChannelRole::Member,
                 ChannelRole::Guest | ChannelRole::Talker => ChannelRole::Guest,
-                ChannelRole::Banned => return Err(anyhow!("banned users cannot invite").into()),
+                ChannelRole::Banned => return Err(anyhow!("不能邀请拉黑用户").into()),
             };
 
             room_participant::ActiveModel {
@@ -193,7 +193,7 @@ impl Database {
 
             let room = self.get_room(room_id, &tx).await?;
             let incoming_call = Self::build_incoming_call(&room, called_user_id)
-                .context("failed to build incoming call")?;
+                .context("构建来电失败")?;
             Ok((room, incoming_call))
         })
         .await
@@ -239,7 +239,7 @@ impl Database {
             let participant = if let Some(participant) = participant {
                 participant
             } else if expected_room_id.is_some() {
-                return Err(anyhow!("could not find call to decline"))?;
+                return Err(anyhow!("不能找到要拒绝的呼叫"))?;
             } else {
                 return Ok(None);
             };
@@ -279,7 +279,7 @@ impl Database {
                 )
                 .one(&*tx)
                 .await?
-                .context("no call to cancel")?;
+                .context("无呼叫可取消")?;
 
             room_participant::Entity::delete(participant.into_active_model())
                 .exec(&*tx)
@@ -310,10 +310,10 @@ impl Database {
                 .into_values::<_, QueryChannelId>()
                 .one(&*tx)
                 .await?
-                .context("no such room")?;
+                .context("无此房间")?;
 
             if channel_id.is_some() {
-                Err(anyhow!("tried to join channel call directly"))?
+                Err(anyhow!("尝试直接加入频道呼叫"))?
             }
 
             let participant_index = self
@@ -339,7 +339,7 @@ impl Database {
                 .exec(&*tx)
                 .await?;
             if result.rows_affected == 0 {
-                Err(anyhow!("room does not exist or was already joined"))?;
+                Err(anyhow!("房间不存在或已加入"))?;
             }
 
             let room = self.get_room(room_id, &tx).await?;
@@ -462,7 +462,7 @@ impl Database {
         }
 
         let (channel, room) = self.get_channel_room(room_id, tx).await?;
-        let channel = channel.context("no channel for room")?;
+        let channel = channel.context("该房间没有频道")?;
         Ok(JoinRoom {
             room,
             channel: Some(channel),
@@ -496,7 +496,7 @@ impl Database {
                 .exec(&*tx)
                 .await?;
             if participant_update.rows_affected == 0 {
-                return Err(anyhow!("room does not exist or was already joined"))?;
+                return Err(anyhow!("房间不存在或已加入"))?;
             }
 
             let participant = room_participant::Entity::find()
@@ -515,9 +515,9 @@ impl Database {
                 let project = project::Entity::find_by_id(project_id)
                     .one(&*tx)
                     .await?
-                    .context("project does not exist")?;
+                    .context("项目不存在")?;
                 if project.host_user_id != Some(user_id) {
-                    return Err(anyhow!("no such project"))?;
+                    return Err(anyhow!("无此项目"))?;
                 }
 
                 let mut collaborators = project
@@ -1086,7 +1086,7 @@ impl Database {
             let tx = tx;
             let location_kind;
             let location_project_id;
-            match location.variant.as_ref().context("invalid location")? {
+            match location.variant.as_ref().context("无效位置")? {
                 proto::participant_location::Variant::SharedProject(project) => {
                     location_kind = 0;
                     location_project_id = Some(ProjectId::from_proto(project.id));
@@ -1126,7 +1126,7 @@ impl Database {
                 let room = self.get_room(room_id, &tx).await?;
                 Ok(room)
             } else {
-                Err(anyhow!("could not update room participant location"))?
+                Err(anyhow!("不能更新房间参与者位置"))?
             }
         })
         .await
@@ -1150,7 +1150,7 @@ impl Database {
                 )
                 .one(&*tx)
                 .await?
-                .context("only admins can set participant role")?;
+                .context("只有管理员才能设置参与者角色")?;
 
             if role.requires_cla() {
                 self.check_user_has_signed_cla(user_id, room_id, &tx)
@@ -1171,7 +1171,7 @@ impl Database {
                 .await?;
 
             if result.rows_affected != 1 {
-                Err(anyhow!("could not update room participant role"))?;
+                Err(anyhow!("不能更新房间参与者角色"))?;
             }
             self.get_room(room_id, &tx).await
         })
@@ -1187,7 +1187,7 @@ impl Database {
         let channel = room::Entity::find_by_id(room_id)
             .one(tx)
             .await?
-            .context("could not find room")?
+            .context("不能找到房间")?
             .find_related(channel::Entity)
             .one(tx)
             .await?;
@@ -1210,7 +1210,7 @@ impl Database {
                     .await?
                     .is_none()
             {
-                Err(anyhow!("user has not signed the Zed CLA"))?;
+                Err(anyhow!("用户尚未签署 Zed CLA"))?;
             }
         }
         Ok(())
@@ -1311,7 +1311,7 @@ impl Database {
             }
 
             if !is_participant {
-                Err(anyhow!("not a room participant"))?;
+                Err(anyhow!("不是房间参与者"))?;
             }
 
             Ok(connection_ids)
@@ -1327,7 +1327,7 @@ impl Database {
         let db_room = room::Entity::find_by_id(room_id)
             .one(tx)
             .await?
-            .context("could not find room")?;
+            .context("不能找到房间")?;
 
         let mut db_participants = db_room
             .find_related(room_participant::Entity)

@@ -88,9 +88,9 @@ impl Connection {
         Ok(move |bindings| {
             statement
                 .with_bindings(&bindings)
-                .context("Bindings failed")?
+                .context("绑定失败")?
                 .maybe_row::<C>()
-                .context("Maybe row failed")
+                .context("可能行失败")
         })
     }
 }

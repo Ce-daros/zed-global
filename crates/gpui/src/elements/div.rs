@@ -4328,7 +4328,7 @@ mod tests {
     #[test]
     fn test_write_a11y_info_string_and_numeric_properties() {
         let mut interactivity = Interactivity::default();
-        interactivity.aria_label = Some("Buffer Font Size".into());
+        interactivity.aria_label = Some("缓冲区字体大小".into());
         interactivity.aria_value = Some("15".into());
         interactivity.aria_placeholder = Some("Search".into());
         interactivity.aria_numeric_value = Some(15.0);
@@ -4339,7 +4339,7 @@ mod tests {
         let mut node = accesskit::Node::new(accesskit::Role::SpinButton);
         interactivity.write_a11y_info(&mut node);
 
-        assert_eq!(node.label(), Some("Buffer Font Size"));
+        assert_eq!(node.label(), Some("缓冲区字体大小"));
         assert_eq!(node.value(), Some("15"));
         assert_eq!(node.placeholder(), Some("Search"));
         assert_eq!(node.numeric_value(), Some(15.0));

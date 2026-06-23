@@ -193,7 +193,7 @@ impl ReplStore {
             .ok();
 
             let kernel_specifications =
-                kernel_specifications_res.context("getting python kernelspecs")?;
+                kernel_specifications_res.context("正在获取 Python kernelspec")?;
 
             let active_toolchain_path = active_toolchain.await.map(|toolchain| toolchain.path);
 

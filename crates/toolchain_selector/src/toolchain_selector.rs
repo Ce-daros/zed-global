@@ -177,7 +177,7 @@ impl AddToolchainState {
                                 .p_1()
                                 .justify_between()
                                 .gap_2()
-                                .child(Label::new("Select Toolchain Path").color(Color::Muted).map(
+                                .child(Label::new("选择工具链路径").color(Color::Muted).map(
                                     |this| {
                                         if is_loading {
                                             this.with_animation(
@@ -243,7 +243,7 @@ impl AddToolchainState {
                             this.focus_handle(cx).focus(window, cx);
                         }
                     });
-                    return Err(anyhow::anyhow!("Failed to resolve toolchain"));
+                    return Err(anyhow::anyhow!("解析工具链失败"));
                 };
                 let resolved_toolchain_path = project.read_with(cx, |this, cx| {
                     this.find_project_path(&toolchain.path.as_ref(), cx)
@@ -799,7 +799,7 @@ impl ToolchainSelectorDelegate {
                 let relative_path = this
                     .update(cx, |this, cx| {
                         this.delegate.add_toolchain_text = format!(
-                            "Add {}",
+                            "添加 {}",
                             meta.term.as_ref().to_case(convert_case::Case::Title)
                         )
                         .into();
@@ -826,13 +826,13 @@ impl ToolchainSelectorDelegate {
                     .await?;
                 let pretty_path = {
                     if relative_path.is_empty() {
-                        Cow::Borrowed("worktree root")
+                        Cow::Borrowed("工作区根目录")
                     } else {
                         Cow::Owned(format!("`{}`", relative_path.display(path_style)))
                     }
                 };
                 let placeholder_text =
-                    format!("Select a {} for {pretty_path}…", meta.term.to_lowercase(),).into();
+                    format!("为 {pretty_path} 选择一个 {}…", meta.term.to_lowercase(),).into();
                 let _ = this.update_in(cx, move |this, window, cx| {
                     this.delegate.relative_path = relative_path;
                     this.delegate.placeholder_text = placeholder_text;
@@ -870,7 +870,7 @@ impl ToolchainSelectorDelegate {
                 Some(())
             }
         });
-        let placeholder_text = "Select a toolchain…".to_string().into();
+        let placeholder_text = "选择工具链…".to_string().into();
         Self {
             toolchain_selector,
             candidates: Default::default(),
@@ -884,7 +884,7 @@ impl ToolchainSelectorDelegate {
             _fetch_candidates_task,
             project,
             focus_handle: cx.focus_handle(),
-            add_toolchain_text: Arc::from("Add Toolchain"),
+            add_toolchain_text: Arc::from("添加工具链"),
         }
     }
     fn relativize_path(
@@ -905,7 +905,7 @@ impl PickerDelegate for ToolchainSelectorDelegate {
     type ListItem = ListItem;
 
     fn name() -> &'static str {
-        "toolchain selector"
+        "工具链选择器"
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {

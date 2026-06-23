@@ -66,11 +66,11 @@ impl Gitlab {
         // is not very reliable. See https://github.com/zed-industries/zed/issues/26393 for more
         // information.
         if !host.contains("gitlab") {
-            bail!("not a GitLab URL");
+            bail!("不是 GitLab 链接");
         }
 
         Ok(Self::new(
-            "GitLab Self-Hosted",
+            "GitLab 自托管",
             Url::parse(&format!("https://{}", host))?,
         ))
     }
@@ -106,7 +106,7 @@ impl Gitlab {
         if response.status().is_client_error() {
             let text = String::from_utf8_lossy(body.as_slice());
             bail!(
-                "status error {}, response: {text:?}",
+                "状态错误 {}，响应：{text:?}",
                 response.status().as_u16()
             );
         }
@@ -134,7 +134,7 @@ impl Gitlab {
         if response.status().is_client_error() {
             let text = String::from_utf8_lossy(body.as_slice());
             bail!(
-                "status error {}, response: {text:?}",
+                "状态错误 {}，响应：{text:?}",
                 response.status().as_u16()
             );
         }
@@ -509,7 +509,7 @@ mod tests {
         );
 
         let base_url = Url::parse("https://gitlab.zed.com").unwrap();
-        let github = Gitlab::new("GitLab Self-Hosted", base_url);
+        let github = Gitlab::new("GitLab 自托管", base_url);
         let url = github
             .build_create_pull_request_url(&remote, "feature/new-feature")
             .expect("should be able to build pull request url");
@@ -564,7 +564,7 @@ mod tests {
     #[test]
     fn test_extract_merge_request_self_hosted() {
         let base_url = Url::parse("https://gitlab.my-company.com").unwrap();
-        let provider = Gitlab::new("GitLab Self-Hosted", base_url);
+        let provider = Gitlab::new("GitLab 自托管", base_url);
 
         let remote = ParsedGitRemote {
             owner: "team".into(),

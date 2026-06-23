@@ -51,8 +51,8 @@ impl Render for ContactFinder {
                     .bg(cx.theme().colors().element_background)
                     // HACK: Prevent the background color from overflowing the parent container.
                     .rounded_t(px(8.))
-                    .child(Label::new("Contacts"))
-                    .child(h_flex().child(Label::new("Invite new contacts"))),
+                    .child(Label::new("联系人"))
+                    .child(h_flex().child(Label::new("邀请新联系人"))),
             )
             .child(self.picker.clone())
     }
@@ -78,7 +78,7 @@ impl PickerDelegate for ContactFinderDelegate {
     type ListItem = ListItem;
 
     fn name() -> &'static str {
-        "contact finder"
+        "联系人查找器"
     }
 
     fn match_count(&self) -> usize {
@@ -99,7 +99,7 @@ impl PickerDelegate for ContactFinderDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search collaborator by username...".into()
+        "使用用户名搜索协作者...".into()
     }
 
     fn update_matches(

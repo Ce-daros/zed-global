@@ -33,7 +33,7 @@ impl std::fmt::Debug for Command {
             .map(|(k, v)| (k, if should_redact(k) { "[REDACTED]" } else { v }))
             .collect::<Vec<_>>();
 
-        f.debug_struct("Command")
+        f.debug_struct("命令")
             .field("command", &self.command)
             .field("args", &self.args)
             .field("env", &filtered_env)

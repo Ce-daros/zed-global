@@ -662,7 +662,7 @@ async fn test_random_diagnostics_blocks(cx: &mut TestAppContext, mut rng: StdRng
     init_test(cx);
 
     let operations = env::var("OPERATIONS")
-        .map(|i| i.parse().expect("invalid `OPERATIONS` variable"))
+        .map(|i| i.parse().expect("无效的 `OPERATIONS` 变量"))
         .unwrap_or(10);
 
     let fs = FakeFs::new(cx.executor());
@@ -837,7 +837,7 @@ async fn test_random_diagnostics_with_inlays(cx: &mut TestAppContext, mut rng: S
     init_test(cx);
 
     let operations = env::var("OPERATIONS")
-        .map(|i| i.parse().expect("invalid `OPERATIONS` variable"))
+        .map(|i| i.parse().expect("无效的 `OPERATIONS` 变量"))
         .unwrap_or(10);
 
     let fs = FakeFs::new(cx.executor());

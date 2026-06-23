@@ -88,9 +88,9 @@ pub enum SearchOption {
     Backwards,
 }
 
-const REPLACE_PLACEHOLDER: &str = "Replace in project…";
+const REPLACE_PLACEHOLDER: &str = "在项目中替换…";
 const INCLUDE_PLACEHOLDER: &str = "Include: e.g. src/**/*.rs";
-const EXCLUDE_PLACEHOLDER: &str = "Exclude: e.g. vendor/*, *.lock";
+const EXCLUDE_PLACEHOLDER: &str = "排除：例如 vendor/*、*.lock";
 
 pub enum SearchSource<'a, 'b> {
     Buffer,
@@ -104,12 +104,12 @@ impl SearchOption {
 
     pub fn label(&self) -> &'static str {
         match self {
-            SearchOption::WholeWord => "Match Whole Words",
-            SearchOption::CaseSensitive => "Match Case Sensitivity",
-            SearchOption::IncludeIgnored => "Also search files ignored by configuration",
-            SearchOption::Regex => "Use Regular Expressions",
-            SearchOption::OneMatchPerLine => "One Match Per Line",
-            SearchOption::Backwards => "Search Backwards",
+            SearchOption::WholeWord => "全字匹配",
+            SearchOption::CaseSensitive => "匹配大小写",
+            SearchOption::IncludeIgnored => "也搜索配置忽略的文件",
+            SearchOption::Regex => "使用正则表达式",
+            SearchOption::OneMatchPerLine => "每行一个匹配",
+            SearchOption::Backwards => "向后搜索",
         }
     }
 
@@ -240,7 +240,7 @@ pub(crate) fn show_no_more_matches(window: &mut Window, cx: &mut App) {
         };
         workspace.update(cx, |workspace, cx| {
             workspace.show_toast(
-                Toast::new(notification_id.clone(), "No more matches").autohide(),
+                Toast::new(notification_id.clone(), "没有更多匹配项").autohide(),
                 cx,
             );
         })

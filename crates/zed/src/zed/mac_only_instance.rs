@@ -72,10 +72,10 @@ fn get_uid_as_u32(uid: &sysinfo::Uid) -> u32 {
 
 fn instance_handshake() -> &'static str {
     match *release_channel::RELEASE_CHANNEL {
-        ReleaseChannel::Dev => "Zed Editor Dev Instance Running",
-        ReleaseChannel::Nightly => "Zed Editor Nightly Instance Running",
-        ReleaseChannel::Preview => "Zed Editor Preview Instance Running",
-        ReleaseChannel::Stable => "Zed Editor Stable Instance Running",
+        ReleaseChannel::Dev => "Zed 编辑器开发实例正在运行",
+        ReleaseChannel::Nightly => "Zed 编辑器夜间实例正在运行",
+        ReleaseChannel::Preview => "Zed 编辑器预览实例正在运行",
+        ReleaseChannel::Stable => "Zed 编辑器稳定实例正在运行",
     }
 }
 
@@ -94,7 +94,7 @@ pub fn ensure_only_instance() -> IsOnlyInstance {
         Ok(listener) => listener,
 
         Err(err) => {
-            log::warn!("Error binding to single instance port: {err}");
+            log::warn!("绑定到单实例端口时出错: {err}");
             if check_got_handshake() {
                 return IsOnlyInstance::No;
             }
@@ -102,7 +102,7 @@ pub fn ensure_only_instance() -> IsOnlyInstance {
             // Avoid failing to start when some other application by chance already has
             // a claim on the port. This is sub-par as any other instance that gets launched
             // will be unable to communicate with this instance and will duplicate
-            log::warn!("Backup handshake request failed, continuing without handshake");
+            log::warn!("备份握手请求失败，继续不进行握手");
             return IsOnlyInstance::Yes;
         }
     };
@@ -133,16 +133,16 @@ fn check_got_handshake() -> bool {
 
             stream.set_read_timeout(Some(RECEIVE_TIMEOUT)).unwrap();
             if let Err(err) = stream.read_exact(&mut buf) {
-                log::warn!("Connected to single instance port but failed to read: {err}");
+                log::warn!("连接到单实例端口但读取失败: {err}");
                 return false;
             }
 
             if buf == instance_handshake().as_bytes() {
-                log::info!("Got instance handshake");
+                log::info!("收到实例握手");
                 return true;
             }
 
-            log::warn!("Got wrong instance handshake value");
+            log::warn!("收到错误的实例握手值");
             false
         }
 

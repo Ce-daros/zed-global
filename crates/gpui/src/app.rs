@@ -1283,7 +1283,7 @@ impl App {
         self.platform.write_to_primary(item)
     }
 
-    /// Reads data from macOS's "Find" pasteboard.
+    /// Reads data from macOS's "查找" pasteboard.
     ///
     /// Used to share the current search string between apps.
     ///
@@ -1293,7 +1293,7 @@ impl App {
         self.platform.read_from_find_pasteboard()
     }
 
-    /// Writes data to macOS's "Find" pasteboard.
+    /// Writes data to macOS's "查找" pasteboard.
     ///
     /// Used to share the current search string between apps.
     ///

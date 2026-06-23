@@ -122,7 +122,7 @@ impl Prettier {
                                         if let serde_json::Value::String(s) = value {
                                             Some(s.clone())
                                         } else {
-                                            log::warn!("Skipping non-string 'workspaces' value: {value:?}");
+                                            log::warn!("跳过非字符串的 'workspaces' 值：{value:?}");
                                             None
                                         }
                                     }).any(|workspace_definition| {
@@ -227,7 +227,7 @@ impl Prettier {
                                         Some(s.clone())
                                     } else {
                                         log::warn!(
-                                            "Skipping non-string 'workspaces' value: {value:?}"
+                                            "跳过非字符串的 'workspaces' 值：{value:?}"
                                         );
                                         None
                                     }

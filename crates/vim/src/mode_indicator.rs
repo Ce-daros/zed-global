@@ -128,7 +128,7 @@ impl Render for ModeIndicator {
             (label, None)
         } else {
             let mode_str = if temp_mode {
-                format!("(insert) {}", mode)
+                format!("(插入) {}", mode)
             } else {
                 mode.to_string()
             };

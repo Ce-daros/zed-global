@@ -4589,7 +4589,7 @@ async fn test_newline_comments(cx: &mut TestAppContext) {
         //s
         // ˇ
     "}
-            .replace("s", " ") // s is used as space placeholder to prevent format on save
+            .replace(" ", " ") // s is used as space placeholder to prevent format on save
             .as_str(),
         );
         // Ensure that we add comment prefix when existing line does not contain space
@@ -4832,7 +4832,7 @@ async fn test_newline_documentation_comments(cx: &mut TestAppContext) {
          * ˇ
          */
     "}
-            .replace("s", " ") // s is used as space placeholder to prevent format on save
+            .replace(" ", " ") // s is used as space placeholder to prevent format on save
             .as_str(),
         );
         // Ensure that delimiter space is preserved when newline on already
@@ -4845,7 +4845,7 @@ async fn test_newline_documentation_comments(cx: &mut TestAppContext) {
          * ˇ
          */
     "}
-            .replace("s", " ") // s is used as space placeholder to prevent format on save
+            .replace(" ", " ") // s is used as space placeholder to prevent format on save
             .as_str(),
         );
         // Ensure that delimiter space is preserved when space is not
@@ -6589,7 +6589,7 @@ async fn test_wrap_in_tag_does_nothing_in_unsupported_languages(cx: &mut TestApp
 
     let plaintext_language = Arc::new(Language::new(
         LanguageConfig {
-            name: "Plain Text".into(),
+            name: "纯文本".into(),
             ..LanguageConfig::default()
         },
         None,
@@ -7928,7 +7928,7 @@ async fn test_rewrap(cx: &mut TestAppContext) {
                 },
             ),
             (
-                "Plain Text".into(),
+                "纯文本".into(),
                 LanguageSettingsContent {
                     allow_rewrap: Some(language_settings::RewrapBehavior::Anywhere),
                     preferred_line_length: Some(40),
@@ -8006,7 +8006,7 @@ async fn test_rewrap(cx: &mut TestAppContext) {
 
     let plaintext_language = Arc::new(Language::new(
         LanguageConfig {
-            name: "Plain Text".into(),
+            name: "纯文本".into(),
             ..LanguageConfig::default()
         },
         None,
@@ -8769,7 +8769,7 @@ async fn test_rewrap_block_comments(cx: &mut TestAppContext) {
 async fn test_rewrap_line_comment_in_go(cx: &mut TestAppContext) {
     init_test(cx, |settings| {
         settings.languages.0.extend([(
-            "Go".into(),
+            "继续".into(),
             LanguageSettingsContent {
                 allow_rewrap: Some(language_settings::RewrapBehavior::InComments),
                 preferred_line_length: Some(40),
@@ -17734,7 +17734,7 @@ async fn test_completion(cx: &mut TestAppContext) {
     "});
     cx.simulate_keystroke(" ");
     assert!(cx.editor(|e, _, _| e.context_menu.borrow_mut().is_none()));
-    cx.simulate_keystroke("s");
+    cx.simulate_keystroke(" ");
     assert!(cx.editor(|e, _, _| e.context_menu.borrow_mut().is_none()));
 
     cx.assert_editor_state(indoc! {"
@@ -20988,7 +20988,7 @@ fn test_split_words_for_snippet_prefix() {
             "this@is!@#$^many   . symbols",
         ],
     );
-    assert_eq!(split("a.s"), &["s", ".s", "a.s"]);
+    assert_eq!(split("a.s"), &[" ", ".s", "a.s"]);
 }
 
 #[gpui::test]

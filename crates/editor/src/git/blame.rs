@@ -226,7 +226,7 @@ impl GitBlame {
                         .iter()
                         .any(|(_, entry_id, _)| project_entry_id == Some(*entry_id))
                     {
-                        log::debug!("Updated buffers. Regenerating blame data...",);
+                        log::debug!("更新缓冲区。重新生成追溯数据...",);
                         git_blame.generate(cx);
                     }
                 }
@@ -239,7 +239,7 @@ impl GitBlame {
                 GitStoreEvent::RepositoryUpdated(_, _, _)
                 | GitStoreEvent::RepositoryAdded
                 | GitStoreEvent::RepositoryRemoved(_) => {
-                    log::debug!("Status of git repositories updated. Regenerating blame data...",);
+                    log::debug!("git 仓库状态已更新。重新生成追溯数据...",);
                     this.generate(cx);
                 }
                 _ => {}
@@ -517,8 +517,8 @@ impl GitBlame {
                     buffers
                         .iter()
                         .map(|buffer| {
-                            let buffer = buffer.upgrade().context("buffer was dropped")?;
-                            let project = project.upgrade().context("project was dropped")?;
+                            let buffer = buffer.upgrade().context("缓冲区已删除")?;
+                            let project = project.upgrade().context("项目已删除")?;
                             let id = buffer.read(cx).remote_id();
                             let snapshot = buffer.read(cx).snapshot();
                             let buffer_edits = buffer.update(cx, |buffer, _| buffer.subscribe());
@@ -1159,7 +1159,7 @@ mod tests {
     #[gpui::test(iterations = 100)]
     async fn test_blame_random(mut rng: StdRng, cx: &mut gpui::TestAppContext) {
         let operations = env::var("OPERATIONS")
-            .map(|i| i.parse().expect("invalid `OPERATIONS` variable"))
+            .map(|i| i.parse().expect("无效的 `OPERATIONS` 变量"))
             .unwrap_or(10);
         let max_edits_per_operation = env::var("MAX_EDITS_PER_OPERATION")
             .map(|i| {
@@ -1229,17 +1229,17 @@ mod tests {
                     cx.executor().run_until_parked();
                 }
                 20..=69 => {
-                    log::info!("editing buffer");
+                    log::info!("编辑缓冲区");
                     buffer.update(cx, |buffer, cx| {
                         buffer.randomly_edit(&mut rng, max_edits_per_operation, cx);
-                        log::info!("buffer text: {:?}", buffer.text());
+                        log::info!("缓冲区文本: {:?}", buffer.text());
                     });
 
                     let blame_entries = gen_blame_entries(
                         buffer.read_with(cx, |buffer, _| buffer.max_point().row),
                         &mut rng,
                     );
-                    log::info!("regenerating blame entries: {:?}", blame_entries);
+                    log::info!("重新生成追溯条目: {:?}", blame_entries);
 
                     fs.set_blame_for_repo(
                         Path::new(path!("/my-repo/.git")),

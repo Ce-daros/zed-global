@@ -315,9 +315,9 @@ enum ReportEditorEvent {
 impl ReportEditorEvent {
     pub fn event_type(&self) -> &'static str {
         match self {
-            Self::Saved { .. } => "Editor Saved",
-            Self::EditorOpened => "Editor Opened",
-            Self::Closed => "Editor Closed",
+            Self::Saved { .. } => "编辑器已保存",
+            Self::EditorOpened => "编辑器已打开",
+            Self::Closed => "编辑器已关闭",
         }
     }
 }
@@ -2010,7 +2010,7 @@ impl Editor {
                             Self::open_transaction_for_hidden_buffers(
                                 workspace,
                                 transaction.clone(),
-                                "Rename".to_string(),
+                                "重命名".to_string(),
                                 window,
                                 cx,
                             );
@@ -2030,7 +2030,7 @@ impl Editor {
                             Self::open_transaction_for_hidden_buffers(
                                 workspace,
                                 transaction.clone(),
-                                "LSP Edit".to_string(),
+                                "LSP 编辑".to_string(),
                                 window,
                                 cx,
                             );
@@ -2563,7 +2563,7 @@ impl Editor {
         cx: &mut App,
     ) -> KeyContext {
         let mut key_context = KeyContext::new_with_defaults();
-        key_context.add("Editor");
+        key_context.add("编辑器");
         let mode = match self.mode {
             EditorMode::SingleLine => "single_line",
             EditorMode::AutoHeight { .. } => "auto_height",
@@ -2745,13 +2745,13 @@ impl Editor {
         cx: &mut Context<Workspace>,
     ) {
         Self::new_in_workspace(workspace, window, cx).detach_and_prompt_err(
-            "Failed to create buffer",
+            "无法创建缓冲区",
             window,
             cx,
             |e, _, _| match e.error_code() {
                 ErrorCode::RemoteUpgradeRequired => Some(format!(
-                "The remote instance of Zed does not support this yet. It must be upgraded to {}",
-                e.error_tag("required").unwrap_or("the latest version")
+                "远程 Zed 实例暂不支持此功能。需要升级到 {}",
+                e.error_tag("required").unwrap_or("最新版本")
             )),
                 _ => None,
             },
@@ -2827,11 +2827,11 @@ impl Editor {
             })?;
             anyhow::Ok(())
         })
-        .detach_and_prompt_err("Failed to create buffer", window, cx, |e, _, _| {
+        .detach_and_prompt_err("无法创建缓冲区", window, cx, |e, _, _| {
             match e.error_code() {
                 ErrorCode::RemoteUpgradeRequired => Some(format!(
-                "The remote instance of Zed does not support this yet. It must be upgraded to {}",
-                e.error_tag("required").unwrap_or("the latest version")
+                "远程 Zed 实例暂不支持此功能。需要升级到 {}",
+                e.error_tag("required").unwrap_or("最新版本")
             )),
                 _ => None,
             }
@@ -3969,9 +3969,9 @@ impl Editor {
             }))
             .tooltip(move |_window, cx| {
                 Tooltip::with_meta_in(
-                    "Remove Bookmark",
+                    "移除书签",
                     Some(&ToggleBookmark),
-                    SharedString::from("Right-click for more options"),
+                    SharedString::from("右键查看更多选项"),
                     &focus_handle,
                     cx,
                 )
@@ -4058,47 +4058,47 @@ impl Editor {
             .map(|(anchor, bp)| (anchor, Arc::from(bp)));
 
         let log_breakpoint_msg = if breakpoint.as_ref().is_some_and(|bp| bp.1.message.is_some()) {
-            "Edit Log Breakpoint"
+            "编辑日志断点"
         } else {
-            "Set Log Breakpoint"
+            "设置日志断点"
         };
 
         let condition_breakpoint_msg = if breakpoint
             .as_ref()
             .is_some_and(|bp| bp.1.condition.is_some())
         {
-            "Edit Condition Breakpoint"
+            "编辑条件断点"
         } else {
-            "Set Condition Breakpoint"
+            "设置条件断点"
         };
 
         let hit_condition_breakpoint_msg = if breakpoint
             .as_ref()
             .is_some_and(|bp| bp.1.hit_condition.is_some())
         {
-            "Edit Hit Condition Breakpoint"
+            "编辑命中条件断点"
         } else {
-            "Set Hit Condition Breakpoint"
+            "设置命中条件断点"
         };
 
         let set_breakpoint_msg = if breakpoint.as_ref().is_some() {
-            "Unset Breakpoint"
+            "取消断点"
         } else {
-            "Set Breakpoint"
+            "设置断点"
         };
 
         let git_blame_msg = if self.show_git_blame_gutter {
-            "Close Git Blame"
+            "关闭 Git Blame"
         } else {
-            "Open Git Blame"
+            "打开 Git Blame"
         };
 
         let bookmark = self.bookmark_at_row(row, window, cx);
 
         let set_bookmark_msg = if bookmark.as_ref().is_some() {
-            "Remove Bookmark"
+            "移除书签"
         } else {
-            "Add Bookmark"
+            "添加书签"
         };
         let has_bookmark = bookmark.as_ref().is_some();
 
@@ -4123,7 +4123,7 @@ impl Editor {
                 .when(run_to_cursor, |this| {
                     let weak_editor = weak_editor.clone();
                     this.entry(
-                        "Run to Cursor",
+                        "运行到光标",
                         Some(RunToCursor.boxed_clone()),
                         move |window, cx| {
                             weak_editor
@@ -4263,7 +4263,7 @@ impl Editor {
                 })
                 .when(has_bookmark, |this| {
                     this.entry(
-                        "Edit Bookmark",
+                        "编辑书签",
                         Some(EditBookmark.boxed_clone()),
                         move |window, cx| {
                             weak_editor
@@ -4310,18 +4310,18 @@ impl Editor {
             modifiers: Modifiers::secondary_key(),
             ..Default::default()
         };
-        let primary_action_text = "Unset breakpoint";
+        let primary_action_text = "取消断点";
         let focus_handle = self.focus_handle.clone();
         let has_context_menu = self.has_mouse_context_menu();
 
         let meta = if is_rejected {
-            SharedString::from("No executable code is associated with this line.")
+            SharedString::from("此行没有关联可执行代码。")
         } else if !breakpoint.is_disabled() {
             SharedString::from(format!(
                 "{alt_as_text}-click to disable\nright-click for more options"
             ))
         } else {
-            SharedString::from("Right-click for more options")
+            SharedString::from("右键查看更多选项")
         };
         IconButton::new(("breakpoint_indicator", row.0 as usize), icon)
             .icon_size(IconSize::XSmall)
@@ -4380,8 +4380,8 @@ impl Editor {
         impl Intent {
             fn as_str(&self) -> &'static str {
                 match self {
-                    Intent::SetBookmark => "Set bookmark",
-                    Intent::SetBreakpoint => "Set breakpoint",
+                    Intent::SetBookmark => "设置书签",
+                    Intent::SetBreakpoint => "设置断点",
                 }
             }
 
@@ -5836,12 +5836,12 @@ impl Editor {
 
         let placeholder_text = match edit_action {
             BreakpointPromptEditAction::Log => {
-                "Message to log when a breakpoint is hit. Expressions within {} are interpolated."
+                "断点命中时记录的消息。{} 内的表达式会被插值。"
             }
             BreakpointPromptEditAction::Condition => {
-                "Condition when a breakpoint is hit. Expressions within {} are interpolated."
+                "断点命中条件。{} 内的表达式会被插值。"
             }
-            BreakpointPromptEditAction::HitCondition => "How many breakpoint hits to ignore",
+            BreakpointPromptEditAction::HitCondition => "要忽略多少次断点命中",
         };
 
         let breakpoint = breakpoint.clone();
@@ -12309,7 +12309,7 @@ impl Render for PromptEditor {
         let left_gutter_width = gutter_dimensions.full_width() + (gutter_dimensions.margin / 2.0);
         let right_padding = editor_margins.right + px(9.);
         h_flex()
-            .key_context("Editor")
+            .key_context("编辑器")
             .bg(cx.theme().colors().editor_background)
             .border_y_1()
             .border_color(cx.theme().status().info_border)

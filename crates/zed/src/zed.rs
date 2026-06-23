@@ -217,7 +217,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 asset_str::<Assets>("licenses.md"),
-                "Open Source License Attribution",
+                "开源许可证归属",
                 "Markdown",
                 window,
                 cx,
@@ -286,7 +286,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 settings::default_settings(),
-                "Default Settings",
+                "默认设置",
                 "JSON",
                 window,
                 cx,
@@ -298,7 +298,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 settings::default_keymap(),
-                "Default Key Bindings",
+                "默认键绑定",
                 "JSON",
                 window,
                 cx,
@@ -543,7 +543,7 @@ pub fn initialize_workspace(app_state: Arc<AppState>, cx: &mut App) {
         initialize_file_watcher(window, cx);
 
         if let Some(specs) = window.gpu_specs() {
-            log::info!("Using GPU: {:?}", specs);
+            log::info!("使用显卡：{:?}", specs);
             show_software_emulation_warning_if_needed(specs.clone(), window, cx);
             if let Some(crash_client) = cx.try_global::<CrashHandler>() {
                 crashes::set_gpu_info(&crash_client.0, specs);
@@ -642,9 +642,9 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start inotify",
+            "无法启动 inotify",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排除故障并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -665,17 +665,17 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
     if let Err(e) = fs::fs_watcher::global(|_| {}) {
         let message = format!(
             db::indoc! {r#"
-            ReadDirectoryChangesW initialization failed: {}
+            ReadDirectoryChangesW 初始化失败：{}
 
-            This may occur on network filesystems and WSL paths. For troubleshooting see: https://zed.dev/docs/windows
+            这可能发生在网络文件系统和 WSL 路径上。有关故障排除，请参阅：https://zed.dev/docs/windows
             "#},
             e
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start ReadDirectoryChangesW",
+            "无法启动 ReadDirectoryChangesW",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排除故障并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -723,9 +723,9 @@ fn show_software_emulation_warning_if_needed(
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Unsupported GPU",
+            "不支持的显卡",
             Some(&message),
-            &["Skip", "Troubleshoot and Quit"],
+            &["跳过", "排除故障并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -755,7 +755,7 @@ fn initialize_panels(window: &mut Window, cx: &mut Context<Workspace>) -> Task<a
             workspace_handle: WeakEntity<Workspace>,
             mut cx: gpui::AsyncWindowContext,
         ) {
-            if let Some(panel) = panel_task.await.context("failed to load panel").log_err()
+            if let Some(panel) = panel_task.await.context("加载面板失败").log_err()
             {
                 workspace_handle
                     .update_in(&mut cx, |workspace, window, cx| {
@@ -937,7 +937,7 @@ fn register_actions(
             }
         })
         .register_action(|workspace, action: &workspace::Open, window, cx| {
-            telemetry::event!("Project Opened");
+            telemetry::event!("项目已打开");
             workspace::prompt_for_open_path_and_open(
                 workspace,
                 workspace.app_state().clone(),
@@ -982,7 +982,7 @@ fn register_actions(
             if workspace.project().read(cx).is_local() {
                 return;
             }
-            telemetry::event!("Project Opened");
+            telemetry::event!("项目已打开");
             let paths = workspace.prompt_for_open_path(
                 PathPromptOptions {
                     files: true,
@@ -1127,7 +1127,7 @@ fn register_actions(
                         Toast::new(
                             NotificationId::unique::<RegisterZedScheme>(),
                             format!(
-                                "zed:// links will now open in {}.",
+                                "zed:// 链接将改为在 {} 中打开。",
                                 ReleaseChannel::global(cx).display_name()
                             ),
                         ),
@@ -1137,7 +1137,7 @@ fn register_actions(
                 Ok(())
             })
             .detach_and_prompt_err(
-                "Error registering zed:// scheme",
+                "注册 zed:// 协议失败",
                 window,
                 cx,
                 |_, _, _| None,
@@ -1299,7 +1299,7 @@ fn register_actions(
                                 buffer
                                     .read(cx)
                                     .project_path(cx)
-                                    .expect("Settings file must have a location"),
+                                    .expect("设置文件必须有一个位置"),
                                 None,
                                 true,
                                 window,
@@ -1522,7 +1522,7 @@ fn open_about_window(cx: &mut App) {
                             .child(Headline::new(self.message.clone()))
                             .when_some(self.commit.clone(), |this, commit| {
                                 this.child(
-                                    Label::new("Commit")
+                                    Label::new("提交")
                                         .color(Color::Muted)
                                         .size(LabelSize::XSmall),
                                 )
@@ -1567,7 +1567,7 @@ fn open_about_window(cx: &mut App) {
                                         },
                                     ))
                                     .child(
-                                        Button::new("copy", "Copy")
+                                        Button::new("copy", "复制")
                                             .full_width()
                                             .style(ButtonStyle::Tinted(TintColor::Accent))
                                             .toggle_state(copy_is_focused)
@@ -1614,7 +1614,7 @@ fn open_about_window(cx: &mut App) {
     cx.open_window(
         WindowOptions {
             titlebar: Some(TitlebarOptions {
-                title: Some("About Zed".into()),
+                title: Some("关于 Zed".into()),
                 appears_transparent: true,
                 traffic_light_position: Some(point(px(12.), px(12.))),
             }),
@@ -1672,9 +1672,9 @@ fn quit(_: &Quit, cx: &mut App) {
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Info,
-                        "Are you sure you want to quit?",
+                        "您确定要退出吗？",
                         None,
-                        &["Quit", "Cancel"],
+                        &["退出", "取消"],
                         cx,
                     )
                 })
@@ -6169,7 +6169,7 @@ mod tests {
             "Case 1: Should prompt to save dirty item in active workspace"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(
@@ -6246,7 +6246,7 @@ mod tests {
             "Case 2: Should prompt to save dirty item in non-active workspace"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(
@@ -6330,7 +6330,7 @@ mod tests {
             "Case 3: Should prompt to save dirty item in non-active window"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(

@@ -34,7 +34,7 @@ pub static TRAILING_WHITESPACE_REGEX: LazyLock<regex::Regex> = LazyLock::new(|| 
     RegexBuilder::new(r"[ \t]+$")
         .multi_line(true)
         .build()
-        .expect("Failed to create TRAILING_WHITESPACE_REGEX")
+        .expect("创建 TRAILING_WHITESPACE_REGEX 失败")
 });
 
 #[cfg(test)]
@@ -3436,7 +3436,7 @@ fn test_random_collaboration(cx: &mut App, mut rng: StdRng) {
         .map(|i| i.parse().expect("invalid `MAX_PEERS` variable"))
         .unwrap_or(5);
     let operations = env::var("OPERATIONS")
-        .map(|i| i.parse().expect("invalid `OPERATIONS` variable"))
+        .map(|i| i.parse().expect("无效的 `OPERATIONS` 变量"))
         .unwrap_or(10);
 
     let base_text_len = rng.random_range(0..10);

@@ -42,7 +42,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
             } else {
                 let message = match remote {
                     Some(remote) => format!("Synchronized with {}", remote.name),
-                    None => "Synchronized with remotes".into(),
+                    None => "与远程同步".into(),
                 };
                 SuccessMessage {
                     message,
@@ -56,13 +56,13 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                     .stdout
                     .lines()
                     .last()
-                    .context("Failed to get last line of output")?
+                    .context("获取输出的最后一行失败")?
                     .trim();
 
                 let files_changed = last_line
                     .split_whitespace()
                     .next()
-                    .context("Failed to get first word of last line")?
+                    .context("获取最后一行的第一个词失败")?
                     .parse()?;
 
                 Ok(files_changed)
@@ -72,46 +72,46 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                     message: "Pull: Already up to date".into(),
                     style: SuccessStyle::Toast,
                 }
-            } else if output.stdout.starts_with("Updating") {
+            } else if output.stdout.starts_with("正在更新") {
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Received {} file change{} from {}",
+                        "从 {} 收到 {} 个文件更改{}",
                         files_changed,
-                        if files_changed == 1 { "" } else { "s" },
+                        if files_changed == 1 { "" } else { " " },
                         remote_ref.name
                     )
                 } else {
-                    format!("Fast forwarded from {}", remote_ref.name)
+                    format!("快速前进自 {}", remote_ref.name)
                 };
                 SuccessMessage {
                     message,
                     style: SuccessStyle::ToastWithLog { output },
                 }
-            } else if output.stdout.starts_with("Merge") {
+            } else if output.stdout.starts_with("合并") {
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Merged {} file change{} from {}",
+                        "从 {} 合并了 {} 个文件更改{}",
                         files_changed,
-                        if files_changed == 1 { "" } else { "s" },
+                        if files_changed == 1 { "" } else { " " },
                         remote_ref.name
                     )
                 } else {
-                    format!("Merged from {}", remote_ref.name)
+                    format!("从 {} 合并", remote_ref.name)
                 };
                 SuccessMessage {
                     message,
                     style: SuccessStyle::ToastWithLog { output },
                 }
-            } else if output.stdout.contains("Successfully rebased") {
+            } else if output.stdout.contains("成功变基") {
                 SuccessMessage {
-                    message: format!("Successfully rebased from {}", remote_ref.name),
+                    message: format!("成功从 {} 变基", remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             } else {
                 SuccessMessage {
-                    message: format!("Successfully pulled from {}", remote_ref.name),
+                    message: format!("成功从 {} 拉取", remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             }
@@ -124,7 +124,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 }
             } else {
                 SuccessMessage {
-                    message: format!("Pushed {} to {}", branch_name, remote_ref.name),
+                    message: format!("推送 {} 至 {}", branch_name, remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             }

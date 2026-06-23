@@ -166,7 +166,7 @@ impl Render for BufferSearchBar {
                                 .icon_size(IconSize::Small)
                                 .tooltip(Tooltip::element(move |_, cx| {
                                     let message = if is_split_set && !is_split_active {
-                                        format!("Split when wider than {} columns", min_columns)
+                                        format!("宽度超过 {} 列时分屏", min_columns)
                                             .into()
                                     } else {
                                         SharedString::from("Split")
@@ -186,7 +186,7 @@ impl Render for BufferSearchBar {
                                                     Some(TextSize::Small.rems(cx).into()),
                                                     false,
                                                 ))
-                                                .child("click to change min width"),
+                                                .child("点击更改最小宽度"),
                                         )
                                         .into_any()
                                 }))
@@ -242,9 +242,9 @@ impl Render for BufferSearchBar {
                 .map(|editor: Entity<Editor>| editor.read(cx).has_any_buffer_folded(cx))
                 .unwrap_or_default();
             let (icon, tooltip_label) = if is_collapsed {
-                (IconName::ChevronUpDown, "Expand All Files")
+                (IconName::ChevronUpDown, "展开所有文件")
             } else {
-                (IconName::ChevronDownUp, "Collapse All Files")
+                (IconName::ChevronDownUp, "折叠所有文件")
             };
 
             let collapse_expand_icon_button = |id| {
@@ -300,12 +300,12 @@ impl Render for BufferSearchBar {
 
         self.query_editor.update(cx, |query_editor, cx| {
             if query_editor.placeholder_text(cx).is_none() {
-                query_editor.set_placeholder_text("Search…", window, cx);
+                query_editor.set_placeholder_text("搜索…", window, cx);
             }
         });
 
         self.replacement_editor.update(cx, |editor, cx| {
-            editor.set_placeholder_text("Replace with…", window, cx);
+            editor.set_placeholder_text("替换为…", window, cx);
         });
 
         let mut color_override = None;
@@ -393,7 +393,7 @@ impl Render for BufferSearchBar {
                     "buffer-search-bar-toggle",
                     IconName::Replace,
                     self.replace_enabled.then_some(ActionButtonState::Toggled),
-                    "Toggle Replace",
+                    "切换替换",
                     &ToggleReplace,
                     focus_handle.clone(),
                 ))
@@ -417,7 +417,7 @@ impl Render for BufferSearchBar {
                         let focus_handle = focus_handle.clone();
                         move |_window, cx| {
                             Tooltip::for_action_in(
-                                "Toggle Search Selection",
+                                "切换搜索选择",
                                 &ToggleSelection,
                                 &focus_handle,
                                 cx,
@@ -439,7 +439,7 @@ impl Render for BufferSearchBar {
                         self.active_match_index
                             .is_none()
                             .then_some(ActionButtonState::Disabled),
-                        "Select Previous Match",
+                        "选择上一个",
                         &SelectPreviousMatch,
                         query_focus.clone(),
                     ))
@@ -449,7 +449,7 @@ impl Render for BufferSearchBar {
                         self.active_match_index
                             .is_none()
                             .then_some(ActionButtonState::Disabled),
-                        "Select Next Match",
+                        "选择下一个",
                         &SelectNextMatch,
                         query_focus.clone(),
                     ))
@@ -470,7 +470,7 @@ impl Render for BufferSearchBar {
                         "buffer-search-nav-button",
                         IconName::SelectAll,
                         Default::default(),
-                        "Select All Matches",
+                        "全选",
                         &SelectAllMatches,
                         query_focus.clone(),
                     ))
@@ -482,7 +482,7 @@ impl Render for BufferSearchBar {
                     "buffer-search",
                     IconName::Close,
                     Default::default(),
-                    "Close Search Bar",
+                    "关闭搜索栏",
                     &Dismiss,
                     focus_handle.clone(),
                 ))
@@ -516,7 +516,7 @@ impl Render for BufferSearchBar {
                     "buffer-search-replace-button",
                     IconName::ReplaceNext,
                     Default::default(),
-                    "Replace Next Match",
+                    "替换下一个匹配项",
                     &ReplaceNext,
                     focus_handle.clone(),
                 ))
@@ -524,7 +524,7 @@ impl Render for BufferSearchBar {
                     "buffer-search-replace-button",
                     IconName::ReplaceAll,
                     Default::default(),
-                    "Replace All Matches",
+                    "替换所有匹配项",
                     &ReplaceAll,
                     focus_handle,
                 ));
@@ -569,7 +569,7 @@ impl Render for BufferSearchBar {
                                 "buffer-search",
                                 IconName::Close,
                                 Default::default(),
-                                "Close Search Bar",
+                                "关闭搜索栏",
                                 &Dismiss,
                                 focus_handle.clone(),
                             )),
@@ -1995,7 +1995,7 @@ mod tests {
                             A regular expression (shortened as regex or regexp;[1] also referred to as
                             rational expression[2][3]) is a sequence of characters that specifies a search
                             pattern in text. Usually such patterns are used by string-searching algorithms
-                            for "find" or "find and replace" operations on strings, or for input validation.
+                            for "find" or "查找和替换" operations on strings, or for input validation.
                             "#
                             .unindent(),
                             cx,
@@ -2071,7 +2071,7 @@ mod tests {
                 A regular expression (shortened as regex or regexp;[1] also referred to as
                 rational expression[2][3]) is a sequence of characters that specifies a search
                 pattern in text. Usually such patterns are used by string-searching algorithms
-                for "find" or "find and replace" operations on strings, or for input validation.
+                for "find" or "查找和替换" operations on strings, or for input validation.
                 "#
                 .unindent(),
                 cx,
@@ -2468,7 +2468,7 @@ mod tests {
         A regular expression (shortened as regex or regexp;[1] also referred to as
         rational expression[2][3]) is a sequence of characters that specifies a search
         pattern in text. Usually such patterns are used by string-searching algorithms
-        for "find" or "find and replace" operations on strings, or for input validation.
+        for "find" or "查找和替换" operations on strings, or for input validation.
         "#
         .unindent();
         let expected_query_matches_count = buffer_text
@@ -3002,7 +3002,7 @@ mod tests {
         A regular expr$1 (shortened as regex or regexp;[1] also referred to as
         rational expr$1[2][3]) is a sequence of characters that specifies a search
         pattern in text. Usually such patterns are used by string-searching algorithms
-        for "find" or "find and replace" operations on strings, or for input validation.
+        for "find" or "查找和替换" operations on strings, or for input validation.
         "#
             .unindent()
         );
@@ -3028,7 +3028,7 @@ mod tests {
         A regular expr$1 (shortened as regex banana regexp;[1] also referred to as
         rational expr$1[2][3]) is a sequence of characters that specifies a search
         pattern in text. Usually such patterns are used by string-searching algorithms
-        for "find" or "find and replace" operations on strings, or for input validation.
+        for "find" or "查找和替换" operations on strings, or for input validation.
         "#
             .unindent()
         );
@@ -3057,7 +3057,7 @@ mod tests {
         A regular expr$1 (shortened as regex banana regexp;1number also referred to as
         rational expr$12number3number) is a sequence of characters that specifies a search
         pattern in text. Usually such patterns are used by string-searching algorithms
-        for "find" or "find and replace" operations on strings, or for input validation.
+        for "find" or "查找和替换" operations on strings, or for input validation.
         "#
             .unindent()
         );
@@ -3088,7 +3088,7 @@ mod tests {
         A regular expr$1 (shortened as regex banana regexp;1number also referred to as
         rational expr$12number3number) is a sequence of characters that specifies a search
         pattern in text. Usually such patterns are used by string-searching things
-        for "find" or "find and replace" operations on strings, or for input validation.
+        for "find" or "查找和替换" operations on strings, or for input validation.
         "#
             .unindent()
         );
@@ -3123,7 +3123,7 @@ mod tests {
         });
 
         // Focus on the editor instead of the search bar, as we want to ensure
-        // that pressing the "Replace Next Match" button will work, even if the
+        // that pressing the "替换下一个匹配项" button will work, even if the
         // search bar is not focused.
         cx.focus(&editor);
 
@@ -3208,7 +3208,7 @@ mod tests {
             A regular \n (shortened as regex or regexp;[1] also referred to as
             rational \n[2][3]) is a sequence of characters that specifies a search
             pattern in text. Usually such patterns are used by string-searching algorithms
-            for "find" or "find and replace" operations on strings, or for input validation.
+            for "find" or "查找和替换" operations on strings, or for input validation.
             "#
             .unindent(),
         })
@@ -3227,7 +3227,7 @@ mod tests {
             \\ regexp;[1] also referred to as
             rational \n[2][3]) is a sequence of characters that specifies a search
             pattern in text. Usually such patterns are used by string-searching algorithms
-            for "find" or "find and replace" operations on strings, or for input validation.
+            for "find" or "查找和替换" operations on strings, or for input validation.
             "#
             .unindent(),
         })
@@ -3248,7 +3248,7 @@ mod tests {
             specifies a search
             pattern in text. Usually such patterns are used
             by string-searching algorithms
-            for "find" or "find and replace" operations on strings, or for input validation.
+            for "find" or "查找和替换" operations on strings, or for input validation.
             "#
             .unindent(),
         })

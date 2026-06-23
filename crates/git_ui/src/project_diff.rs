@@ -118,13 +118,13 @@ impl ProjectDiff {
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {
-        telemetry::event!("Git Branch Diff Opened");
+        telemetry::event!("已打开分支差异");
         let project = workspace.project().clone();
         let Some(intended_repo) = project.read(cx).active_repository(cx) else {
             let workspace = cx.entity().downgrade();
             window
                 .spawn(cx, async |_cx| {
-                    let result: Result<()> = Err(anyhow!("No active repository"));
+                    let result: Result<()> = Err(anyhow!("无活动仓库"));
                     result
                 })
                 .detach_and_notify_err(workspace, window, cx);
@@ -138,7 +138,7 @@ impl ProjectDiff {
             .spawn(cx, async move |cx| {
                 let base_ref = default_branch
                     .await??
-                    .context("Could not determine default branch")?;
+                    .context("无法确定默认分支")?;
 
                 workspace.update_in(cx, |workspace, window, cx| {
                     Self::deploy_branch_diff_with_base_ref(
@@ -167,7 +167,7 @@ impl ProjectDiff {
             let workspace = cx.entity().downgrade();
             window
                 .spawn(cx, async |_cx| {
-                    let result: Result<()> = Err(anyhow!("No active repository"));
+                    let result: Result<()> = Err(anyhow!("无活动仓库"));
                     result
                 })
                 .detach_and_notify_err(workspace, window, cx);
@@ -329,11 +329,11 @@ impl ProjectDiff {
         cx: &mut Context<Workspace>,
     ) {
         telemetry::event!(
-            "Git Diff Opened",
+            "已打开 Git 差异",
             source = if entry.is_some() {
-                "Git Panel"
+                "Git 面板"
             } else {
-                "Action"
+                "操作"
             }
         );
         let intended_repo = workspace.project().read(cx).active_repository(cx);
@@ -391,7 +391,7 @@ impl ProjectDiff {
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {
-        telemetry::event!("Git Diff Opened", source = "Agent Panel");
+        telemetry::event!("已打开 Git 差异", source = "代理面板");
         let existing = workspace
             .items_of_type::<Self>(cx)
             .find(|item| matches!(item.read(cx).diff_base(cx), DiffBase::Head));
@@ -433,13 +433,13 @@ impl ProjectDiff {
         cx: &mut App,
     ) -> Task<Result<Entity<Self>>> {
         let Some(repo) = project.read(cx).git_store().read(cx).active_repository() else {
-            return Task::ready(Err(anyhow!("No active repository")));
+            return Task::ready(Err(anyhow!("无活动仓库")));
         };
         let main_branch = repo.update(cx, |repo, _| repo.default_branch(true));
         window.spawn(cx, async move |cx| {
             let main_branch = main_branch
                 .await??
-                .context("Could not determine default branch")?;
+                .context("无法确定默认分支")?;
 
             let branch_diff = cx.new_window_entity(|window, cx| {
                 let mut branch_diff = branch_diff::BranchDiff::new(
@@ -1301,8 +1301,8 @@ impl Item for ProjectDiff {
 
     fn tab_tooltip_text(&self, cx: &App) -> Option<SharedString> {
         match self.diff_base(cx) {
-            DiffBase::Head => Some("Project Diff".into()),
-            DiffBase::Merge { .. } => Some("Branch Diff".into()),
+            DiffBase::Head => Some("项目差异".into()),
+            DiffBase::Merge { .. } => Some("分支差异".into()),
         }
     }
 
@@ -1318,13 +1318,13 @@ impl Item for ProjectDiff {
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
         match self.branch_diff.read(cx).diff_base() {
-            DiffBase::Head => "Uncommitted Changes".into(),
-            DiffBase::Merge { base_ref } => format!("Changes since {}", base_ref).into(),
+            DiffBase::Head => "未提交的更改".into(),
+            DiffBase::Merge { base_ref } => format!("自 {} 以来的更改", base_ref).into(),
         }
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
-        Some("Project Diff Opened")
+        Some("已打开项目差异")
     }
 
     fn as_searchable(&self, _: &Entity<Self>, _cx: &App) -> Option<Box<dyn SearchableItemHandle>> {
@@ -1479,7 +1479,7 @@ impl Render for ProjectDiff {
 
         div()
             .track_focus(&self.focus_handle)
-            .key_context(if is_empty { "EmptyPane" } else { "GitDiff" })
+            .key_context(if is_empty { "空窗格" } else { "GitDiff" })
             .when(is_branch_diff_view, |this| {
                 this.on_action(cx.listener(Self::review_diff))
             })
@@ -1515,19 +1515,19 @@ impl Render for ProjectDiff {
                         .child(
                             h_flex()
                                 .justify_around()
-                                .child(Label::new("No uncommitted changes")),
+                                .child(Label::new("没有未提交的更改")),
                         )
                         .map(|el| match remote_button {
                             Some(button) => el.child(h_flex().justify_around().child(button)),
                             None => el.child(
                                 h_flex()
                                     .justify_around()
-                                    .child(Label::new("Remote up to date")),
+                                    .child(Label::new("远程已更新")),
                             ),
                         })
                         .child(
                             h_flex().justify_around().mt_1().child(
-                                Button::new("project-diff-close-button", "Close")
+                                Button::new("project-diff-close-button", "关闭")
                                     // .style(ButtonStyle::Transparent)
                                     .key_binding(KeyBinding::for_action_in(
                                         &CloseActiveItem::default(),
@@ -1551,7 +1551,7 @@ impl Render for ProjectDiff {
 
 impl SerializableItem for ProjectDiff {
     fn serialized_item_kind() -> &'static str {
-        "ProjectDiff"
+        "项目差异"
     }
 
     fn cleanup(
@@ -1578,7 +1578,7 @@ impl SerializableItem for ProjectDiff {
             let diff = cx.update(|window, cx| {
                 let branch_diff = cx
                     .new(|cx| branch_diff::BranchDiff::new(diff_base, project.clone(), window, cx));
-                let workspace = workspace.upgrade().context("workspace gone")?;
+                let workspace = workspace.upgrade().context("工作区已关闭")?;
                 anyhow::Ok(
                     cx.new(|cx| ProjectDiff::new_impl(branch_diff, project, workspace, window, cx)),
                 )
@@ -1797,9 +1797,9 @@ impl Render for ProjectDiffToolbar {
                 h_group_sm()
                     .when(button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Toggle Staged")
+                            Button::new("stage", "切换暂存状态")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Toggle Staged",
+                                    "切换暂存状态",
                                     &ToggleStaged,
                                     &focus_handle,
                                 ))
@@ -1811,9 +1811,9 @@ impl Render for ProjectDiffToolbar {
                     })
                     .when(!button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Stage")
+                            Button::new("stage", "暂存")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Stage and go to next hunk",
+                                    "暂存并跳转到下一个代码块",
                                     &StageAndNext,
                                     &focus_handle,
                                 ))
@@ -1827,9 +1827,9 @@ impl Render for ProjectDiffToolbar {
                                 })),
                         )
                         .child(
-                            Button::new("unstage", "Unstage")
+                            Button::new("unstage", "取消暂存")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Unstage and go to next hunk",
+                                    "取消暂存并跳转到下一个代码块",
                                     &UnstageAndNext,
                                     &focus_handle,
                                 ))
@@ -1849,10 +1849,10 @@ impl Render for ProjectDiffToolbar {
             .child(
                 h_group_sm()
                     .child(
-                        IconButton::new("up", IconName::ArrowUp)
+                        IconButton::new("上", IconName::ArrowUp)
                             .shape(ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to previous hunk",
+                                "跳转到上一个代码块",
                                 &GoToPreviousHunk,
                                 &focus_handle,
                             ))
@@ -1862,10 +1862,10 @@ impl Render for ProjectDiffToolbar {
                             })),
                     )
                     .child(
-                        IconButton::new("down", IconName::ArrowDown)
+                        IconButton::new("下", IconName::ArrowDown)
                             .shape(ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to next hunk",
+                                "跳转到下一个代码块",
                                 &GoToHunk,
                                 &focus_handle,
                             ))
@@ -1882,9 +1882,9 @@ impl Render for ProjectDiffToolbar {
                         button_states.unstage_all && !button_states.stage_all,
                         |el| {
                             el.child(
-                                Button::new("unstage-all", "Unstage All")
+                                Button::new("unstage-all", "全部取消暂存")
                                     .tooltip(Tooltip::for_action_title_in(
-                                        "Unstage all changes",
+                                        "取消暂存所有更改",
                                         &UnstageAll,
                                         &focus_handle,
                                     ))
@@ -1898,13 +1898,13 @@ impl Render for ProjectDiffToolbar {
                         !button_states.unstage_all || button_states.stage_all,
                         |el| {
                             el.child(
-                                // todo make it so that changing to say "Unstaged"
+                                // todo make it so that changing to say "未暂存"
                                 // doesn't change the position.
                                 div().child(
-                                    Button::new("stage-all", "Stage All")
+                                    Button::new("stage-all", "全部暂存")
                                         .disabled(!button_states.stage_all)
                                         .tooltip(Tooltip::for_action_title_in(
-                                            "Stage all changes",
+                                            "暂存所有更改",
                                             &StageAll,
                                             &focus_handle,
                                         ))
@@ -1916,9 +1916,9 @@ impl Render for ProjectDiffToolbar {
                         },
                     )
                     .child(
-                        Button::new("commit", "Commit")
+                        Button::new("commit", "提交")
                             .tooltip(Tooltip::for_action_title_in(
-                                "Commit",
+                                "提交",
                                 &Commit,
                                 &focus_handle,
                             ))
@@ -1927,7 +1927,7 @@ impl Render for ProjectDiffToolbar {
                             })),
                     ),
             )
-            // "Send Review to Agent" button (only shown when there are review comments)
+            // "发送给 Agent 审查" button (only shown when there are review comments)
             .when(review_count > 0, |el| {
                 el.child(vertical_divider()).child(
                     render_send_review_to_agent_button(review_count, &focus_handle).on_click(
@@ -1951,7 +1951,7 @@ fn render_send_review_to_agent_button(review_count: usize, focus_handle: &FocusH
             .color(Color::Muted),
     )
     .tooltip(Tooltip::for_action_title_in(
-        "Send all review comments to the Agent panel",
+        "将所有审查意见发送到 Agent 面板",
         &SendReviewToAgent,
         focus_handle,
     ))
@@ -2023,7 +2023,7 @@ impl Render for BranchDiffToolbar {
             return div();
         };
         let selected_base_ref = base_ref.clone();
-        let base_ref_label = format!("Base: {base_ref}");
+        let base_ref_label = format!("基准：{base_ref}");
         let repository = project_diff.read(cx).branch_diff.read(cx).repo().cloned();
         let workspace = project_diff.read(cx).workspace.clone();
         let project_diff_for_picker = project_diff.downgrade();
@@ -2078,7 +2078,7 @@ impl Render for BranchDiffToolbar {
                                     .size(IconSize::XSmall)
                                     .color(Color::Muted),
                             ),
-                        Tooltip::text("Select base branch"),
+                        Tooltip::text("选择基准分支"),
                     ),
             )
             .when(!is_multibuffer_empty, |this| {
@@ -2091,7 +2091,7 @@ impl Render for BranchDiffToolbar {
             .when(show_review_button, |this| {
                 let focus_handle = focus_handle.clone();
                 this.child(Divider::vertical()).child(
-                    Button::new("review-diff", "Review Diff")
+                    Button::new("review-diff", "审查差异")
                         .start_icon(
                             Icon::new(IconName::ZedAssistant)
                                 .size(IconSize::Small)
@@ -2100,7 +2100,7 @@ impl Render for BranchDiffToolbar {
                         .key_binding(KeyBinding::for_action_in(&ReviewDiff, &focus_handle, cx))
                         .tooltip(move |_, cx| {
                             Tooltip::with_meta_in(
-                                "Review Diff",
+                                "审查差异",
                                 Some(&ReviewDiff),
                                 "Send this diff for your last agent to review.",
                                 &focus_handle,
@@ -3012,7 +3012,7 @@ mod tests {
         let target_branch_diff = cx
             .update(|window, cx| {
                 let Some(repository) = project.read(cx).active_repository(cx) else {
-                    return Task::ready(Err(anyhow!("No active repository")));
+                    return Task::ready(Err(anyhow!("无活动仓库")));
                 };
                 ProjectDiff::new_with_branch_base(
                     project.clone(),

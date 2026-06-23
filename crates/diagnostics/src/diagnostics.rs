@@ -104,12 +104,12 @@ impl Render for ProjectDiagnosticsEditor {
         let child =
             if warning_count + self.summary.error_count == 0 && self.editor.read(cx).is_empty(cx) {
                 let label = if self.summary.warning_count == 0 {
-                    SharedString::new_static("No problems in workspace")
+                    SharedString::new_static("工作区无问题")
                 } else {
-                    SharedString::new_static("No errors in workspace")
+                    SharedString::new_static("工作区没有错误")
                 };
                 v_flex()
-                    .key_context("EmptyPane")
+                    .key_context("空窗格")
                     .size_full()
                     .gap_1()
                     .justify_center()
@@ -119,12 +119,12 @@ impl Render for ProjectDiagnosticsEditor {
                     .child(Label::new(label).color(Color::Muted))
                     .when(self.summary.warning_count > 0, |this| {
                         let plural_suffix = if self.summary.warning_count > 1 {
-                            "s"
+                            " "
                         } else {
                             ""
                         };
                         let label = format!(
-                            "Show {} warning{}",
+                            "显示 {} 条警告{}",
                             self.summary.warning_count, plural_suffix
                         );
                         this.child(
@@ -141,7 +141,7 @@ impl Render for ProjectDiagnosticsEditor {
             };
 
         div()
-            .key_context("Diagnostics")
+            .key_context("诊断")
             .track_focus(&self.focus_handle(cx))
             .size_full()
             .on_action(cx.listener(Self::toggle_warnings))
@@ -180,7 +180,7 @@ impl ProjectDiagnosticsEditor {
                     cx.notify();
                 }
                 project::Event::DiskBasedDiagnosticsFinished { language_server_id } => {
-                    log::debug!("disk based diagnostics finished for server {language_server_id}");
+                    log::debug!("基于磁盘的诊断已为服务器 {language_server_id} 完成");
                     this.close_diagnosticless_buffers(
                         cx,
                         this.editor.focus_handle(cx).contains_focused(window, cx)
@@ -753,7 +753,7 @@ impl Item for ProjectDiagnosticsEditor {
     }
 
     fn tab_content_text(&self, _detail: usize, _: &App) -> SharedString {
-        "Diagnostics".into()
+        "诊断".into()
     }
 
     fn tab_content(&self, params: TabContentParams, _window: &Window, _: &App) -> AnyElement {

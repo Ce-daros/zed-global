@@ -199,7 +199,7 @@ impl Output {
                     el.child(
                         IconButton::new(ElementId::Name("copy-output".into()), IconName::Copy)
                             .style(ButtonStyle::Transparent)
-                            .tooltip(Tooltip::text("Copy Output"))
+                            .tooltip(Tooltip::text("复制输出"))
                             .on_click(move |_, window, cx| {
                                 let clipboard_content = v.clipboard_content(window, cx);
 
@@ -217,7 +217,7 @@ impl Output {
                             IconName::FileTextOutlined,
                         )
                         .style(ButtonStyle::Transparent)
-                        .tooltip(Tooltip::text("Open in Buffer"))
+                        .tooltip(Tooltip::text("在缓冲区中打开"))
                         .on_click({
                             let workspace = workspace.clone();
                             move |_, window, cx| {
@@ -231,7 +231,7 @@ impl Output {
                                             let mut multi_buffer =
                                                 MultiBuffer::singleton(buffer.clone(), cx);
 
-                                            multi_buffer.set_title("REPL Output".to_string(), cx);
+                                            multi_buffer.set_title("REPL 输出".to_string(), cx);
                                             multi_buffer
                                         });
 
@@ -323,7 +323,7 @@ impl Output {
                             let full_error = format!("{}: {}\n{}", ename, evalue, traceback_text);
 
                             CopyButton::new("copy-full-error", full_error)
-                                .tooltip_label("Copy Full Error")
+                                .tooltip_label("复制完整错误")
                         })
                         .child(
                             IconButton::new(
@@ -331,7 +331,7 @@ impl Output {
                                 IconName::FileTextOutlined,
                             )
                             .style(ButtonStyle::Transparent)
-                            .tooltip(Tooltip::text("Open Full Error in Buffer"))
+                            .tooltip(Tooltip::text("在缓冲区中打开完整错误"))
                             .on_click({
                                 let ename = err.ename.clone();
                                 let evalue = err.evalue.clone();
@@ -353,7 +353,7 @@ impl Output {
                                                 let mut multi_buffer =
                                                     MultiBuffer::singleton(buffer.clone(), cx);
                                                 multi_buffer
-                                                    .set_title("Full Error".to_string(), cx);
+                                                    .set_title("完整错误".to_string(), cx);
                                                 multi_buffer
                                             });
                                             Editor::for_multibuffer(multibuffer, None, window, cx)
@@ -403,7 +403,7 @@ impl Output {
                     content: cx.new(|_| json_view),
                     display_id,
                 },
-                Err(_) => Output::Message("Failed to parse JSON".to_string()),
+                Err(_) => Output::Message("解析 JSON 失败".to_string()),
             },
             Some(MimeType::Plain(text)) => Output::Plain {
                 content: cx.new(|cx| TerminalOutput::from(text, window, cx)),
@@ -421,7 +421,7 @@ impl Output {
                     content: cx.new(|_| view),
                     display_id,
                 },
-                Err(error) => Output::Message(format!("Failed to load image: {}", error)),
+                Err(error) => Output::Message(format!("加载图像失败： {}", error)),
             },
             Some(MimeType::DataTable(data)) => Output::Table {
                 content: cx.new(|cx| TableView::new(data, window, cx)),
@@ -441,7 +441,7 @@ impl Output {
                 },
             },
             // Any other media types are not supported
-            _ => Output::Message("Unsupported media type".to_string()),
+            _ => Output::Message("不支持的媒体类型".to_string()),
         }
     }
 }
@@ -477,7 +477,7 @@ struct PendingInput {
 
 /// An ExecutionView shows the outputs of an execution.
 /// It can hold zero or more outputs, which the user
-/// sees as "the output" for a single execution.
+/// sees as "输出" for a single execution.
 pub struct ExecutionView {
     #[allow(unused)]
     workspace: WeakEntity<Workspace>,
@@ -536,7 +536,7 @@ impl ExecutionView {
 
             let editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Type here and press Enter", window, cx);
+                editor.set_placeholder_text("在此输入并按 Enter", window, cx);
                 if password {
                     editor.set_masked(true, cx);
                 }
@@ -753,7 +753,7 @@ impl ExecutionView {
 impl Render for ExecutionView {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let status = match &self.status {
-            ExecutionStatus::ConnectingToKernel => Label::new("Connecting to kernel...")
+            ExecutionStatus::ConnectingToKernel => Label::new("连接到内核...")
                 .color(Color::Muted)
                 .into_any_element(),
             ExecutionStatus::Executing => h_flex()
@@ -769,22 +769,22 @@ impl Render for ExecutionView {
             ExecutionStatus::Finished => Icon::new(IconName::Check)
                 .size(IconSize::Small)
                 .into_any_element(),
-            ExecutionStatus::Unknown => Label::new("Unknown status")
+            ExecutionStatus::Unknown => Label::new("未知状态")
                 .color(Color::Muted)
                 .into_any_element(),
-            ExecutionStatus::ShuttingDown => Label::new("Kernel shutting down...")
+            ExecutionStatus::ShuttingDown => Label::new("内核正在关闭...")
                 .color(Color::Muted)
                 .into_any_element(),
-            ExecutionStatus::Restarting => Label::new("Kernel restarting...")
+            ExecutionStatus::Restarting => Label::new("内核正在重启...")
                 .color(Color::Muted)
                 .into_any_element(),
-            ExecutionStatus::Shutdown => Label::new("Kernel shutdown")
+            ExecutionStatus::Shutdown => Label::new("内核已关闭")
                 .color(Color::Muted)
                 .into_any_element(),
             ExecutionStatus::Queued => Label::new("Queued...")
                 .color(Color::Muted)
                 .into_any_element(),
-            ExecutionStatus::KernelErrored(error) => Label::new(format!("Kernel error: {}", error))
+            ExecutionStatus::KernelErrored(error) => Label::new(format!("内核错误： {}", error))
                 .color(Color::Error)
                 .into_any_element(),
         };
@@ -985,10 +985,10 @@ mod tests {
             execution_view.update(cx, |view, cx| {
                 let message = JupyterMessageContent::ErrorOutput(ErrorOutput {
                     ename: "NameError".to_string(),
-                    evalue: "name 'x' is not defined".to_string(),
+                    evalue: "名称 'x' 未定义".to_string(),
                     traceback: vec![
-                        "Traceback (most recent call last):".to_string(),
-                        "NameError: name 'x' is not defined".to_string(),
+                        "回溯（最近一次调用在最后）：".to_string(),
+                        "NameError：名称 'x' 未定义".to_string(),
                     ],
                 });
                 view.push_message(&message, window, cx);
@@ -1001,10 +1001,10 @@ mod tests {
             match &view.outputs[0] {
                 Output::ErrorOutput(error_view) => {
                     assert_eq!(error_view.ename, "NameError");
-                    assert_eq!(error_view.evalue, "name 'x' is not defined");
+                    assert_eq!(error_view.evalue, "名称 'x' 未定义");
                 }
                 other => panic!(
-                    "expected ErrorOutput, got {:?}",
+                    "期望为 ErrorOutput，实际得到 {:?}",
                     std::mem::discriminant(other)
                 ),
             }

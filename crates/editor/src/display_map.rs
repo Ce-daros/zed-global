@@ -2685,7 +2685,7 @@ pub mod tests {
     async fn test_random_display_map(cx: &mut gpui::TestAppContext, mut rng: StdRng) {
         cx.background_executor.set_block_on_ticks(0..=50);
         let operations = env::var("OPERATIONS")
-            .map(|i| i.parse().expect("invalid `OPERATIONS` variable"))
+            .map(|i| i.parse().expect("无效的 `OPERATIONS` 变量"))
             .unwrap_or(10);
 
         let mut tab_size = rng.random_range(1..=4);
@@ -2739,7 +2739,7 @@ pub mod tests {
         let mut blocks = Vec::new();
 
         let snapshot = map.update(cx, |map, cx| map.snapshot(cx));
-        log::info!("buffer text: {:?}", snapshot.buffer_snapshot().text());
+        log::info!("缓冲区文本: {:?}", snapshot.buffer_snapshot().text());
         log::info!("fold text: {:?}", snapshot.fold_snapshot().text());
         log::info!("tab text: {:?}", snapshot.tab_snapshot().text());
         log::info!("wrap text: {:?}", snapshot.wrap_snapshot().text());
@@ -2860,7 +2860,7 @@ pub mod tests {
 
             let snapshot = map.update(cx, |map, cx| map.snapshot(cx));
             fold_count = snapshot.fold_count();
-            log::info!("buffer text: {:?}", snapshot.buffer_snapshot().text());
+            log::info!("缓冲区文本: {:?}", snapshot.buffer_snapshot().text());
             log::info!("fold text: {:?}", snapshot.fold_snapshot().text());
             log::info!("tab text: {:?}", snapshot.tab_snapshot().text());
             log::info!("wrap text: {:?}", snapshot.wrap_snapshot().text());
@@ -2926,7 +2926,7 @@ pub mod tests {
                 log::info!("Moving from point {:?}", point);
 
                 let moved_right = movement::right(&snapshot, point);
-                log::info!("Right {:?}", moved_right);
+                log::info!("右 {:?}", moved_right);
                 if point < max_point {
                     assert!(moved_right > point);
                     if point.column() == snapshot.line_len(point.row())
@@ -2940,7 +2940,7 @@ pub mod tests {
                 }
 
                 let moved_left = movement::left(&snapshot, point);
-                log::info!("Left {:?}", moved_left);
+                log::info!("左 {:?}", moved_left);
                 if point > min_point {
                     assert!(moved_left < point);
                     if point.column() == 0 {
@@ -3216,7 +3216,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()
@@ -3664,7 +3664,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()
@@ -3751,7 +3751,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()

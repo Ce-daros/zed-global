@@ -468,13 +468,13 @@ impl WorktreeStore {
         cx: &mut Context<Self>,
     ) -> Task<Result<Option<Entry>>> {
         let Some(old_worktree) = self.worktree_for_entry(entry_id, cx) else {
-            return Task::ready(Err(anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow!("无效的工作树")));
         };
         let Some(old_entry) = old_worktree.read(cx).entry_for_id(entry_id) else {
-            return Task::ready(Err(anyhow!("no such entry")));
+            return Task::ready(Err(anyhow!("无此条目")));
         };
         let Some(new_worktree) = self.worktree_for_id(new_project_path.worktree_id, cx) else {
-            return Task::ready(Err(anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow!("无效的工作树")));
         };
 
         match &self.state {
@@ -543,13 +543,13 @@ impl WorktreeStore {
         cx: &mut Context<Self>,
     ) -> Task<Result<CreatedEntry>> {
         let Some(old_worktree) = self.worktree_for_entry(entry_id, cx) else {
-            return Task::ready(Err(anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow!("无效的工作树")));
         };
         let Some(old_entry) = old_worktree.read(cx).entry_for_id(entry_id).cloned() else {
-            return Task::ready(Err(anyhow!("no such entry")));
+            return Task::ready(Err(anyhow!("无此条目")));
         };
         let Some(new_worktree) = self.worktree_for_id(new_project_path.worktree_id, cx) else {
-            return Task::ready(Err(anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow!("无效的工作树")));
         };
 
         match &self.state {
@@ -711,7 +711,7 @@ impl WorktreeStore {
                     ..
                 } => {
                     if upstream_client.is_via_collab() {
-                        Task::ready(Err(Arc::new(anyhow!("cannot create worktrees via collab"))))
+                        Task::ready(Err(Arc::new(anyhow!("不能通过协作创建工作树"))))
                     } else {
                         let abs_path = RemotePathBuf::new(abs_path.to_string(), *path_style);
                         self.create_remote_worktree(upstream_client.clone(), abs_path, visible, cx)
@@ -794,7 +794,7 @@ impl WorktreeStore {
         }
 
         cx.spawn(async move |this, cx| {
-            let this = this.upgrade().context("Dropped worktree store")?;
+            let this = this.upgrade().context("删除工作树存储")?;
 
             let path = RemotePathBuf::new(abs_path, path_style);
             let response = client
@@ -999,7 +999,7 @@ impl WorktreeStore {
             })
             .collect::<HashMap<_, _>>();
 
-        let (client, project_id) = self.upstream_client().context("invalid project")?;
+        let (client, project_id) = self.upstream_client().context("无效项目")?;
 
         for worktree in worktrees {
             if let Some(old_worktree) =
@@ -1062,9 +1062,9 @@ impl WorktreeStore {
         }
 
         let source_index =
-            source_index.with_context(|| format!("Missing worktree for id {source}"))?;
+            source_index.with_context(|| format!("在 id {source} 中缺少工作树"))?;
         let destination_index =
-            destination_index.with_context(|| format!("Missing worktree for id {destination}"))?;
+            destination_index.with_context(|| format!("在 id {destination} 中缺少工作树"))?;
 
         if source_index == destination_index {
             return Ok(());
@@ -1215,7 +1215,7 @@ impl WorktreeStore {
         let worktree = this.update(&mut cx, |this, cx| {
             let worktree_id = WorktreeId::from_proto(envelope.payload.worktree_id);
             this.worktree_for_id(worktree_id, cx)
-                .context("worktree not found")
+                .context("工作树未找到")
         })?;
         Worktree::handle_create_entry(worktree, envelope.payload, cx).await
     }
@@ -1236,7 +1236,7 @@ impl WorktreeStore {
                 bail!("no downstream client")
             };
             let Some(entry) = this.entry_for_id(entry_id, cx) else {
-                bail!("no such entry");
+                bail!("无此条目");
             };
             if entry.is_private && project_id != REMOTE_SERVER_PROJECT_ID {
                 bail!("entry is private")
@@ -1244,7 +1244,7 @@ impl WorktreeStore {
 
             let new_worktree = this
                 .worktree_for_id(new_worktree_id, cx)
-                .context("no such worktree")?;
+                .context("无效的工作树")?;
             let scan_id = new_worktree.read(cx).scan_id();
             anyhow::Ok((
                 scan_id,
@@ -1275,7 +1275,7 @@ impl WorktreeStore {
                 bail!("entry is private")
             }
             this.worktree_for_entry(entry_id, cx)
-                .context("worktree not found")
+                .context("工作树未找到")
         })?;
         Worktree::handle_delete_entry(worktree, envelope.payload, cx).await
     }
@@ -1293,7 +1293,7 @@ impl WorktreeStore {
         let (scan_id, task) = this.update(&mut cx, |this, cx| {
             let worktree = this
                 .worktree_for_entry(entry_id, cx)
-                .context("no such worktree")?;
+                .context("无效的工作树")?;
 
             let Some((_, project_id)) = this.downstream_client else {
                 bail!("no downstream client")
@@ -1329,7 +1329,7 @@ impl WorktreeStore {
         let entry_id = ProjectEntryId::from_proto(envelope.payload.entry_id);
         let worktree = this
             .update(&mut cx, |this, cx| this.worktree_for_entry(entry_id, cx))
-            .context("invalid request")?;
+            .context("无效请求")?;
         Worktree::handle_expand_entry(worktree, envelope.payload, cx).await
     }
 
@@ -1341,7 +1341,7 @@ impl WorktreeStore {
         let entry_id = ProjectEntryId::from_proto(envelope.payload.entry_id);
         let worktree = this
             .update(&mut cx, |this, cx| this.worktree_for_entry(entry_id, cx))
-            .context("invalid request")?;
+            .context("无效请求")?;
         Worktree::handle_expand_all_for_entry(worktree, envelope.payload, cx).await
     }
 

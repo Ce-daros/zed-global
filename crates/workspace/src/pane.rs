@@ -92,7 +92,7 @@ pub enum SaveIntent {
     SaveAll,
     /// always prompt for a new path
     SaveAs,
-    /// prompt "you have unsaved changes" before writing
+    /// prompt "您有未保存的更改" before writing
     Close,
     /// write all dirty files, don't prompt on conflict
     Overwrite,
@@ -363,7 +363,7 @@ impl fmt::Debug for Event {
                 .debug_struct("ActivateItem")
                 .field("local", local)
                 .finish(),
-            Event::Remove { .. } => f.write_str("Remove"),
+            Event::Remove { .. } => f.write_str("删除"),
             Event::RemovedItem { item } => f
                 .debug_struct("RemovedItem")
                 .field("item", &item.item_id())
@@ -1933,7 +1933,7 @@ impl Pane {
                 let filename = project_item
                     .project_path(cx)
                     .and_then(|path| path.path.file_name().map(ToOwned::to_owned));
-                file_names.insert(filename.unwrap_or("untitled".to_string()));
+                file_names.insert(filename.unwrap_or("未命名".to_string()));
             });
         }
         if file_names.len() > 6 {
@@ -1994,9 +1994,9 @@ impl Pane {
                     let detail = Self::file_names_for_prompt(&mut dirty_items.iter(), cx);
                     window.prompt(
                         PromptLevel::Warning,
-                        "Do you want to save changes to the following files?",
+                        "要保存以下文件的更改吗？",
                         Some(&detail),
-                        &["Save all", "Discard all", "Cancel"],
+                        &["全部保存", "全部放弃", "取消"],
                         cx,
                     )
                 })?;
@@ -2038,7 +2038,7 @@ impl Pane {
                                     PromptLevel::Warning,
                                     &format!("Unable to save file: {}", &err),
                                     Some(&detail),
-                                    &["Close Without Saving", "Cancel"],
+                                    &["不保存并关闭", "取消"],
                                     cx,
                                 )
                             })?;
@@ -2237,9 +2237,9 @@ impl Pane {
         save_intent: SaveIntent,
         cx: &mut AsyncWindowContext,
     ) -> Result<bool> {
-        const CONFLICT_MESSAGE: &str = "This file has changed on disk since you started editing it. Do you want to overwrite it?";
+        const CONFLICT_MESSAGE: &str = "自您开始编辑以来，此文件在磁盘上已更改。您要覆盖它吗？";
 
-        const DELETED_MESSAGE: &str = "This file has been deleted on disk since you started editing it. Do you want to recreate it?";
+        const DELETED_MESSAGE: &str = "自您开始编辑以来，此文件在磁盘上已被删除。您要重新创建它吗？";
 
         let path_style = project.read_with(cx, |project, cx| project.path_style(cx));
         if save_intent == SaveIntent::Skip {
@@ -2308,7 +2308,7 @@ impl Pane {
                         PromptLevel::Warning,
                         DELETED_MESSAGE,
                         None,
-                        &["Save", "Close", "Cancel"],
+                        &["保存", "关闭", "取消"],
                         cx,
                     )
                 })?;
@@ -2343,7 +2343,7 @@ impl Pane {
                         PromptLevel::Warning,
                         CONFLICT_MESSAGE,
                         None,
-                        &["Overwrite", "Discard", "Cancel"],
+                        &["覆盖", "放弃", "取消"],
                         cx,
                     )
                 })?;
@@ -2386,7 +2386,7 @@ impl Pane {
                                 PromptLevel::Warning,
                                 &prompt,
                                 None,
-                                &["Save", "Don't Save", "Cancel"],
+                                &["保存", "不保存", "取消"],
                                 cx,
                             ))
                         } else {
@@ -2398,7 +2398,7 @@ impl Pane {
                         pane.update(cx, |pane, _| {
                             if !pane.save_modals_spawned.remove(&item_id) {
                                 debug_panic!(
-                                    "save modal was not present in spawned modals after awaiting for its answer"
+                                    "在等待其答案后，保存模式未出现在生成的模式中"
                                 )
                             }
                         })?;
@@ -2871,13 +2871,13 @@ impl Pane {
                 .tooltip(move |_, cx| {
                     if toggleable {
                         Tooltip::with_meta(
-                            "Unlock File",
+                            "解锁文件",
                             None,
-                            "This will make this file editable",
+                            "这会让文件可编辑",
                             cx,
                         )
                     } else {
-                        Tooltip::with_meta("Locked File", None, "This file is read-only", cx)
+                        Tooltip::with_meta("已锁定文件", None, "此文件为只读", cx)
                     }
                 })
                 .on_click(cx.listener(move |pane, _, window, cx| {
@@ -2911,7 +2911,7 @@ impl Pane {
                         let extra_actions = item_handle.tab_extra_context_menu_actions(window, cx);
                         if let Some((_, action)) = extra_actions
                             .into_iter()
-                            .find(|(label, _)| label.as_ref() == "Rename")
+                            .find(|(label, _)| label.as_ref() == "重命名")
                         {
                             // Dispatch action directly through the focus handle to avoid
                             // relay_action's intermediate focus step which can interfere
@@ -2987,8 +2987,8 @@ impl Pane {
                 let end_slot_tooltip_text: &'static str;
                 let end_slot = if is_pinned {
                     end_slot_action = &TogglePinTab;
-                    end_slot_tooltip_text = "Unpin Tab";
-                    IconButton::new("unpin tab", IconName::Pin)
+                    end_slot_tooltip_text = "取消固定标签";
+                    IconButton::new("取消固定标签", IconName::Pin)
                         .shape(IconButtonShape::Square)
                         .icon_color(Color::Muted)
                         .size(ButtonSize::None)
@@ -3001,11 +3001,11 @@ impl Pane {
                         save_intent: None,
                         close_pinned: false,
                     };
-                    end_slot_tooltip_text = "Close Tab";
+                    end_slot_tooltip_text = "关闭标签";
                     match show_close_button {
-                        ShowCloseButton::Always => IconButton::new("close tab", IconName::Close),
+                        ShowCloseButton::Always => IconButton::new("关闭标签", IconName::Close),
                         ShowCloseButton::Hover => {
-                            IconButton::new("close tab", IconName::Close).visible_on_hover("")
+                            IconButton::new("关闭标签", IconName::Close).visible_on_hover("")
                         }
                         ShowCloseButton::Hidden => return this,
                     }
@@ -3056,7 +3056,7 @@ impl Pane {
                             } else {
                                 this.tooltip(move |_, cx| {
                                     let text = text.clone();
-                                    Tooltip::with_meta(text, None, "Read-Only File", cx)
+                                    Tooltip::with_meta(text, None, "只读文件", cx)
                                 })
                             }
                         }
@@ -3123,7 +3123,7 @@ impl Pane {
                     if let Some(pane) = pane.upgrade() {
                         menu = menu
                             .entry(
-                                "Close",
+                                "关闭",
                                 Some(Box::new(close_active_item_action)),
                                 window.handler_for(&pane, move |pane, window, cx| {
                                     pane.close_item_by_id(item_id, SaveIntent::Close, window, cx)
@@ -3131,7 +3131,7 @@ impl Pane {
                                 }),
                             )
                             .item(ContextMenuItem::Entry(
-                                ContextMenuEntry::new("Close Others")
+                                ContextMenuEntry::new("关闭其他")
                                     .action(Box::new(close_inactive_items_action.clone()))
                                     .disabled(total_items == 1)
                                     .handler(window.handler_for(&pane, move |pane, window, cx| {
@@ -3147,7 +3147,7 @@ impl Pane {
                             // We make this optional, instead of using disabled as to not overwhelm the context menu unnecessarily
                             .extend(has_multibuffer_items.then(|| {
                                 ContextMenuItem::Entry(
-                                    ContextMenuEntry::new("Close Multibuffers")
+                                    ContextMenuEntry::new("关闭多缓冲区")
                                         .action(Box::new(close_multibuffers_action.clone()))
                                         .handler(window.handler_for(
                                             &pane,
@@ -3164,7 +3164,7 @@ impl Pane {
                             }))
                             .separator()
                             .item(ContextMenuItem::Entry(
-                                ContextMenuEntry::new("Close Left")
+                                ContextMenuEntry::new("关闭左侧")
                                     .action(Box::new(close_items_to_the_left_action.clone()))
                                     .disabled(!has_items_to_left)
                                     .handler(window.handler_for(&pane, move |pane, window, cx| {
@@ -3178,7 +3178,7 @@ impl Pane {
                                     })),
                             ))
                             .item(ContextMenuItem::Entry(
-                                ContextMenuEntry::new("Close Right")
+                                ContextMenuEntry::new("关闭右侧")
                                     .action(Box::new(close_items_to_the_right_action.clone()))
                                     .disabled(!has_items_to_right)
                                     .handler(window.handler_for(&pane, move |pane, window, cx| {
@@ -3193,7 +3193,7 @@ impl Pane {
                             ))
                             .separator()
                             .item(ContextMenuItem::Entry(
-                                ContextMenuEntry::new("Close Clean")
+                                ContextMenuEntry::new("清理关闭")
                                     .action(Box::new(close_clean_items_action.clone()))
                                     .disabled(!has_clean_items)
                                     .handler(window.handler_for(&pane, move |pane, window, cx| {
@@ -3206,7 +3206,7 @@ impl Pane {
                                     })),
                             ))
                             .entry(
-                                "Close All",
+                                "全部关闭",
                                 Some(Box::new(close_all_items_action.clone())),
                                 window.handler_for(&pane, move |pane, window, cx| {
                                     pane.close_all_items(&close_all_items_action, window, cx)
@@ -3218,7 +3218,7 @@ impl Pane {
                             menu.separator().map(|this| {
                                 if is_pinned {
                                     this.entry(
-                                        "Unpin Tab",
+                                        "取消固定标签",
                                         Some(TogglePinTab.boxed_clone()),
                                         window.handler_for(&pane, move |pane, window, cx| {
                                             pane.unpin_tab_at(ix, window, cx);
@@ -3226,7 +3226,7 @@ impl Pane {
                                     )
                                 } else {
                                     this.entry(
-                                        "Pin Tab",
+                                        "固定标签",
                                         Some(TogglePinTab.boxed_clone()),
                                         window.handler_for(&pane, move |pane, window, cx| {
                                             pane.pin_tab_at(ix, window, cx);
@@ -3238,9 +3238,9 @@ impl Pane {
 
                         if capability != Capability::ReadOnly {
                             let read_only_label = if capability.editable() {
-                                "Make File Read-Only"
+                                "设为只读"
                             } else {
-                                "Make File Editable"
+                                "设为可编辑"
                             };
                             menu = menu.separator().entry(
                                 read_only_label,
@@ -3299,7 +3299,7 @@ impl Pane {
                                 .separator()
                                 .when_some(entry_abs_path, |menu, abs_path| {
                                     menu.entry(
-                                        "Copy Path",
+                                        "复制路径",
                                         Some(Box::new(zed_actions::workspace::CopyPath)),
                                         window.handler_for(&pane, move |_, _, cx| {
                                             cx.write_to_clipboard(ClipboardItem::new_string(
@@ -3310,7 +3310,7 @@ impl Pane {
                                 })
                                 .when_some(relative_path, |menu, relative_path| {
                                     menu.entry(
-                                        "Copy Relative Path",
+                                        "复制相对路径",
                                         Some(Box::new(zed_actions::workspace::CopyRelativePath)),
                                         window.handler_for(&pane, move |this, _, cx| {
                                             let Some(project) = this.project.upgrade() else {
@@ -3346,7 +3346,7 @@ impl Pane {
                                 .map(pin_tab_entries)
                                 .when(visible_in_project_panel, |menu| {
                                     menu.entry(
-                                        "Reveal In Project Panel",
+                                        "在项目面板中显示",
                                         Some(Box::new(RevealInProjectPanel::default())),
                                         window.handler_for(&pane, move |pane, _, cx| {
                                             pane.project
@@ -3361,7 +3361,7 @@ impl Pane {
                                 })
                                 .when_some(parent_abs_path, |menu, parent_abs_path| {
                                     menu.entry(
-                                        "Open in Terminal",
+                                        "在终端中打开",
                                         Some(Box::new(OpenInTerminal)),
                                         window.handler_for(&pane, move |_, window, cx| {
                                             window.dispatch_action(
@@ -3415,7 +3415,7 @@ impl Pane {
                 let focus_handle = focus_handle.clone();
                 move |window, cx| {
                     Tooltip::for_action_in(
-                        "Go Back",
+                        "返回",
                         &GoBack,
                         &window.focused(cx).unwrap_or_else(|| focus_handle.clone()),
                         cx,
@@ -3423,7 +3423,7 @@ impl Pane {
                 }
             });
 
-        let navigate_forward = IconButton::new("navigate_forward", IconName::ArrowRight)
+        let navigate_forward = IconButton::new("向前导航", IconName::ArrowRight)
             .icon_size(IconSize::Small)
             .on_click({
                 let entity = cx.entity();
@@ -3438,7 +3438,7 @@ impl Pane {
                 let focus_handle = focus_handle.clone();
                 move |window, cx| {
                     Tooltip::for_action_in(
-                        "Go Forward",
+                        "前进",
                         &GoForward,
                         &window.focused(cx).unwrap_or_else(|| focus_handle.clone()),
                         cx,
@@ -7874,7 +7874,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         save.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -7894,7 +7894,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         save.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -7924,7 +7924,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -7948,7 +7948,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         close_task.await.unwrap();
         assert_item_labels(&pane, ["Dirty*^"], cx);
     }
@@ -7987,7 +7987,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8029,7 +8029,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8052,7 +8052,7 @@ mod tests {
             cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let pane = workspace.read_with(cx, |workspace, _| workspace.active_pane().clone());
 
-        let item = add_labeled_item(&pane, "untitled", true, cx);
+        let item = add_labeled_item(&pane, "未命名", true, cx);
         item.update(cx, |item, cx| {
             item.project_items.push(TestProjectItem::new_untitled(cx));
         });
@@ -8087,7 +8087,7 @@ mod tests {
             cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let pane = workspace.read_with(cx, |workspace, _| workspace.active_pane().clone());
 
-        let item = add_labeled_item(&pane, "untitled", true, cx);
+        let item = add_labeled_item(&pane, "未命名", true, cx);
         item.update(cx, |item, cx| {
             item.project_items.push(TestProjectItem::new_untitled(cx));
         });
@@ -8162,7 +8162,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8278,7 +8278,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         save.await.unwrap();
         assert_item_labels(&pane, ["C", "A*^"], cx);
 
@@ -8309,7 +8309,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         save.await.unwrap();
         assert_item_labels(&pane, ["C", "A*^"], cx);
     }
@@ -8370,12 +8370,12 @@ mod tests {
 
         cx.simulate_resize(size(px(300.), px(300.)));
 
-        add_labeled_item(&pane, "untitled", false, cx);
-        add_labeled_item(&pane, "untitled", false, cx);
-        add_labeled_item(&pane, "untitled", false, cx);
-        add_labeled_item(&pane, "untitled", false, cx);
+        add_labeled_item(&pane, "未命名", false, cx);
+        add_labeled_item(&pane, "未命名", false, cx);
+        add_labeled_item(&pane, "未命名", false, cx);
+        add_labeled_item(&pane, "未命名", false, cx);
         // Act: this should trigger a scroll
-        add_labeled_item(&pane, "untitled", false, cx);
+        add_labeled_item(&pane, "未命名", false, cx);
         // Assert
         let tab_bar_scroll_handle =
             pane.update_in(cx, |pane, _window, _cx| pane.tab_bar_scroll_handle.clone());

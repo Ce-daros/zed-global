@@ -150,7 +150,7 @@ impl State {
                 Ok(()) => Ok(()),
                 Err(err) => {
                     // If any cause in the error chain is an std::io::Error with
-                    // ErrorKind::ConnectionRefused, treat this as "credentials not found"
+                    // ErrorKind::ConnectionRefused, treat this as "未找到凭证"
                     // (i.e. LM Studio not running).
                     let mut connection_refused = false;
                     for cause in err.chain() {
@@ -576,7 +576,7 @@ impl LmStudioEventMapper {
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.into_iter().next() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
-                "Response contained no choices"
+                "响应中没有候选项"
             )))];
         };
 
@@ -657,7 +657,7 @@ impl LmStudioEventMapper {
                 events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::ToolUse)));
             }
             Some(stop_reason) => {
-                log::error!("Unexpected LMStudio stop_reason: {stop_reason:?}",);
+                log::error!("LM Studio 出现意外的 stop_reason：{stop_reason:?}",);
                 events.push(Ok(LanguageModelCompletionEvent::Stop(StopReason::EndTurn)));
             }
             None => {}
@@ -716,7 +716,7 @@ struct ConfigurationView {
 
 impl ConfigurationView {
     pub fn new(state: Entity<State>, _window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let api_key_editor = cx.new(|cx| InputField::new(_window, cx, "sk-...").label("API key"));
+        let api_key_editor = cx.new(|cx| InputField::new(_window, cx, "sk-...").label("API 密钥"));
 
         let api_url_editor = cx.new(|cx| {
             let input = InputField::new(_window, cx, LMSTUDIO_API_URL).label("API URL");
@@ -847,7 +847,7 @@ impl ConfigurationView {
                         .child(v_flex().gap_1().child(Label::new(api_url))),
                 )
                 .child(
-                    Button::new("reset-api-url", "Reset API URL")
+                    Button::new("reset-api-url", "重置 API URL")
                         .label_size(LabelSize::Small)
                         .start_icon(Icon::new(IconName::Undo).size(IconSize::Small))
                         .layer(ElevationIndex::ModalSurface)
@@ -872,9 +872,9 @@ impl ConfigurationView {
         let state = self.state.read(cx);
         let env_var_set = state.api_key_state.is_from_env_var();
         let configured_card_label = if env_var_set {
-            format!("API key set in {API_KEY_ENV_VAR_NAME} environment variable.")
+            format!("API 密钥已在 {API_KEY_ENV_VAR_NAME} 环境变量中设置。")
         } else {
-            "API key configured".to_string()
+            "API 密钥已配置".to_string()
         };
 
         if !state.api_key_state.has_key() {
@@ -883,7 +883,7 @@ impl ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量并重启 Zed。"
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
@@ -895,7 +895,7 @@ impl ConfigurationView {
                 .on_click(cx.listener(|this, _, _window, cx| this.reset_api_key(_window, cx)))
                 .when(env_var_set, |this| {
                     this.tooltip_label(format!(
-                        "To reset your API key, unset the {API_KEY_ENV_VAR_NAME} environment variable."
+                        "要重置 API 密钥，请取消设置 {API_KEY_ENV_VAR_NAME} 环境变量。"
                     ))
                 })
                 .into_any_element()
@@ -912,15 +912,15 @@ impl Render for ConfigurationView {
             .child(
                 v_flex()
                     .gap_1()
-                    .child(Label::new("Run local LLMs like Llama, Phi, and Qwen."))
+                    .child(Label::new("运行本地LLM，如Llama、Phi和Qwen。"))
                     .child(
                         List::new()
                             .child(ListBulletItem::new(
-                                "LM Studio needs to be running with at least one model downloaded.",
+                                "LM Studio 需要运行，且至少已下载一个模型。",
                             ))
                             .child(
                                 ListBulletItem::new("")
-                                    .child(Label::new("To get your first model, try running"))
+                                    .child(Label::new("要获取你的第一个模型，请尝试运行"))
                                     .child(Label::new("lms get qwen2.5-coder-7b").inline_code(cx)),
                             ),
                     )

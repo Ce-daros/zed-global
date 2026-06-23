@@ -173,7 +173,7 @@ impl ExtensionManifest {
 
         if !is_allowed {
             bail!(
-                "capability for process:exec {desired_command} {desired_args:?} was not listed in the extension manifest",
+                "扩展清单中未列出 process:exec 能力 {desired_command} {desired_args:?}",
             );
         }
 
@@ -368,7 +368,7 @@ impl ExtensionManifest {
         let extension_name = extension_dir
             .file_name()
             .and_then(OsStr::to_str)
-            .context("invalid extension name")?;
+            .context("扩展名称无效")?;
 
         let extension_manifest_path = extension_dir.join("extension.toml");
         if fs.is_file(&extension_manifest_path).await {
@@ -389,7 +389,7 @@ impl ExtensionManifest {
                 .with_context(|| format!("invalid extension.json for extension {extension_name}"))
                 .map(|manifest_json| manifest_from_old_manifest(manifest_json, extension_name))
         } else {
-            anyhow::bail!("No extension manifest found for extension {extension_name}")
+            anyhow::bail!("未找到扩展 {extension_name} 的清单")
         }
     }
 }
@@ -448,7 +448,7 @@ mod tests {
     fn extension_manifest() -> ExtensionManifest {
         ExtensionManifest {
             id: "test".into(),
-            name: "Test".to_string(),
+            name: "测试".to_string(),
             version: "1.0.0".into(),
             schema_version: SchemaVersion::ZERO,
             description: None,

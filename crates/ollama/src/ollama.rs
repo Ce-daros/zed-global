@@ -304,7 +304,7 @@ pub async fn stream_chat_completion(
         Ok(reader
             .lines()
             .map(|line| match line {
-                Ok(line) => serde_json::from_str(&line).context("Unable to parse chat response"),
+                Ok(line) => serde_json::from_str(&line).context("无法解析聊天响应"),
                 Err(e) => Err(e.into()),
             })
             .boxed())
@@ -312,7 +312,7 @@ pub async fn stream_chat_completion(
         let mut body = String::new();
         response.body_mut().read_to_string(&mut body).await?;
         anyhow::bail!(
-            "Failed to connect to Ollama API: {} {}",
+            "连接到 Ollama API 失败：{} {}",
             response.status(),
             body,
         );
@@ -343,12 +343,12 @@ pub async fn get_models(
 
     anyhow::ensure!(
         response.status().is_success(),
-        "Failed to connect to Ollama API: {} {}",
+        "连接到 Ollama API 失败：{} {}",
         response.status(),
         body,
     );
     let response: LocalModelsResponse =
-        serde_json::from_str(&body).context("Unable to parse Ollama tag listing")?;
+        serde_json::from_str(&body).context("无法解析 Ollama 标签列表")?;
     Ok(response.models)
 }
 
@@ -379,7 +379,7 @@ pub async fn show_model(
 
     anyhow::ensure!(
         response.status().is_success(),
-        "Failed to connect to Ollama API: {} {}",
+        "连接到 Ollama API 失败：{} {}",
         response.status(),
         body,
     );
@@ -487,7 +487,7 @@ mod tests {
                 assert!(tool_calls.is_some_and(|v| !v.is_empty()));
                 assert!(thinking.is_none());
             }
-            _ => panic!("Deserialized wrong role"),
+            _ => panic!("反序列化出了错误的角色"),
         }
     }
 
@@ -672,7 +672,7 @@ mod tests {
         let request = ChatRequest {
             model: "llava".to_string(),
             messages: vec![ChatMessage::User {
-                content: "What do you see in this image?".to_string(),
+                content: "你在这张图里看到了什么？".to_string(),
                 images: Some(vec![base64_image.to_string()]),
             }],
             stream: false,
@@ -692,7 +692,7 @@ mod tests {
         let request = ChatRequest {
             model: "llama3.2".to_string(),
             messages: vec![ChatMessage::User {
-                content: "Hello, world!".to_string(),
+                content: "你好，世界！".to_string(),
                 images: None,
             }],
             stream: false,
@@ -713,7 +713,7 @@ mod tests {
         let request = ChatRequest {
             model: "llava".to_string(),
             messages: vec![ChatMessage::User {
-                content: "What do you see?".to_string(),
+                content: "你看到了什么？".to_string(),
                 images: Some(vec![base64_image.to_string()]),
             }],
             stream: false,

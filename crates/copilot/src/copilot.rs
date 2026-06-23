@@ -75,17 +75,17 @@ impl CopilotServer {
         let server = self.as_running()?;
         anyhow::ensure!(
             matches!(server.sign_in_status, SignInStatus::Authorized),
-            "must sign in before using copilot"
+            "使用 Copilot 前必须登录"
         );
         Ok(server)
     }
 
     fn as_running(&mut self) -> Result<&mut RunningCopilotServer> {
         match self {
-            CopilotServer::Starting { .. } => anyhow::bail!("copilot is still starting"),
-            CopilotServer::Disabled => anyhow::bail!("copilot is disabled"),
+            CopilotServer::Starting { .. } => anyhow::bail!("copilot 仍在启动"),
+            CopilotServer::Disabled => anyhow::bail!("copilot 已禁用"),
             CopilotServer::Error(error) => {
-                anyhow::bail!("copilot was not started because of an error: {error}")
+                anyhow::bail!("Copilot 未启动，原因是错误：{error}")
             }
             CopilotServer::Running(server) => Ok(server),
         }
@@ -418,7 +418,7 @@ impl Copilot {
                 this.start_copilot(true, false, cx);
                 if let Ok(server) = this.server.as_running() {
                     notify_did_change_config_to_server(&server.lsp, cx)
-                        .context("copilot setting change: did change configuration")
+                        .context("Copilot 设置变更：配置已更改")
                         .log_err();
                 }
             }
@@ -497,7 +497,7 @@ impl Copilot {
             Some("HTTPS_PROXY")
         } else {
             log::error!(
-                "Unsupported protocol scheme for language server proxy (must be http or https)"
+                "语言服务器代理不支持此协议方案（必须是 http 或 https）"
             );
             None
         };
@@ -692,7 +692,7 @@ impl Copilot {
                 .await?;
 
             this.update(cx, |_, cx| notify_did_change_config_to_server(&server, cx))?
-                .context("copilot: did change configuration")?;
+                .context("Copilot：配置已更改")?;
 
             let status = server
                 .request::<request::CheckStatus>(
@@ -703,7 +703,7 @@ impl Copilot {
                 )
                 .await
                 .into_response()
-                .context("copilot: check status")?;
+                .context("Copilot：检查状态")?;
 
             anyhow::Ok((server, status))
         };
@@ -774,7 +774,7 @@ impl Copilot {
                                     )
                                     .await
                                     .into_response()
-                                    .context("copilot sign-in")?;
+                                    .context("Copilot 登录")?;
 
                                 this.update(cx, |this, cx| {
                                     if let CopilotServer::Running(RunningCopilotServer {
@@ -820,7 +820,7 @@ impl Copilot {
         } else {
             // If we're downloading, wait until download is finished
             // If we're in a stuck state, display to the user
-            Task::ready(Err(anyhow!("copilot hasn't started yet")))
+            Task::ready(Err(anyhow!("copilot 尚未启动")))
         }
     }
 
@@ -838,7 +838,7 @@ impl Copilot {
                         .request::<request::SignOut>(request::SignOutParams {}, request_timeout)
                         .await
                         .into_response()
-                        .context("copilot: sign in confirm")?;
+                        .context("Copilot：确认登录")?;
                     anyhow::Ok(())
                 })
             }
@@ -846,7 +846,7 @@ impl Copilot {
                 clear_copilot_config_dir().await;
                 anyhow::Ok(())
             }),
-            _ => Task::ready(Err(anyhow!("copilot hasn't started yet"))),
+            _ => Task::ready(Err(anyhow!("copilot 尚未启动"))),
         }
     }
 
@@ -1035,7 +1035,7 @@ impl Copilot {
         let buffer_entity = buffer.clone();
         let lsp = server.lsp.clone();
         let Some(registered_buffer) = server.registered_buffers.get_mut(&buffer.entity_id()) else {
-            return Task::ready(Err(anyhow::anyhow!("buffer not registered")));
+            return Task::ready(Err(anyhow::anyhow!("缓冲区未注册")));
         };
         let pending_snapshot = registered_buffer.report_changes(buffer, cx);
         let buffer = buffer.read(cx);
@@ -1221,7 +1221,7 @@ impl Copilot {
                 request
                     .await
                     .into_response()
-                    .context("copilot: notify accepted")?;
+                    .context("Copilot：通知已接受")?;
                 Ok(())
             })
         } else {
@@ -1438,7 +1438,7 @@ async fn get_copilot_lsp(fs: Arc<dyn Fs>, node_runtime: NodeRuntime) -> anyhow::
         return Ok(binary_path);
     }
 
-    anyhow::bail!("GitHub Copilot native language server binary was not installed")
+    anyhow::bail!("GitHub Copilot 原生语言服务器二进制未安装")
 }
 
 fn copilot_lsp_native_binary_path() -> anyhow::Result<PathBuf> {
@@ -1446,13 +1446,13 @@ fn copilot_lsp_native_binary_path() -> anyhow::Result<PathBuf> {
         "linux" => "linux",
         "macos" => "darwin",
         "windows" => "win32",
-        platform => anyhow::bail!("unsupported Copilot language server platform: {platform}"),
+        platform => anyhow::bail!("不支持的 Copilot 语言服务器平台：{platform}"),
     };
     let architecture = match env::consts::ARCH {
         "aarch64" => "arm64",
         "x86_64" => "x64",
         architecture => {
-            anyhow::bail!("unsupported Copilot language server architecture: {architecture}")
+            anyhow::bail!("不支持的 Copilot 语言服务器架构：{architecture}")
         }
     };
 
@@ -1514,7 +1514,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Disabled),
-                "Copilot should not start when disable_ai is true"
+                "disable_ai 为 true 时 Copilot 不应启动"
             );
         });
     }
@@ -1567,7 +1567,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Running(_)),
-                "Copilot should be running initially"
+                "Copilot 应在初始状态运行"
             );
         });
 
@@ -1582,7 +1582,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Disabled),
-                "Copilot should be disabled after disable_ai is set to true"
+                "将 disable_ai 设为 true 后 Copilot 应禁用"
             );
         });
     }
@@ -1709,7 +1709,7 @@ mod tests {
             Ok(request::PromptUserDeviceFlow {
                 user_code: "test-code".into(),
                 command: lsp::Command {
-                    title: "Sign in".into(),
+                    title: "登录".into(),
                     command: "github.copilot.finishDeviceFlow".into(),
                     arguments: None,
                 },
@@ -1855,7 +1855,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Disabled),
-                "Copilot should be disabled initially"
+                "Copilot 应在初始状态禁用"
             );
         });
 
@@ -1868,7 +1868,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Disabled),
-                "Copilot should remain disabled when disable_ai is true"
+                "disable_ai 为 true 时 Copilot 应保持禁用"
             );
         });
 
@@ -1885,7 +1885,7 @@ mod tests {
         copilot.read_with(cx, |copilot, _| {
             assert!(
                 matches!(copilot.server, CopilotServer::Starting { .. }),
-                "Copilot should be starting after disable_ai is set to false"
+                "将 disable_ai 设为 false 后 Copilot 应开始启动"
             );
         });
     }

@@ -244,7 +244,7 @@ impl LanguageModelProvider for OpenAiLanguageModelProvider {
 
     fn fast_mode_confirmation(&self, _cx: &App) -> Option<FastModeConfirmation> {
         Some(FastModeConfirmation {
-            title: "Enable Fast Mode for OpenAI?".into(),
+            title: "为 OpenAI 启用快速模式？".into(),
             message: "Fast mode sends requests using OpenAI's Priority processing tier, which \
                 targets significantly lower latency than the standard tier and is billed at a \
                 premium per-token rate."

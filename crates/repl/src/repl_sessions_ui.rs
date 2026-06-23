@@ -207,11 +207,11 @@ impl Item for ReplSessionsPage {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "REPL Sessions".into()
+        "REPL 会话".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
-        Some("REPL Session Started")
+        Some("REPL 会话已启动")
     }
 
     fn show_toolbar(&self) -> bool {
@@ -242,9 +242,9 @@ impl Render for ReplSessionsPage {
         // install kernels. It can be assumed they don't have a running kernel if we have no
         // specifications.
         if kernel_specifications.is_empty() {
-            let instructions = "To start interactively running code in your editor, you need to install and configure Jupyter kernels.";
+            let instructions = "要在编辑器中交互运行代码，你需要安装并配置 Jupyter 内核。";
 
-            return ReplSessionsContainer::new("No Jupyter Kernels Available")
+            return ReplSessionsContainer::new("没有可用的 Jupyter 内核")
                 .child(Label::new(instructions))
                 .child(
                     h_flex().w_full().p_4().justify_center().gap_2().child(
@@ -252,7 +252,7 @@ impl Render for ReplSessionsPage {
                             .style(ButtonStyle::Filled)
                             .size(ButtonSize::Large)
                             .layer(ElevationIndex::ModalSurface)
-                            .child(Label::new("Install Kernels"))
+                            .child(Label::new("安装内核"))
                             .on_click(move |_, _, cx| {
                                 cx.open_url(
                                     "https://zed.dev/docs/repl#language-specific-instructions",
@@ -266,14 +266,14 @@ impl Render for ReplSessionsPage {
         if sessions.is_empty() {
             let instructions = "To run code in a Jupyter kernel, select some code and use the 'repl::Run' command.";
 
-            return ReplSessionsContainer::new("No Jupyter Kernel Sessions").child(
+            return ReplSessionsContainer::new("没有 Jupyter 内核会话").child(
                 v_flex()
                     .child(Label::new(instructions))
                     .child(KeyBinding::for_action(&Run, cx)),
             );
         }
 
-        ReplSessionsContainer::new("Jupyter Kernel Sessions").children(sessions)
+        ReplSessionsContainer::new("Jupyter 内核会话").children(sessions)
     }
 }
 
@@ -339,7 +339,7 @@ mod tests {
         ) -> ToolchainList {
             ToolchainList {
                 toolchains: vec![Toolchain {
-                    name: SharedString::new_static("Test Python"),
+                    name: SharedString::new_static("测试 Python"),
                     path: SharedString::new_static("/test/python"),
                     language_name: LanguageName::new_static("Python"),
                     as_json: serde_json::Value::Null,
@@ -353,7 +353,7 @@ mod tests {
             _path: PathBuf,
             _project_env: Option<HashMap<String, String>>,
         ) -> anyhow::Result<Toolchain> {
-            anyhow::bail!("not implemented")
+            anyhow::bail!("未实现")
         }
 
         fn activation_script(
@@ -422,13 +422,13 @@ mod tests {
                 project.open_local_buffer(path!("/project/main.txt"), cx)
             })
             .await
-            .expect("failed to open buffer");
+            .expect("打开缓冲区失败");
 
         let worktree_id = buffer
             .read_with(cx, |buffer, cx| {
                 buffer.project_path(cx).map(|path| path.worktree_id)
             })
-            .expect("buffer should have a project path");
+            .expect("缓冲区应包含项目路径");
 
         cx.add_window(|window, cx| {
             let multi_buffer = MultiBuffer::build_from_buffer(buffer.clone(), cx);

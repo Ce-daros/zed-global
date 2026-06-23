@@ -74,7 +74,7 @@ impl ChannelView {
             let channel_view = channel_view.await?;
             pane.update_in(cx, |pane, window, cx| {
                 telemetry::event!(
-                    "Channel Notes Opened",
+                    "频道笔记已打开",
                     channel_id,
                     room_id = ActiveCall::global(cx)
                         .read(cx)
@@ -208,7 +208,7 @@ impl ChannelView {
             editor.set_custom_context_menu(move |_, position, window, cx| {
                 let this = this.clone();
                 Some(ui::ContextMenu::build(window, cx, move |menu, _, _| {
-                    menu.entry("Copy Link to Section", None, move |window, cx| {
+                    menu.entry("复制区段链接", None, move |window, cx| {
                         this.update(cx, |this, cx| {
                             this.copy_link_for_position(position, window, cx)
                         })
@@ -333,7 +333,7 @@ impl ChannelView {
                 workspace.show_toast(
                     Toast::new(
                         NotificationId::unique::<CopyLinkForPositionToast>(),
-                        "Link copied to clipboard",
+                        "链接已复制到剪贴板",
                     ),
                     cx,
                 );

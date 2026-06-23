@@ -613,14 +613,14 @@ impl SerializableItem for ImageView {
         window.spawn(cx, async move |cx| {
             let image_path = db
                 .get_image_path(item_id, workspace_id)?
-                .context("No image path found")?;
+                .context("未找到图像路径")?;
 
             let (worktree, relative_path) = project
                 .update(cx, |project, cx| {
                     project.find_or_create_worktree(image_path.clone(), false, cx)
                 })
                 .await
-                .context("Path not found")?;
+                .context("路径未找到")?;
             let worktree_id = worktree.update(cx, |worktree, _cx| worktree.id());
 
             let project_path = ProjectPath {
@@ -776,7 +776,7 @@ impl Render for ImageViewToolbarControls {
             .child(
                 IconButton::new("zoom-out", IconName::Dash)
                     .icon_size(IconSize::Small)
-                    .tooltip(|_window, cx| Tooltip::for_action("Zoom Out", &ZoomOut, cx))
+                    .tooltip(|_window, cx| Tooltip::for_action("缩小", &ZoomOut, cx))
                     .on_click({
                         let image_view = image_view.downgrade();
                         move |_, window, cx| {
@@ -791,7 +791,7 @@ impl Render for ImageViewToolbarControls {
             .child(
                 Button::new("zoom-level", zoom_percentage)
                     .label_size(LabelSize::Small)
-                    .tooltip(|_window, cx| Tooltip::for_action("Reset Zoom", &ResetZoom, cx))
+                    .tooltip(|_window, cx| Tooltip::for_action("重置缩放", &ResetZoom, cx))
                     .on_click({
                         let image_view = image_view.downgrade();
                         move |_, window, cx| {
@@ -806,7 +806,7 @@ impl Render for ImageViewToolbarControls {
             .child(
                 IconButton::new("zoom-in", IconName::Plus)
                     .icon_size(IconSize::Small)
-                    .tooltip(|_window, cx| Tooltip::for_action("Zoom In", &ZoomIn, cx))
+                    .tooltip(|_window, cx| Tooltip::for_action("放大", &ZoomIn, cx))
                     .on_click({
                         let image_view = image_view.downgrade();
                         move |_, window, cx| {
@@ -821,7 +821,7 @@ impl Render for ImageViewToolbarControls {
             .child(
                 IconButton::new("fit-to-view", IconName::Maximize)
                     .icon_size(IconSize::Small)
-                    .tooltip(|_window, cx| Tooltip::for_action("Fit to View", &FitToView, cx))
+                    .tooltip(|_window, cx| Tooltip::for_action("适合视图", &FitToView, cx))
                     .on_click({
                         let image_view = image_view.downgrade();
                         move |_, window, cx| {

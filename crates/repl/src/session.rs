@@ -75,8 +75,8 @@ impl EditorBlock {
         on_close: CloseBlockFn,
         cx: &mut Context<Session>,
     ) -> anyhow::Result<Self> {
-        let editor = editor.upgrade().context("editor is not open")?;
-        let workspace = editor.read(cx).workspace().context("workspace dropped")?;
+        let editor = editor.upgrade().context("编辑器未打开")?;
+        let workspace = editor.read(cx).workspace().context("工作区已丢弃")?;
 
         let execution_view = cx.new(|cx| ExecutionView::new(status, workspace.downgrade(), cx));
 
@@ -183,7 +183,7 @@ impl EditorBlock {
                         .icon_color(Color::Muted)
                         .size(ButtonSize::Compact)
                         .shape(IconButtonShape::Square)
-                        .tooltip(Tooltip::text("Close output area"))
+                        .tooltip(Tooltip::text("关闭输出区域"))
                         .on_click(move |_, window, cx| {
                             if let BlockId::Custom(block_id) = block_id {
                                 (on_close)(block_id, window, cx)
@@ -298,7 +298,7 @@ impl Session {
         };
 
         telemetry::event!(
-            "Kernel Status Changed",
+            "内核状态已更改",
             kernel_language,
             kernel_status = KernelStatus::Starting.to_string(),
             repl_session_id = cx.entity_id().to_string(),
@@ -349,7 +349,7 @@ impl Session {
                         cx,
                     )
                 } else {
-                    Task::ready(Err(anyhow::anyhow!("No project associated with editor")))
+                    Task::ready(Err(anyhow::anyhow!("当前没有关联项目")))
                 }
             }
             KernelSpecification::WslRemote(spec) => WslRunningKernel::new(
@@ -827,7 +827,7 @@ impl Session {
         let kernel_language = self.kernel_specification.language();
 
         telemetry::event!(
-            "Kernel Status Changed",
+            "内核状态已更改",
             kernel_language,
             kernel_status,
             repl_session_id = cx.entity_id().to_string(),
@@ -884,7 +884,7 @@ impl Session {
 
                 cx.spawn_in(window, async move |this, cx| {
                     // Send shutdown request with restart flag
-                    log::debug!("restarting kernel");
+                    log::debug!("正在重启内核");
                     let message: JupyterMessage = ShutdownRequest { restart: true }.into();
                     request_tx.try_send(message).ok();
 
@@ -936,8 +936,8 @@ impl Render for Session {
                 ),
             ),
             Kernel::StartingKernel(_) => (Some("Starting".into()), None),
-            Kernel::ErroredLaunch(err) => (Some(format!("Error: {err}")), None),
-            Kernel::ShuttingDown => (Some("Shutting Down".into()), None),
+            Kernel::ErroredLaunch(err) => (Some(format!("错误：{err}")), None),
+            Kernel::ShuttingDown => (Some("正在关闭".into()), None),
             Kernel::Shutdown => (Some("Shutdown".into()), None),
             Kernel::Restarting => (Some("Restarting".into()), None),
         };
@@ -987,7 +987,7 @@ impl KernelSession for Session {
                 self.kernel.set_execution_state(&status.execution_state);
 
                 telemetry::event!(
-                    "Kernel Status Changed",
+                    "内核状态已更改",
                     kernel_language = self.kernel_specification.language(),
                     kernel_status = KernelStatus::from(&self.kernel).to_string(),
                     repl_session_id = cx.entity_id().to_string(),

@@ -2929,7 +2929,7 @@ mod tests {
             icon_theme_names: &["Zed Icons".into()],
             lsp_adapter_names: &[
                 "rust-analyzer".to_string(),
-                "typescript-language-server".to_string(),
+                "TypeScript 语言服务器".to_string(),
             ],
             action_names: &[],
             action_documentation: &HashMap::default(),
@@ -2944,7 +2944,7 @@ mod tests {
             .unwrap();
 
         assert!(properties.contains_key("rust-analyzer"));
-        assert!(properties.contains_key("typescript-language-server"));
+        assert!(properties.contains_key("TypeScript 语言服务器"));
 
         let init_options_ref = properties
             .get("rust-analyzer")
@@ -2984,7 +2984,7 @@ mod tests {
             icon_theme_names: &["Zed Icons".into()],
             lsp_adapter_names: &[
                 "rust-analyzer".to_string(),
-                "typescript-language-server".to_string(),
+                "TypeScript 语言服务器".to_string(),
             ],
             action_names: &[],
             action_documentation: &HashMap::default(),
@@ -2999,7 +2999,7 @@ mod tests {
             .unwrap();
 
         assert!(properties.contains_key("rust-analyzer"));
-        assert!(properties.contains_key("typescript-language-server"));
+        assert!(properties.contains_key("TypeScript 语言服务器"));
 
         let init_options_ref = properties
             .get("rust-analyzer")

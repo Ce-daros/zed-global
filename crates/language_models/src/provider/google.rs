@@ -290,7 +290,7 @@ impl GoogleLanguageModel {
         });
 
         async move {
-            let api_key = api_key.context("Missing Google API key")?;
+            let api_key = api_key.context("Google API 密钥缺失")?;
             let request = google_ai::stream_generate_content(
                 http_client.as_ref(),
                 &api_url,
@@ -298,7 +298,7 @@ impl GoogleLanguageModel {
                 request,
                 &extra_headers,
             );
-            request.await.context("failed to stream completion")
+            request.await.context("流式完成失败")
         }
         .boxed()
     }
@@ -421,7 +421,7 @@ impl ConfigurationView {
             let state = state.clone();
             async move |this, cx| {
                 if let Some(task) = Some(state.update(cx, |state, cx| state.authenticate(cx))) {
-                    // We don't log an error, because "not signed in" is also an error.
+                    // We don't log an error, because "未登录" is also an error.
                     let _ = task.await;
                 }
                 this.update(cx, |this, cx| {
@@ -482,45 +482,45 @@ impl Render for ConfigurationView {
         let env_var_set = self.state.read(cx).api_key_state.is_from_env_var();
         let configured_card_label = if env_var_set {
             format!(
-                "API key set in {} environment variable",
+                "API 密钥已在 {} 环境变量中设置",
                 API_KEY_ENV_VAR.name
             )
         } else {
             let api_url = GoogleLanguageModelProvider::api_url(cx);
             if api_url == google_ai::API_URL {
-                "API key configured".to_string()
+                "API 密钥已配置".to_string()
             } else {
-                format!("API key configured for {}", api_url)
+                format!("已为 {} 配置 API 密钥", api_url)
             }
         };
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("加载凭据中..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new(format!("To use {}, you need to add an API key. Follow these steps:", match &self.target_agent {
-                    ConfigurationViewTargetAgent::ZedAgent => "Zed's agent with Google AI".into(),
+                .child(Label::new(format!("要使用 {}，你需要添加 API 密钥。请按以下步骤操作：", match &self.target_agent {
+                    ConfigurationViewTargetAgent::ZedAgent => "Zed 的 Google AI 代理".into(),
                     ConfigurationViewTargetAgent::Other(agent) => agent.clone(),
                 })))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("Google AI's console", "https://aistudio.google.com/app/apikey"))
+                                .child(Label::new("通过访问创建一个"))
+                                .child(ButtonLink::new("Google AI 控制台", "https://aistudio.google.com/app/apikey"))
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the agent")
+                            ListBulletItem::new("在下方粘贴你的 API 密钥，然后按 Enter 开始使用代理")
                         )
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {GEMINI_API_KEY_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {GEMINI_API_KEY_VAR_NAME} 环境变量并重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )
@@ -530,7 +530,7 @@ impl Render for ConfigurationView {
                 .disabled(env_var_set)
                 .on_click(cx.listener(|this, _, window, cx| this.reset_api_key(window, cx)))
                 .when(env_var_set, |this| {
-                    this.tooltip_label(format!("To reset your API key, make sure {GEMINI_API_KEY_VAR_NAME} and {GOOGLE_AI_API_KEY_VAR_NAME} environment variables are unset."))
+                    this.tooltip_label(format!("要重置 API 密钥，请确保 {GEMINI_API_KEY_VAR_NAME} 和 {GOOGLE_AI_API_KEY_VAR_NAME} 环境变量未设置。"))
                 })
                 .into_any_element()
         }

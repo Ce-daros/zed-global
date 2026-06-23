@@ -40,7 +40,7 @@ impl TryFrom<String> for Role {
             "assistant" => Ok(Self::Assistant),
             "system" => Ok(Self::System),
             "tool" => Ok(Self::Tool),
-            _ => anyhow::bail!("invalid role '{value}'"),
+            _ => anyhow::bail!("无效的角色 '{value}'"),
         }
     }
 }
@@ -136,7 +136,7 @@ impl Model {
             "gpt-5.4-pro" => Ok(Self::FivePointFourPro),
             "gpt-5.5" => Ok(Self::FivePointFive),
             "gpt-5.5-pro" => Ok(Self::FivePointFivePro),
-            invalid_id => anyhow::bail!("invalid model id '{invalid_id}'"),
+            invalid_id => anyhow::bail!("无效的模型 ID '{invalid_id}'"),
         }
     }
 
@@ -706,7 +706,7 @@ pub struct ChoiceDelta {
 
 #[derive(Error, Debug)]
 pub enum RequestError {
-    #[error("HTTP response error from {provider}'s API: status {status_code} - {body:?}")]
+    #[error("来自 {provider} API 的 HTTP 响应错误：状态 {status_code} - {body:?}")]
     HttpResponseError {
         provider: String,
         status_code: StatusCode,

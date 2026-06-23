@@ -243,7 +243,7 @@ async fn upload_minidump(
     }
 
     ::telemetry::event!(
-        "Minidump Uploaded",
+        "已上传 Minidump",
         panic_message = panic_message,
         crashed_version = metadata.init.zed_version.clone(),
         commit_sha = metadata.init.commit_sha.clone(),
@@ -387,7 +387,7 @@ async fn upload_build_timings(_client: Arc<Client>) -> Result<()> {
         };
 
         telemetry::event!(
-            "Build Timing: Cargo Build",
+            "构建耗时：Cargo Build",
             started_at = timing.started_at.to_rfc3339(),
             duration_ms = timing.duration_ms,
             first_crate = timing.first_crate,

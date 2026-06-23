@@ -642,7 +642,7 @@ fn create_remote_shell(
         Shell::WithArguments {
             program: command.program,
             args: command.args,
-            title_override: Some(format!("{} — Terminal", host)),
+            title_override: Some(format!("{} — 终端", host)),
         },
         command.env,
     ))

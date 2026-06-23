@@ -145,7 +145,7 @@ impl Database {
                     .await
                     .is_err()
                 {
-                    log::info!("user is not a member of channel");
+                    log::info!("用户不是频道的成员");
                     continue;
                 }
 
@@ -159,7 +159,7 @@ impl Database {
                 // connection, then the client's buffer can be synchronized with
                 // the server's buffer.
                 if buffer.epoch as u64 != client_buffer.epoch {
-                    log::info!("can't rejoin buffer, epoch has changed");
+                    log::info!("不能重新加入缓冲区，时代已更改");
                     continue;
                 }
 
@@ -168,7 +168,7 @@ impl Database {
                 let Some(self_collaborator) =
                     collaborators.iter_mut().find(|c| c.user_id == user_id)
                 else {
-                    log::info!("can't rejoin buffer, no previous collaborator found");
+                    log::info!("不能重新加入缓冲区，找不到以前的协作者");
                     continue;
                 };
                 let old_connection_id = self_collaborator.connection();
@@ -376,7 +376,7 @@ impl Database {
             .exec(tx)
             .await?;
         if result.rows_affected == 0 {
-            Err(anyhow!("not a collaborator on this project"))?;
+            Err(anyhow!("不是此项目的合作者"))?;
         }
 
         let mut collaborators = Vec::new();
@@ -476,7 +476,7 @@ impl Database {
                 .filter(buffer::Column::ChannelId.eq(channel_id))
                 .one(&*tx)
                 .await?
-                .context("no such buffer")?;
+                .context("无此缓冲区")?;
 
             let serialization_version = self
                 .get_buffer_operation_serialization_version(buffer.id, buffer.epoch, &tx)
@@ -615,7 +615,7 @@ impl Database {
             .into_values::<_, QueryOperationSerializationVersion>()
             .one(tx)
             .await?
-            .context("missing buffer snapshot")?)
+            .context("丢失缓冲区快照")?)
     }
 
     pub async fn get_channel_buffer(
@@ -630,7 +630,7 @@ impl Database {
         .find_related(buffer::Entity)
         .one(tx)
         .await?
-        .context("no such buffer")?)
+        .context("无此缓冲区")?)
     }
 
     async fn get_buffer_state(
@@ -652,7 +652,7 @@ impl Database {
                 )
                 .one(tx)
                 .await?
-                .context("no such snapshot")?;
+                .context("无此快照")?;
 
             let version = snapshot.operation_serialization_version;
             (snapshot.text, version)

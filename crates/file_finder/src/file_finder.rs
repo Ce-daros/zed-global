@@ -1245,11 +1245,11 @@ impl FileFinderDelegate {
                 } => (
                     channel_name.to_string(),
                     string_match.positions.clone(),
-                    "Channel Notes".to_string(),
+                    "频道备注".to_string(),
                     vec![],
                 ),
                 Match::CreateNew(project_path) => (
-                    format!("Create File: {}", project_path.path.display(path_style)),
+                    format!("创建文件：{}", project_path.path.display(path_style)),
                     vec![],
                     String::from(""),
                     vec![],
@@ -1620,11 +1620,11 @@ impl PickerDelegate for FileFinderDelegate {
     type ListItem = ListItem;
 
     fn name() -> &'static str {
-        "file finder"
+        "文件查找器"
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search project files...".into()
+        "搜索项目文件...".into()
     }
 
     fn searchbar_trailer(
@@ -1637,9 +1637,9 @@ impl PickerDelegate for FileFinderDelegate {
         // Clicking includes ignored files unless they're already included, in
         // which case it excludes them again (see `handle_toggle_ignored`).
         let tooltip_label = if including_ignored {
-            "Exclude Ignored Files"
+            "排除忽略文件"
         } else {
-            "Include Ignored Files"
+            "包括忽略文件"
         };
 
         let filter_button = IconButton::new("filter-ignored", IconName::Sliders)
@@ -1916,13 +1916,13 @@ impl PickerDelegate for FileFinderDelegate {
         _cx: &mut Context<Picker<Self>>,
     ) -> Vec<picker::PickerAction> {
         vec![
-            picker::PickerAction::header("Split…"),
+            picker::PickerAction::header("分屏…"),
             picker::PickerAction::button("Left", pane::SplitLeft::default().boxed_clone()),
             picker::PickerAction::button("Right", pane::SplitRight::default().boxed_clone()),
             picker::PickerAction::button("Up", pane::SplitUp::default().boxed_clone()),
             picker::PickerAction::button("Down", pane::SplitDown::default().boxed_clone()),
             picker::PickerAction::separator(),
-            picker::PickerAction::button("Open File", menu::Confirm.boxed_clone()),
+            picker::PickerAction::button("打开文件", menu::Confirm.boxed_clone()),
         ]
     }
 }

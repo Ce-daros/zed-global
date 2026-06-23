@@ -17,7 +17,7 @@
 //!   fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
 //!     div()
 //!       .track_focus(&self.focus_handle(cx))
-//!       .key_context("Editor")
+//!       .key_context("编辑器")
 //!       .on_action(cx.listener(Editor::undo))
 //!       .on_action(cx.listener(Editor::redo))
 //!     ...
@@ -31,8 +31,8 @@
 //!
 //! ```ignore
 //! cx.bind_keys([
-//!   KeyBinding::new("cmd-z", Editor::undo, Some("Editor")),
-//!   KeyBinding::new("cmd-shift-z", Editor::redo, Some("Editor")),
+//!   KeyBinding::new("cmd-z", Editor::undo, Some("编辑器")),
+//!   KeyBinding::new("cmd-shift-z", Editor::redo, Some("编辑器")),
 //! ])
 //! ```
 //!
@@ -47,7 +47,7 @@
 //! In GPUI, keybindings are not limited to just single keystrokes, you can define
 //! sequences by separating the keys with a space:
 //!
-//!  KeyBinding::new("cmd-k left", pane::SplitLeft, Some("Pane"))
+//!  KeyBinding::new("cmd-k left", pane::SplitLeft, Some("窗格"))
 
 use crate::{
     Action, ActionRegistry, App, DispatchPhase, EntityId, FocusId, KeyBinding, KeyContext, Keymap,
@@ -666,7 +666,7 @@ mod tests {
     #[test]
     fn test_bindings_for_action_hides_targeted_unbind_in_active_context() {
         let tree = test_dispatch_tree(vec![
-            KeyBinding::new("tab", TestAction, Some("Editor")),
+            KeyBinding::new("tab", TestAction, Some("编辑器")),
             KeyBinding::new(
                 "tab",
                 Unbind("dispatch_test::TestAction".into()),
@@ -698,7 +698,7 @@ mod tests {
     #[test]
     fn test_bindings_for_action_keeps_targeted_binding_outside_unbind_context() {
         let tree = test_dispatch_tree(vec![
-            KeyBinding::new("tab", TestAction, Some("Editor")),
+            KeyBinding::new("tab", TestAction, Some("编辑器")),
             KeyBinding::new(
                 "tab",
                 Unbind("dispatch_test::TestAction".into()),
@@ -713,7 +713,7 @@ mod tests {
 
         let contexts = vec![
             KeyContext::parse("Workspace").unwrap(),
-            KeyContext::parse("Editor").unwrap(),
+            KeyContext::parse("编辑器").unwrap(),
         ];
 
         let bindings = tree.bindings_for_action(&TestAction, &contexts);
@@ -738,7 +738,7 @@ mod tests {
         // editor::AddSelectionBelow), TestAction for the picker action.
         let contexts = vec![
             KeyContext::parse("Picker").unwrap(),
-            KeyContext::parse("Editor").unwrap(),
+            KeyContext::parse("编辑器").unwrap(),
         ];
 
         // Default keymap (picker binding) followed by a base keymap that binds
@@ -746,7 +746,7 @@ mod tests {
         // picker action is shadowed, so its footer tooltip renders no shortcut.
         let shadowed = test_dispatch_tree(vec![
             KeyBinding::new("ctrl-alt-down", TestAction, Some("Picker > Editor")),
-            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("Editor")),
+            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("编辑器")),
         ]);
         let highest = shadowed.highest_precedence_binding_for_action(&TestAction, &contexts);
         assert!(
@@ -758,7 +758,7 @@ mod tests {
         // restores it as the resolved binding.
         let fixed = test_dispatch_tree(vec![
             KeyBinding::new("ctrl-alt-down", TestAction, Some("Picker > Editor")),
-            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("Editor")),
+            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("编辑器")),
             // overlay loaded last:
             KeyBinding::new("ctrl-alt-down", TestAction, Some("Picker > Editor")),
         ]);
@@ -774,7 +774,7 @@ mod tests {
         let override_before_base = test_dispatch_tree(vec![
             KeyBinding::new("ctrl-alt-down", TestAction, Some("Picker > Editor")),
             KeyBinding::new("ctrl-alt-down", TestAction, Some("Picker > Editor")),
-            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("Editor")),
+            KeyBinding::new("ctrl-alt-down", SecondaryTestAction, Some("编辑器")),
         ]);
         let highest =
             override_before_base.highest_precedence_binding_for_action(&TestAction, &contexts);
@@ -887,7 +887,7 @@ mod tests {
                 cx: &mut App,
             ) {
                 let mut key_context = KeyContext::default();
-                key_context.add("Terminal");
+                key_context.add("终端");
                 window.set_key_context(key_context);
                 window.handle_input(&self.focus_handle, self.clone(), cx);
                 window.on_action(std::any::TypeId::of::<TestAction>(), |_, _, _, _| {});
@@ -981,8 +981,8 @@ mod tests {
         }
 
         cx.update(|cx| {
-            cx.bind_keys([KeyBinding::new("ctrl-b", TestAction, Some("Terminal"))]);
-            cx.bind_keys([KeyBinding::new("ctrl-b h", TestAction, Some("Terminal"))]);
+            cx.bind_keys([KeyBinding::new("ctrl-b", TestAction, Some("终端"))]);
+            cx.bind_keys([KeyBinding::new("ctrl-b h", TestAction, Some("终端"))]);
         });
 
         let (test, cx) = cx.add_window_view(|_, cx| CustomElement::new(cx));
@@ -1088,7 +1088,7 @@ mod tests {
                 cx: &mut App,
             ) {
                 let mut key_context = KeyContext::default();
-                key_context.add("Terminal");
+                key_context.add("终端");
                 window.set_key_context(key_context);
                 window.handle_input(&self.focus_handle, self.clone(), cx);
                 window.on_action(std::any::TypeId::of::<TestAction>(), |_, _, _, _| {});
@@ -1180,8 +1180,8 @@ mod tests {
         }
 
         cx.update(|cx| {
-            cx.bind_keys([KeyBinding::new("ctrl-b", TestAction, Some("Terminal"))]);
-            cx.bind_keys([KeyBinding::new("ctrl-b h", TestAction, Some("Terminal"))]);
+            cx.bind_keys([KeyBinding::new("ctrl-b", TestAction, Some("终端"))]);
+            cx.bind_keys([KeyBinding::new("ctrl-b h", TestAction, Some("终端"))]);
         });
         let (test, cx) = cx.add_window_view(|_, cx| CustomElement::new(cx));
         let focus_handle = test.update(cx, |test, _| test.focus_handle.clone());

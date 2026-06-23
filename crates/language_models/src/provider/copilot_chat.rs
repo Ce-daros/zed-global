@@ -37,7 +37,7 @@ use language_model::util::{fix_streamed_json, parse_tool_arguments};
 
 const PROVIDER_ID: LanguageModelProviderId = LanguageModelProviderId::new("copilot_chat");
 const PROVIDER_NAME: LanguageModelProviderName =
-    LanguageModelProviderName::new("GitHub Copilot Chat");
+    LanguageModelProviderName::new("GitHub Copilot 聊天");
 
 pub struct CopilotChatLanguageModelProvider {
     state: Entity<State>,
@@ -149,7 +149,7 @@ impl LanguageModelProvider for CopilotChatLanguageModelProvider {
         let Some(copilot) = GlobalCopilotAuth::try_global(cx).cloned() else {
             return Task::ready(Err(anyhow!(concat!(
                 "Copilot must be enabled for Copilot Chat to work. ",
-                "Please enable Copilot and try again."
+                "请启用 Copilot 后重试。"
             ))
             .into()));
         };
@@ -157,21 +157,21 @@ impl LanguageModelProvider for CopilotChatLanguageModelProvider {
         let err = match copilot.0.read(cx).status() {
             Status::Authorized => return Task::ready(Ok(())),
             Status::Disabled => anyhow!(
-                "Copilot must be enabled for Copilot Chat to work. Please enable Copilot and try again."
+                "Copilot 必须启用才能使用 Copilot 聊天。请启用 Copilot 并重试。"
             ),
             Status::Error(err) => anyhow!(format!(
-                "Received the following error while signing into Copilot: {err}"
+                "登录 Copilot 时收到以下错误：{err}"
             )),
             Status::Starting { task: _ } => anyhow!(
-                "Copilot is still starting, please wait for Copilot to start then try again"
+                "Copilot 仍在启动中，请等待 Copilot 启动后重试"
             ),
             Status::Unauthorized => anyhow!(
-                "Unable to authorize with Copilot. Please make sure that you have an active Copilot and Copilot Chat subscription."
+                "无法授权 Copilot。请确保您有有效的 Copilot 和 Copilot 聊天订阅。"
             ),
             Status::SignedOut { .. } => {
-                anyhow!("You have signed out of Copilot. Please sign in to Copilot and try again.")
+                anyhow!("您已退出 Copilot。请登录 Copilot 并重试。")
             }
-            Status::SigningIn { prompt: _ } => anyhow!("Still signing into Copilot..."),
+            Status::SigningIn { prompt: _ } => anyhow!("仍在登录 Copilot..."),
         };
 
         Task::ready(Err(err.into()))
@@ -210,7 +210,7 @@ impl LanguageModelProvider for CopilotChatLanguageModelProvider {
 
     fn reset_credentials(&self, _cx: &mut App) -> Task<Result<()>> {
         Task::ready(Err(anyhow!(
-            "Signing out of GitHub Copilot Chat is currently not supported."
+            "登出 GitHub Copilot 聊天目前不受支持。"
         )))
     }
 }
@@ -265,7 +265,7 @@ impl LanguageModel for CopilotChatLanguageModel {
                     "low" => "Low".into(),
                     "medium" => "Medium".into(),
                     "high" => "High".into(),
-                    "xhigh" => "Extra High".into(),
+                    "xhigh" => "超高".into(),
                     _ => language_model::SharedString::from(level.clone()),
                 };
                 LanguageModelEffortLevel {
@@ -503,7 +503,7 @@ pub fn map_to_language_model_completion_events(
                     Ok(event) => {
                         let Some(choice) = event.choices.first() else {
                             return Some((
-                                vec![Err(anyhow!("Response contained no choices").into())],
+                                vec![Err(anyhow!("响应中没有候选项").into())],
                                 state,
                             ));
                         };
@@ -516,7 +516,7 @@ pub fn map_to_language_model_completion_events(
 
                         let Some(delta) = delta else {
                             return Some((
-                                vec![Err(anyhow!("Response contained no delta").into())],
+                                vec![Err(anyhow!("响应中没有 delta").into())],
                                 state,
                             ));
                         };
@@ -649,7 +649,7 @@ pub fn map_to_language_model_completion_events(
                                 )));
                             }
                             Some(stop_reason) => {
-                                log::error!("Unexpected Copilot Chat stop_reason: {stop_reason:?}");
+                                log::error!("Copilot Chat 出现意外的 stop_reason：{stop_reason:?}");
                                 events.push(Ok(LanguageModelCompletionEvent::Stop(
                                     StopReason::EndTurn,
                                 )));
@@ -991,7 +991,7 @@ fn into_copilot_chat(
                                         }
                                     } else {
                                         debug_panic!(
-                                            "This should be caught at {} level",
+                                            "这应在 {} 层捕获",
                                             tool_result.tool_name
                                         );
                                         ChatMessagePart::Text {
@@ -1235,7 +1235,7 @@ fn into_copilot_responses(
                                                 }
                                             } else {
                                                 debug_panic!(
-                                                    "This should be caught at {} level",
+                                                    "这应在 {} 层捕获",
                                                     tool_result.tool_name
                                                 );
                                                 responses::ResponseInputContent::InputText {
@@ -1583,7 +1583,7 @@ mod tests {
                     ]
                 })
             ),
-            other => panic!("expected reasoning details, got {other:?}"),
+            other => panic!("期望为推理详情，实际得到 {other:?}"),
         }
     }
 
@@ -1649,7 +1649,7 @@ mod tests {
                 role: Role::Assistant,
                 content: vec![
                     MessageContent::RedactedThinking("legacy-redacted".into()),
-                    MessageContent::Text("Done".into()),
+                    MessageContent::Text("完成".into()),
                 ],
                 cache: false,
                 reasoning_details: Some(Arc::new(json!({
@@ -1691,7 +1691,7 @@ mod tests {
                 "content": [
                     {
                         "type": "output_text",
-                        "text": "Done"
+                        "text": "完成"
                     }
                 ],
                 "status": "completed"
@@ -1792,7 +1792,7 @@ mod tests {
             response: responses::Response {
                 error: Some(responses::ResponseError {
                     code: "429".into(),
-                    message: "too many requests".into(),
+                    message: "请求过多".into(),
                 }),
                 ..Default::default()
             },
@@ -1813,9 +1813,9 @@ mod tests {
                 ..
             }) => {
                 assert_eq!(*status_code, http_client::StatusCode::TOO_MANY_REQUESTS);
-                assert_eq!(message, "too many requests");
+                assert_eq!(message, "请求过多");
             }
-            other => panic!("expected HttpResponseError, got {:?}", other),
+            other => panic!("期望为 HttpResponseError，实际得到 {:?}", other),
         }
     }
 
@@ -1843,7 +1843,7 @@ mod tests {
                             }),
                         }],
                         reasoning_opaque: Some("encrypted_reasoning_token_xyz".to_string()),
-                        reasoning_text: Some("Let me check the directory".to_string()),
+                        reasoning_text: Some("我来查看一下目录".to_string()),
                     }),
                     message: None,
                 }],
@@ -1916,7 +1916,7 @@ mod tests {
         );
         assert_eq!(
             reasoning_text_value,
-            Some("Let me check the directory".to_string()),
+            Some("我来查看一下目录".to_string()),
             "Should capture reasoning_text"
         );
     }

@@ -105,8 +105,8 @@ macro_rules! actions {
 /// impl gpui::Action for Paste {
 ///     # fn boxed_clone(&self) -> Box<dyn gpui::Action> { unimplemented!()}
 ///     # fn partial_eq(&self, other: &dyn gpui::Action) -> bool { unimplemented!() }
-///     # fn name(&self) -> &'static str { "Paste" }
-///     # fn name_for_type() -> &'static str { "Paste" }
+///     # fn name(&self) -> &'static str { "粘贴" }
+///     # fn name_for_type() -> &'static str { "粘贴" }
 ///     # fn build(value: serde_json::Value) -> anyhow::Result<Box<dyn gpui::Action>> {
 ///     #     unimplemented!()
 ///     # }

@@ -453,7 +453,7 @@ impl NotebookEditor {
                         .ok();
                     }
                     Err(err) => {
-                        log::error!("Kernel failed to start: {:?}", err);
+                        log::error!("内核启动失败：{:?}", err);
                         this.update(cx, |editor, cx| {
                             editor.kernel = Kernel::ErroredLaunch(err.to_string());
                             cx.notify();
@@ -538,11 +538,11 @@ impl NotebookEditor {
             Kernel::RunningKernel(kernel) => kernel
                 .request_tx()
                 .try_send(message)
-                .map_err(|err| format!("failed to send execute request to kernel (the kernel process may have died): {err}")),
-            Kernel::StartingKernel(_) => Err("the kernel is still starting".to_string()),
-            Kernel::ErroredLaunch(error) => Err(format!("the kernel failed to launch: {error}")),
-            Kernel::ShuttingDown | Kernel::Shutdown => Err("the kernel is shut down".to_string()),
-            Kernel::Restarting => Err("the kernel is restarting".to_string()),
+                .map_err(|err| format!("向内核发送执行请求失败（内核进程可能已退出）：{err}")),
+            Kernel::StartingKernel(_) => Err("内核仍在启动".to_string()),
+            Kernel::ErroredLaunch(error) => Err(format!("内核启动失败：{error}")),
+            Kernel::ShuttingDown | Kernel::Shutdown => Err("内核已关闭".to_string()),
+            Kernel::Restarting => Err("内核正在重启".to_string()),
         };
 
         if let Some(Cell::Code(cell)) = self.cell_map.get(&cell_id) {
@@ -560,7 +560,7 @@ impl NotebookEditor {
         }
 
         if let Err(error) = send_result {
-            log::error!("notebook: cannot execute cell: {error}");
+            log::error!("notebook：无法执行单元格：{error}");
         } else {
             self.execution_requests.insert(msg_id, cell_id.clone());
         }
@@ -1032,7 +1032,7 @@ impl NotebookEditor {
                                     cx,
                                 )
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Execute all cells", &RunAll, cx)
+                                    Tooltip::for_action("执行所有单元格", &RunAll, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(RunAll), cx);
@@ -1047,7 +1047,7 @@ impl NotebookEditor {
                                 )
                                 .disabled(!has_outputs)
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Clear all outputs", &ClearOutputs, cx)
+                                    Tooltip::for_action("清除所有输出", &ClearOutputs, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(ClearOutputs), cx);
@@ -1064,7 +1064,7 @@ impl NotebookEditor {
                                     cx,
                                 )
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Move cell up", &MoveCellUp, cx)
+                                    Tooltip::for_action("上移单元格", &MoveCellUp, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(MoveCellUp), cx);
@@ -1078,7 +1078,7 @@ impl NotebookEditor {
                                     cx,
                                 )
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Move cell down", &MoveCellDown, cx)
+                                    Tooltip::for_action("下移单元格", &MoveCellDown, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(MoveCellDown), cx);
@@ -1095,7 +1095,7 @@ impl NotebookEditor {
                                     cx,
                                 )
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Add markdown block", &AddMarkdownBlock, cx)
+                                    Tooltip::for_action("添加 Markdown 块", &AddMarkdownBlock, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(AddMarkdownBlock), cx);
@@ -1109,7 +1109,7 @@ impl NotebookEditor {
                                     cx,
                                 )
                                 .tooltip(move |window, cx| {
-                                    Tooltip::for_action("Add code block", &AddCodeBlock, cx)
+                                    Tooltip::for_action("添加代码块", &AddCodeBlock, cx)
                                 })
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(Box::new(AddCodeBlock), cx);
@@ -1123,7 +1123,7 @@ impl NotebookEditor {
                     .items_center()
                     .child(
                         Self::render_notebook_control("more-menu", IconName::Ellipsis, window, cx)
-                            .tooltip(move |window, cx| (Tooltip::text("More options"))(window, cx)),
+                            .tooltip(move |window, cx| (Tooltip::text("更多选项"))(window, cx)),
                     )
                     .child(Self::button_group(window, cx).child({
                         let kernel_status = self.kernel.status();
@@ -1140,12 +1140,12 @@ impl NotebookEditor {
                             .kernel_specification
                             .as_ref()
                             .map(|spec| spec.name().to_string())
-                            .unwrap_or_else(|| "Select Kernel".to_string());
+                            .unwrap_or_else(|| "选择内核".to_string());
                         IconButton::new("repl", icon)
                             .icon_color(icon_color)
                             .tooltip(move |window, cx| {
                                 Tooltip::text(format!(
-                                    "{} ({}). Click to change kernel.",
+                                    "{} ({})。点击更改内核。",
                                     kernel_name,
                                     kernel_status.to_string()
                                 ))(window, cx)
@@ -1167,7 +1167,7 @@ impl NotebookEditor {
             .kernel_specification
             .as_ref()
             .map(|spec| spec.name().to_string())
-            .unwrap_or_else(|| "Select Kernel".to_string());
+            .unwrap_or_else(|| "选择内核".to_string());
 
         let (status_icon, status_color) = match &kernel_status {
             KernelStatus::Idle => (IconName::Circle, Color::Success),
@@ -1230,7 +1230,7 @@ impl NotebookEditor {
                                 .color(status_color),
                         ),
                     Tooltip::text(format!(
-                        "Kernel: {} ({}). Click to change.",
+                        "内核：{} ({})。点击更改。",
                         kernel_name,
                         kernel_status.to_string()
                     )),
@@ -1244,7 +1244,7 @@ impl NotebookEditor {
                         IconButton::new("restart-kernel", IconName::RotateCw)
                             .icon_size(IconSize::Small)
                             .tooltip(|window, cx| {
-                                Tooltip::for_action("Restart Kernel", &RestartKernel, cx)
+                                Tooltip::for_action("重启内核", &RestartKernel, cx)
                             })
                             .on_click(cx.listener(|this, _, window, cx| {
                                 this.restart_kernel(&RestartKernel, window, cx);
@@ -1255,7 +1255,7 @@ impl NotebookEditor {
                             .icon_size(IconSize::Small)
                             .disabled(!matches!(kernel_status, KernelStatus::Busy))
                             .tooltip(|window, cx| {
-                                Tooltip::for_action("Interrupt Kernel", &InterruptKernel, cx)
+                                Tooltip::for_action("中断内核", &InterruptKernel, cx)
                             })
                             .on_click(cx.listener(|this, _, window, cx| {
                                 this.interrupt_kernel(&InterruptKernel, window, cx);
@@ -1514,7 +1514,7 @@ impl project::ProjectItem for NotebookItem {
             Some(cx.spawn(async move |cx| {
                 let abs_path = project
                     .read_with(cx, |project, cx| project.absolute_path(&path, cx))
-                    .with_context(|| format!("finding the absolute path of {path:?}"))?;
+                    .with_context(|| format!("正在查找 {path:?} 的绝对路径"))?;
 
                 // todo: watch for changes to the file
                 let buffer = project
@@ -1569,7 +1569,7 @@ impl project::ProjectItem for NotebookItem {
                     .update(cx, |project, cx| {
                         project.entry_for_path(&path, cx).map(|entry| entry.id)
                     })
-                    .context("Entry not found")?;
+                    .context("未找到条目")?;
 
                 Ok(cx.new(|_| NotebookItem {
                     path: abs_path,
@@ -1651,7 +1651,7 @@ impl EventEmitter<()> for NotebookEditor {}
 
 // impl Render for NotebookControls {
 //     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-//         div().child("notebook controls")
+//         div().child("笔记本控制")
 //     }
 // }
 
@@ -1774,7 +1774,7 @@ impl Item for NotebookEditor {
 
         cx.spawn(async move |_this, _cx| {
             let json =
-                serde_json::to_string_pretty(&notebook).context("Failed to serialize notebook")?;
+                serde_json::to_string_pretty(&notebook).context("序列化笔记本失败")?;
             fs.atomic_write(path, json).await?;
             Ok(())
         })
@@ -1795,9 +1795,9 @@ impl Item for NotebookEditor {
         self.mark_as_saved(cx);
 
         cx.spawn(async move |_this, _cx| {
-            let abs_path = abs_path.context("Failed to get absolute path")?;
+            let abs_path = abs_path.context("获取绝对路径失败")?;
             let json =
-                serde_json::to_string_pretty(&notebook).context("Failed to serialize notebook")?;
+                serde_json::to_string_pretty(&notebook).context("序列化笔记本失败")?;
             fs.atomic_write(abs_path, json).await?;
             Ok(())
         })
@@ -1843,7 +1843,7 @@ impl Item for NotebookEditor {
                     nbformat::upgrade_v3_notebook(v3_notebook)?
                 }
                 Err(e) => {
-                    anyhow::bail!("Failed to parse notebook: {:?}", e);
+                    anyhow::bail!("解析笔记本失败：{:?}", e);
                 }
             };
 
@@ -2029,10 +2029,10 @@ mod tests {
                     },
                     cx,
                 )
-                .expect("ipynb files should be openable as notebooks")
+                .expect("ipynb 文件应可作为笔记本打开")
             })
             .await
-            .expect("notebook should parse");
+            .expect("笔记本应可解析");
 
         // Don't render the notebook UI itself: its animated kernel status icon
         // schedules a new frame on every render, which makes `run_until_parked`
@@ -2086,10 +2086,10 @@ mod tests {
             };
             match outputs.as_slice() {
                 [nbformat::v4::Output::Error(error)] => {
-                    assert_eq!(error.ename, "Kernel Error");
+                    assert_eq!(error.ename, "内核错误");
                     let traceback = error.traceback.join("\n");
                     assert!(
-                        traceback.contains("the kernel failed to launch"),
+                        traceback.contains("内核启动失败"),
                         "error output should explain why the cell could not run, got: {traceback}"
                     );
                 }

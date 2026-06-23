@@ -11,28 +11,28 @@ static RELAXED_HEX_REGEX: LazyLock<Regex> = LazyLock::new(|| {
     RegexBuilder::new(HEX)
         .case_insensitive(false)
         .build()
-        .expect("Failed to create RELAXED_HEX_REGEX")
+        .expect("创建 RELAXED_HEX_REGEX 失败")
 });
 
 static STRICT_HEX_REGEX: LazyLock<Regex> = LazyLock::new(|| {
     RegexBuilder::new(&format!("^{HEX}$"))
         .case_insensitive(true)
         .build()
-        .expect("Failed to create STRICT_HEX_REGEX")
+        .expect("创建 STRICT_HEX_REGEX 失败")
 });
 
 static RELAXED_RGB_OR_HSL_REGEX: LazyLock<Regex> = LazyLock::new(|| {
     RegexBuilder::new(RGB_OR_HSL)
         .case_insensitive(false)
         .build()
-        .expect("Failed to create RELAXED_RGB_OR_HSL_REGEX")
+        .expect("创建 RELAXED_RGB_OR_HSL_REGEX 失败")
 });
 
 static STRICT_RGB_OR_HSL_REGEX: LazyLock<Regex> = LazyLock::new(|| {
     RegexBuilder::new(&format!("^{RGB_OR_HSL}$"))
         .case_insensitive(true)
         .build()
-        .expect("Failed to create STRICT_RGB_OR_HSL_REGEX")
+        .expect("创建 STRICT_RGB_OR_HSL_REGEX 失败")
 });
 
 /// Extracts a color from an LSP [`CompletionItem`].

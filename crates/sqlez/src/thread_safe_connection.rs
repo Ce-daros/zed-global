@@ -87,7 +87,7 @@ impl<M: Migrator> ThreadSafeConnectionBuilder<M> {
                 if let Some(db_initialize_query) = db_initialize_query {
                     connection.exec(db_initialize_query).with_context(|| {
                         format!(
-                            "Db initialize query failed to execute: {}",
+                            "数据库初始化查询执行失败：{}",
                             db_initialize_query
                         )
                     })?()?;
@@ -96,7 +96,7 @@ impl<M: Migrator> ThreadSafeConnectionBuilder<M> {
                 // Retry failed migrations in case they were run in parallel from different
                 // processes. This gives a best attempt at migrating before bailing
                 let mut migration_result =
-                    anyhow::Result::<()>::Err(anyhow::anyhow!("Migration never run"));
+                    anyhow::Result::<()>::Err(anyhow::anyhow!("迁移从未运行"));
 
                 let foreign_keys_enabled: bool =
                     connection.select_row::<i32>("PRAGMA foreign_keys")?()
@@ -174,7 +174,7 @@ impl ThreadSafeConnection {
         let queues = QUEUES.read();
         let write_channel = queues
             .get(&self.uri)
-            .expect("Queues are inserted when build is called. This should always succeed");
+            .expect("在调用 build 时插入队列。这应该总是成功的");
 
         // Create a one shot channel for the result of the queued write
         // so we can await on the result
@@ -186,7 +186,7 @@ impl ThreadSafeConnection {
             let result = connection.with_write(|connection| callback(connection));
             sender.send(result).ok();
         }));
-        receiver.map(|response| response.expect("Write queue unexpectedly closed"))
+        receiver.map(|response| response.expect("写入队列意外关闭"))
     }
 
     pub(crate) fn create_connection(
@@ -298,7 +298,7 @@ pub fn background_thread_queue() -> WriteQueueConstructor {
         Box::new(move |queued_write| {
             sender
                 .send(queued_write)
-                .expect("Could not send write action to background thread");
+                .expect("无法将写入操作发送到后台线程");
         })
     })
 }

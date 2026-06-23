@@ -85,8 +85,8 @@ impl sqlez::bindable::Bind for SerializedAxis {
         start_index: i32,
     ) -> anyhow::Result<i32> {
         match self.0 {
-            gpui::Axis::Horizontal => "Horizontal",
-            gpui::Axis::Vertical => "Vertical",
+            gpui::Axis::Horizontal => "水平",
+            gpui::Axis::Vertical => "垂直",
         }
         .bind(statement, start_index)
     }
@@ -100,9 +100,9 @@ impl sqlez::bindable::Column for SerializedAxis {
         String::column(statement, start_index).and_then(|(axis_text, next_index)| {
             Ok((
                 match axis_text.as_str() {
-                    "Horizontal" => Self(Axis::Horizontal),
-                    "Vertical" => Self(Axis::Vertical),
-                    _ => anyhow::bail!("Stored serialized item kind is incorrect"),
+                    "水平" => Self(Axis::Horizontal),
+                    "垂直" => Self(Axis::Vertical),
+                    _ => anyhow::bail!("存储的序列化项目类型不正确"),
                 },
                 next_index,
             ))
@@ -123,7 +123,7 @@ impl Bind for SerializedWindowBounds {
     fn bind(&self, statement: &Statement, start_index: i32) -> Result<i32> {
         match self.0 {
             WindowBounds::Windowed(bounds) => {
-                let next_index = statement.bind(&"Windowed", start_index)?;
+                let next_index = statement.bind(&"窗口化", start_index)?;
                 statement.bind(
                     &(
                         SerializedPixels(bounds.origin.x),
@@ -135,7 +135,7 @@ impl Bind for SerializedWindowBounds {
                 )
             }
             WindowBounds::Maximized(bounds) => {
-                let next_index = statement.bind(&"Maximized", start_index)?;
+                let next_index = statement.bind(&"最大化", start_index)?;
                 statement.bind(
                     &(
                         SerializedPixels(bounds.origin.x),
@@ -147,7 +147,7 @@ impl Bind for SerializedWindowBounds {
                 )
             }
             WindowBounds::Fullscreen(bounds) => {
-                let next_index = statement.bind(&"FullScreen", start_index)?;
+                let next_index = statement.bind(&"全屏", start_index)?;
                 statement.bind(
                     &(
                         SerializedPixels(bounds.origin.x),
@@ -173,10 +173,10 @@ impl Column for SerializedWindowBounds {
         };
 
         let status = match window_state.as_str() {
-            "Windowed" | "Fixed" => SerializedWindowBounds(WindowBounds::Windowed(bounds)),
-            "Maximized" => SerializedWindowBounds(WindowBounds::Maximized(bounds)),
-            "FullScreen" => SerializedWindowBounds(WindowBounds::Fullscreen(bounds)),
-            _ => bail!("Window State did not have a valid string"),
+            "窗口化" | "固定" => SerializedWindowBounds(WindowBounds::Windowed(bounds)),
+            "最大化" => SerializedWindowBounds(WindowBounds::Maximized(bounds)),
+            "全屏" => SerializedWindowBounds(WindowBounds::Fullscreen(bounds)),
+            _ => bail!("窗口状态没有有效的字符串"),
         };
 
         Ok((status, next_index + 4))
@@ -1158,7 +1158,7 @@ impl WorkspaceDb {
                     remote_connection_id.map(|id| id.0 as i32),
                 ))
             })
-            .context("No workspaces found")
+            .context("未找到工作区")
             .warn_on_err()
             .flatten()?;
 
@@ -1191,7 +1191,7 @@ impl WorkspaceDb {
             identity_paths,
             center_group: self
                 .get_center_pane_group(workspace_id)
-                .context("Getting center group")
+                .context("获取中心组")
                 .log_err()?,
             window_bounds,
             centered_layout: centered_layout.unwrap_or(false),
@@ -1295,7 +1295,7 @@ impl WorkspaceDb {
             identity_paths,
             center_group: self
                 .get_center_pane_group(workspace_id)
-                .context("Getting center group")
+                .context("获取中心组")
                 .log_err()?,
             window_bounds,
             centered_layout: centered_layout.unwrap_or(false),
@@ -1484,7 +1484,7 @@ impl WorkspaceDb {
                 conn.exec_bound(sql!(
                     DELETE FROM pane_groups WHERE workspace_id = ?1;
                     DELETE FROM panes WHERE workspace_id = ?1;))?(workspace.id)
-                    .context("Clearing old panes")?;
+                    .context("清除旧窗格")?;
 
                 conn.exec_bound(
                     sql!(
@@ -1573,7 +1573,7 @@ impl WorkspaceDb {
                         paths.paths.clone(),
                         remote_connection_id,
                     ))
-                    .context("clearing out old locations")?;
+                    .context("清除旧位置")?;
                 }
 
                 // Upsert
@@ -1632,11 +1632,11 @@ impl WorkspaceDb {
                     workspace.window_id,
                 );
 
-                prepared_query(args).context("Updating workspace")?;
+                prepared_query(args).context("更新工作区")?;
 
                 // Save center pane group
                 Self::save_pane_group(conn, workspace.id, &workspace.center_group, None)
-                    .context("save pane group in save workspace")?;
+                    .context("在保存工作区中保存窗格组")?;
 
                 Ok(())
             })
@@ -2300,7 +2300,7 @@ impl WorkspaceDb {
                     pinned_count,
                 )))
             } else {
-                bail!("Pane Group Child was neither a pane group or a pane");
+                bail!("窗格组子项既不是窗格组也不是窗格");
             }
         })
         // Filter out panes and pane groups which don't have any children or items
@@ -2350,7 +2350,7 @@ impl WorkspaceDb {
                     *axis,
                     flex_string,
                 ))?
-                .context("Couldn't retrieve group_id from inserted pane_group")?;
+                .context("无法从插入的窗格组中检索 group_id")?;
 
                 for (position, group) in children.iter().enumerate() {
                     Self::save_pane_group(conn, workspace_id, group, Some((group_id, position)))?
@@ -2376,7 +2376,7 @@ impl WorkspaceDb {
             VALUES (?, ?, ?)
             RETURNING pane_id
         ))?((workspace_id, pane.active, pane.pinned_count))?
-        .context("Could not retrieve inserted pane_id")?;
+        .context("无法检索插入的 pane_id")?;
 
         let (parent_id, order) = parent.unzip();
         conn.exec_bound(sql!(
@@ -2384,7 +2384,7 @@ impl WorkspaceDb {
             VALUES (?, ?, ?)
         ))?((pane_id, parent_id, order))?;
 
-        Self::save_items(conn, workspace_id, pane_id, &pane.children).context("Saving items")?;
+        Self::save_items(conn, workspace_id, pane_id, &pane.children).context("保存项目")?;
 
         Ok(pane_id)
     }
@@ -2405,7 +2405,7 @@ impl WorkspaceDb {
     ) -> Result<()> {
         let mut insert = conn.exec_bound(sql!(
             INSERT INTO items(workspace_id, pane_id, position, kind, item_id, active, preview) VALUES (?, ?, ?, ?, ?, ?, ?)
-        )).context("Preparing insertion")?;
+        )).context("准备插入")?;
         for (position, item) in items.iter().enumerate() {
             insert((workspace_id, pane_id, position, item))?;
         }
@@ -2526,7 +2526,7 @@ impl WorkspaceDb {
                         path = ?6,
                         raw_json = ?7
                 ))
-                .context("Preparing insertion")?;
+                .context("准备插入")?;
 
             insert((
                 workspace_id,

@@ -370,7 +370,7 @@ impl UserStore {
                     // Users are fetched in parallel above and cached in call to get_users
                     // No need to parallelize here
                     let mut updated_contacts = Vec::new();
-                    let this = this.upgrade().context("can't upgrade user store handle")?;
+                    let this = this.upgrade().context("无法升级用户存储句柄")?;
                     for contact in message.contacts {
                         updated_contacts
                             .push(Arc::new(Contact::from_proto(contact, &this, cx).await?));
@@ -554,7 +554,7 @@ impl UserStore {
         let client = self.client.upgrade();
         cx.spawn(async move |_, _| {
             client
-                .context("can't upgrade client reference")?
+                .context("无法升级客户端引用")?
                 .request(proto::RespondToContactRequest {
                     requester_id,
                     response: proto::ContactRequestResponse::Dismiss as i32,
@@ -576,7 +576,7 @@ impl UserStore {
 
         cx.spawn(async move |this, cx| {
             let response = client
-                .context("can't upgrade client reference")?
+                .context("无法升级客户端引用")?
                 .request(request)
                 .await;
             this.update(cx, |this, cx| {
@@ -643,7 +643,7 @@ impl UserStore {
                         this.users
                             .get(user_id)
                             .cloned()
-                            .with_context(|| format!("user {user_id} not found"))
+                            .with_context(|| format!("未找到用户 {user_id}"))
                     })
                     .collect()
             })?
@@ -683,7 +683,7 @@ impl UserStore {
                 this.users
                     .get(&user_id)
                     .cloned()
-                    .context("server responded with no users")
+                    .context("服务器未返回用户")
             })?
         })
     }
@@ -738,7 +738,7 @@ impl UserStore {
             cloud_client
                 .update_system_settings(system_id, body)
                 .await
-                .context("failed to persist selected organization")?;
+                .context("保存所选组织失败")?;
             Ok(())
         })
     }
@@ -783,7 +783,7 @@ impl UserStore {
                 "trial" => Some(Plan::ZedProTrial),
                 "pro" => Some(Plan::ZedPro),
                 _ => {
-                    panic!("ZED_SIMULATE_PLAN must be one of 'free', 'trial', or 'pro'");
+                    panic!("ZED_SIMULATE_PLAN 必须是 'free'、'trial' 或 'pro' 之一");
                 }
             };
         }
@@ -926,7 +926,7 @@ impl UserStore {
                                 })
                             })
                         })?
-                        .ok_or(anyhow::anyhow!("Failed to get Cloud client"))?;
+                        .ok_or(anyhow::anyhow!("获取 Cloud 客户端失败"))?;
 
                     let response = cloud_client.get_authenticated_user(system_id).await?;
                     cx.update(|cx| {
@@ -954,7 +954,7 @@ impl UserStore {
         let client = self.client.clone();
         cx.spawn(async move |this, cx| {
             if let Some(rpc) = client.upgrade() {
-                let response = rpc.request(request).await.context("error loading users")?;
+                let response = rpc.request(request).await.context("加载用户出错")?;
                 let users = response.users;
 
                 this.update(cx, |this, _| this.insert(users))
@@ -1054,7 +1054,7 @@ impl Contact {
 impl Collaborator {
     pub fn from_proto(message: proto::Collaborator) -> Result<Self> {
         Ok(Self {
-            peer_id: message.peer_id.context("invalid peer id")?,
+            peer_id: message.peer_id.context("无效对等 ID")?,
             replica_id: ReplicaId::new(message.replica_id as u16),
             user_id: message.user_id as LegacyUserId,
             is_host: message.is_host,
@@ -1079,12 +1079,12 @@ impl RequestUsage {
     ) -> Result<Self> {
         let limit = headers
             .get(limit_name)
-            .with_context(|| format!("missing {limit_name:?} header"))?;
+            .with_context(|| format!("缺少 {limit_name:?} 头"))?;
         let limit = UsageLimit::from_str(limit.to_str()?)?;
 
         let amount = headers
             .get(amount_name)
-            .with_context(|| format!("missing {amount_name:?} header"))?;
+            .with_context(|| format!("缺少 {amount_name:?} 头"))?;
         let amount = amount.to_str()?.parse::<i32>()?;
 
         Ok(Self { limit, amount })

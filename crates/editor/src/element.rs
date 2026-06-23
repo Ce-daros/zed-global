@@ -2650,7 +2650,7 @@ impl EditorElement {
                         });
                     })
                     .tooltip(Tooltip::for_action_title(
-                        "Expand Excerpt",
+                        "展开摘录",
                         &crate::actions::ExpandExcerpts::default(),
                     ))
                     .into_any_element();
@@ -3821,7 +3821,7 @@ impl EditorElement {
                     };
                     let mut element = self
                         .render_context_menu(line_height, menu_height, window, cx)
-                        .expect("Visible context menu should always render.");
+                        .expect("可见的上下文菜单应始终呈现。");
                     let size = element.layout_as_root(AvailableSpace::min_size(), window, cx);
                     Some((CursorPopoverType::CodeContextMenu, element, size))
                 } else {
@@ -3994,7 +3994,7 @@ impl EditorElement {
             move |height, _max_width_for_stable_x, _, window, cx| {
                 let mut element = self
                     .render_context_menu(line_height, height, window, cx)
-                    .expect("Visible context menu should always render.");
+                    .expect("可见的上下文菜单应始终呈现。");
                 let size = element.layout_as_root(AvailableSpace::min_size(), window, cx);
                 vec![(CursorPopoverType::CodeContextMenu, element, size)]
             },
@@ -4563,7 +4563,7 @@ impl EditorElement {
                     DiffHunkStatusKind::Added => colors.version_control_word_added,
                     DiffHunkStatusKind::Deleted => colors.version_control_word_deleted,
                     DiffHunkStatusKind::Modified => {
-                        debug_panic!("modified diff status for row info");
+                        debug_panic!("修改后的行信息差异状态");
                         continue;
                     }
                 };
@@ -6747,7 +6747,7 @@ pub fn render_breadcrumb_text(
             .id("breadcrumb_container")
             .when(!multibuffer_header, |this| this.overflow_x_scroll())
             .child(
-                ButtonLike::new("toggle outline view")
+                ButtonLike::new("切换大纲视图")
                     .child(breadcrumbs)
                     .when(multibuffer_header, |this| {
                         this.style(ButtonStyle::Transparent)
@@ -6762,7 +6762,7 @@ pub fn render_breadcrumb_text(
                                     h_flex()
                                         .gap_1()
                                         .justify_between()
-                                        .child(Label::new("Show Symbol Outline"))
+                                        .child(Label::new("显示符号大纲"))
                                         .child(ui::KeyBinding::for_action_in(
                                             &zed_actions::outline::ToggleOutline,
                                             &focus_handle,
@@ -6777,7 +6777,7 @@ pub fn render_breadcrumb_text(
                                             .pt_1()
                                             .border_t_1()
                                             .border_color(cx.theme().colors().border_variant)
-                                            .child(Label::new("Right-Click to Copy Path")),
+                                            .child(Label::new("右键复制路径")),
                                     )
                                 })
                                 .into_any_element()
@@ -6969,9 +6969,9 @@ enum LineFragment {
 impl fmt::Debug for LineFragment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            LineFragment::Text(shaped_line) => f.debug_tuple("Text").field(shaped_line).finish(),
+            LineFragment::Text(shaped_line) => f.debug_tuple("文本").field(shaped_line).finish(),
             LineFragment::Element { size, len, .. } => f
-                .debug_struct("Element")
+                .debug_struct("元素")
                 .field("size", size)
                 .field("len", len)
                 .finish(),
@@ -7345,7 +7345,7 @@ impl LineWithInvisibles {
                 LineFragment::Element { element, size, .. } => {
                     let mut element = element
                         .take()
-                        .expect("you can't prepaint LineWithInvisibles twice");
+                        .expect("你不能两次预绘制带有不可见字符的行");
 
                     // Center the element vertically within the line.
                     let mut element_origin = fragment_origin;
@@ -8187,7 +8187,7 @@ impl Element for EditorElement {
                             DiffHunkStatusKind::Added => &added_diff_hunk_colors,
                             DiffHunkStatusKind::Deleted => &deleted_diff_hunk_colors,
                             DiffHunkStatusKind::Modified => {
-                                debug_panic!("modified diff status for row info");
+                                debug_panic!("修改后的行信息差异状态");
                                 continue;
                             }
                         };

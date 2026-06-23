@@ -966,7 +966,7 @@ mod tests {
             assert_eq!(
                 NumericPrefixWithSuffix::from_numeric_prefixed_str(numeric_prefix_less),
                 NumericPrefixWithSuffix(None, numeric_prefix_less),
-                "String without numeric prefix `{numeric_prefix_less}` should not be converted into NumericPrefixWithSuffix"
+                "没有数字前缀的字符串 `{numeric_prefix_less}` 不应转换为 NumericPrefixWithSuffix"
             )
         }
     }
@@ -980,7 +980,7 @@ mod tests {
             ("👋!", false),
             ("👋 ", false),
             (" 👋", false),
-            ("Test", false),
+            ("测试", false),
         ];
 
         for (text, expected_result) in words_to_test {

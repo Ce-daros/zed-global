@@ -1373,7 +1373,7 @@ impl KeybindSource {
             KeybindSource::Default => "Default",
             KeybindSource::Base => "Base",
             KeybindSource::Vim => "Vim",
-            KeybindSource::Unknown => "Unknown",
+            KeybindSource::Unknown => "未知",
         }
     }
 
@@ -2575,7 +2575,7 @@ mod tests {
             r#"
             [
               {
-                "context": "Editor",
+                "context": "编辑器",
                 "bindings": {
                   "cmd-k cmd-u": "editor::ConvertToUpperCase",
                   "cmd-k cmd-l": "editor::ConvertToLowerCase",
@@ -2586,7 +2586,7 @@ mod tests {
             "#,
             KeybindUpdateOperation::Remove {
                 target: KeybindUpdateTarget {
-                    context: Some("Editor"),
+                    context: Some("编辑器"),
                     keystrokes: &parse_keystrokes("cmd-k cmd-l"),
                     action_name: "editor::ConvertToLowerCase",
                     action_arguments: None,
@@ -2596,7 +2596,7 @@ mod tests {
             r#"
             [
               {
-                "context": "Editor",
+                "context": "编辑器",
                 "bindings": {
                   "cmd-k cmd-u": "editor::ConvertToUpperCase",
                   "cmd-[": "pane::GoBack",

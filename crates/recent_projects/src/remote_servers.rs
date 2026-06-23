@@ -205,7 +205,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
     type ListItem = AnyElement;
 
     fn name() -> &'static str {
-        "remote dev container picker"
+        "远程 Dev Container 选择器"
     }
 
     fn match_count(&self) -> usize {
@@ -226,7 +226,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select Dev Container Configuration".into()
+        "选择 Dev Container 配置".into()
     }
 
     fn update_matches(
@@ -276,7 +276,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
                     modal.open_dev_container(selected_config, app_state, context, window, cx);
                     modal.view_in_progress_dev_container(window, cx);
                 } else {
-                    log::error!("No active project directory for Dev Container");
+                    log::error!("没有可用于 Dev Container 的活动项目目录");
                 }
             })
             .ok();
@@ -330,7 +330,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
                 .border_t_1()
                 .border_color(cx.theme().colors().border_variant)
                 .child(
-                    Button::new("run-action", "Start Dev Container")
+                    Button::new("run-action", "启动 Dev Container")
                         .key_binding(
                             KeyBinding::for_action(&menu::Confirm, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
@@ -366,7 +366,7 @@ impl EditNicknameState {
             .and_then(|state| state.nickname)
             .filter(|text| !text.is_empty());
         this.editor.update(cx, |this, cx| {
-            this.set_placeholder_text("Add a nickname for this server", window, cx);
+            this.set_placeholder_text("给服务器添加昵称", window, cx);
             if let Some(starting_text) = starting_text {
                 this.set_text(starting_text, window, cx);
             }
@@ -500,7 +500,7 @@ impl ProjectPicker {
                             .log_err()?;
                         cx.open_window(options, |window, cx| {
                             let workspace = cx.new(|cx| {
-                                telemetry::event!("SSH Project Created");
+                                telemetry::event!("SSH 项目已创建");
                                 Workspace::new(None, project.clone(), app_state.clone(), window, cx)
                             });
                             cx.new(|cx| MultiWorkspace::new(workspace, window, cx))
@@ -1100,11 +1100,11 @@ impl PickerDelegate for RemoteServerPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search remote projects…".into()
+        "搜索远程项目…".into()
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
-        Some("No matching remote projects.".into())
+        Some("没有匹配的远程项目。".into())
     }
 
     fn update_matches(
@@ -1269,21 +1269,21 @@ impl PickerDelegate for RemoteServerPickerDelegate {
                 host_positions,
             } => self.render_server_header(*server, host_positions),
             RemoteMatch::AddServer => {
-                Some(self.render_action_item(ix, IconName::Plus, "Connect SSH Server", selected))
+                Some(self.render_action_item(ix, IconName::Plus, "连接 SSH 服务器", selected))
             }
             RemoteMatch::AddDevContainer => {
-                Some(self.render_action_item(ix, IconName::Plus, "Connect Dev Container", selected))
+                Some(self.render_action_item(ix, IconName::Plus, "连接 Dev Container", selected))
             }
             RemoteMatch::AddWsl => {
-                Some(self.render_action_item(ix, IconName::Plus, "Add WSL Distro", selected))
+                Some(self.render_action_item(ix, IconName::Plus, "添加 WSL 发行版", selected))
             }
             RemoteMatch::OpenFolder { .. } => {
-                Some(self.render_action_item(ix, IconName::Plus, "Open Folder", selected))
+                Some(self.render_action_item(ix, IconName::Plus, "打开文件夹", selected))
             }
             RemoteMatch::ViewServerOptions { .. } => Some(self.render_action_item(
                 ix,
                 IconName::Settings,
-                "View Server Options",
+                "查看服务器选项",
                 selected,
             )),
             RemoteMatch::Project {
@@ -1325,7 +1325,7 @@ impl PickerDelegate for RemoteServerPickerDelegate {
                                     .icon_size(IconSize::Small)
                                     .shape(IconButtonShape::Square)
                                     .size(ButtonSize::Large)
-                                    .tooltip(Tooltip::text("Delete Remote Project"))
+                                    .tooltip(Tooltip::text("删除远程项目"))
                                     .on_click(cx.listener(move |_, _, _, cx| {
                                         let remote_project = remote_project.clone();
                                         remote_server_projects
@@ -1367,13 +1367,13 @@ impl PickerDelegate for RemoteServerPickerDelegate {
             h_flex()
                 .gap_1()
                 .child(
-                    Button::new("open_new_window", "New Window")
+                    Button::new("open_new_window", "新建窗口")
                         .key_binding(KeyBinding::for_action(&menu::SecondaryConfirm, cx))
                         .on_click(|_, window, cx| {
                             window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
                         }),
                 )
-                .child(confirm_button("Open".into()))
+                .child(confirm_button("打开".into()))
                 .into_any_element()
         } else {
             confirm_button("Select".into()).into_any_element()
@@ -1463,7 +1463,7 @@ impl RemoteServerProjects {
             this.open_dev_container(config, app_state, context, window, cx);
             this.view_in_progress_dev_container(window, cx);
         } else {
-            log::error!("No active project directory for Dev Container");
+            log::error!("没有可用于 Dev Container 的活动项目目录");
         }
 
         this
@@ -1599,7 +1599,7 @@ impl RemoteServerProjects {
             Err(e) => {
                 self.mode = Mode::CreateRemoteServer(CreateRemoteServer {
                     address_editor: editor,
-                    address_error: Some(format!("could not parse: {:?}", e).into()),
+                    address_error: Some(format!("不能解析： {:?}", e).into()),
                     ssh_prompt: None,
                     _creating: None,
                 });
@@ -1624,15 +1624,15 @@ impl RemoteServerProjects {
             window,
             cx,
         )
-        .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+        .prompt_err("连接失败", window, cx, |_, _, _| None);
 
         let address_editor = editor.clone();
         let creating = cx.spawn_in(window, async move |this, cx| {
             match connection.await {
                 Some(Some(client)) => this
                     .update_in(cx, |this, window, cx| {
-                        info!("ssh server created");
-                        telemetry::event!("SSH Server Created");
+                        info!("ssh 服务器已创建");
+                        telemetry::event!("SSH 服务器已创建");
                         this.retained_connections.push(client);
                         this.add_ssh_server(connection_options, cx);
                         this.mode = Mode::default_mode(&this.ssh_config_servers, cx);
@@ -1699,13 +1699,13 @@ impl RemoteServerProjects {
             window,
             cx,
         )
-        .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+        .prompt_err("连接失败", window, cx, |_, _, _| None);
 
         let wsl_picker = picker.clone();
         let creating = cx.spawn_in(window, async move |this, cx| {
             match connection.await {
                 Some(Some(client)) => this.update_in(cx, |this, window, cx| {
-                    telemetry::event!("WSL Distro Added");
+                    telemetry::event!("WSL 发行版已添加");
                     this.retained_connections.push(client);
                     let Some(fs) = this
                         .workspace
@@ -1763,7 +1763,7 @@ impl RemoteServerProjects {
                 }
             }
             _ => {
-                log::error!("server index and connection options mismatch");
+                log::error!("服务器索引与连接选项不匹配");
                 self.mode = Mode::default_mode(&BTreeSet::default(), cx);
                 return;
             }
@@ -1813,7 +1813,7 @@ impl RemoteServerProjects {
                     window,
                     cx,
                 )
-                .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+                .prompt_err("连接失败", window, cx, |_, _, _| None);
 
                 cx.spawn_in(window, async move |workspace, cx| {
                     let session = connect.await;
@@ -2026,10 +2026,10 @@ impl RemoteServerProjects {
             )
             .await;
             if let Err(e) = result {
-                log::error!("Failed to connect: {e:#}");
+                log::error!("连接失败：{e:#}");
                 cx.prompt(
                     gpui::PromptLevel::Critical,
-                    "Failed to connect",
+                    "连接失败",
                     Some(&e.to_string()),
                     &["OK"],
                 )
@@ -2179,7 +2179,7 @@ impl RemoteServerProjects {
                         Ok(path) => path.into_owned(),
                         Err(error) => {
                             log::error!(
-                                "Invalid devcontainer path: {} - {}",
+                                "无效的 devcontainer 路径：{} - {}",
                                 config_path.display(),
                                 error
                             );
@@ -2237,7 +2237,7 @@ impl RemoteServerProjects {
             self.open_dev_container(config, app_state, context, window, cx);
             self.view_in_progress_dev_container(window, cx);
         } else {
-            log::error!("No active project directory for Dev Container");
+            log::error!("没有可用于 Dev Container 的活动项目目录");
         }
     }
 
@@ -2259,10 +2259,10 @@ impl RemoteServerProjects {
                 match start_dev_container_with_config(context, config, environment).await {
                     Ok((c, s)) => (c, s),
                     Err(e) => {
-                        log::error!("Failed to start dev container: {:?}", e);
+                        log::error!("启动 dev container 失败：{:?}", e);
                         cx.prompt(
                             gpui::PromptLevel::Critical,
-                            "Failed to start Dev Container. See logs for details",
+                            "启动 Dev Container 失败。请查看日志了解详情",
                             Some(&format!("{e}")),
                             &["OK"],
                         )
@@ -2285,7 +2285,7 @@ impl RemoteServerProjects {
             cx.update(|_, cx| {
                 ExtensionStore::global(cx).update(cx, |this, cx| {
                     for extension in &dev_container_connection.extension_ids {
-                        log::info!("Installing extension {extension} from devcontainer");
+                        log::info!("正在从 devcontainer 安装扩展 {extension}");
                         this.install_latest_extension(Arc::from(extension.clone()), cx);
                     }
                 })
@@ -2314,10 +2314,10 @@ impl RemoteServerProjects {
             )
             .await;
             if let Err(e) = result {
-                log::error!("Failed to connect: {e:#}");
+                log::error!("连接失败：{e:#}");
                 cx.prompt(
                     gpui::PromptLevel::Critical,
-                    "Failed to connect",
+                    "连接失败",
                     Some(&e.to_string()),
                     &["OK"],
                 )
@@ -2341,14 +2341,14 @@ impl RemoteServerProjects {
                         .child(
                             div().track_focus(&self.focus_handle(cx)).size_full().child(
                                 v_flex().py_1().child(
-                                    ListItem::new("Error")
+                                    ListItem::new("错误")
                                         .inset(true)
                                         .selectable(false)
                                         .spacing(ui::ListItemSpacing::Sparse)
                                         .start_slot(
                                             Icon::new(IconName::XCircle).color(Color::Error),
                                         )
-                                        .child(Label::new("Error Creating Dev Container:"))
+                                        .child(Label::new("创建 Dev Container 出错："))
                                         .child(Label::new(message).buffer_font(cx)),
                                 ),
                             ),
@@ -2378,7 +2378,7 @@ impl RemoteServerProjects {
                                                 .color(Color::Muted)
                                                 .size(IconSize::Small),
                                         )
-                                        .child(Label::new("Open Zed Log"))
+                                        .child(Label::new("打开 Zed 日志"))
                                         .on_click(cx.listener(|_, _, window, cx| {
                                             window.dispatch_action(Box::new(OpenLog), cx);
                                             cx.emit(DismissEvent);
@@ -2409,7 +2409,7 @@ impl RemoteServerProjects {
                                                 .color(Color::Muted)
                                                 .size(IconSize::Small),
                                         )
-                                        .child(Label::new("Exit"))
+                                        .child(Label::new("退出"))
                                         .on_click(cx.listener(|this, _, window, cx| {
                                             this.cancel(&menu::Cancel, window, cx);
                                             cx.notify();
@@ -2453,7 +2453,7 @@ impl RemoteServerProjects {
                                         h_flex()
                                             .opacity(0.6)
                                             .gap_1()
-                                            .child(Label::new("Creating Dev Container"))
+                                            .child(Label::new("正在创建 Dev Container"))
                                             .child(LoadingLabel::new("")),
                                     ),
                             ),
@@ -2532,13 +2532,13 @@ impl RemoteServerProjects {
                                     .gap_1()
                                     .child(
                                         Label::new(
-                                            "Enter the command you use to SSH into this server.",
+                                            "键入您用于 SSH 到此服务器的命令。",
                                         )
                                         .color(Color::Muted)
                                         .size(LabelSize::Small),
                                     )
                                     .child(
-                                        Button::new("learn-more", "Learn More")
+                                        Button::new("learn-more", "了解更多")
                                             .label_size(LabelSize::Small)
                                             .end_icon(
                                                 Icon::new(IconName::ArrowUpRight)
@@ -2663,7 +2663,7 @@ impl RemoteServerProjects {
                                         .start_slot(
                                             Icon::new(IconName::ArrowLeft).color(Color::Muted),
                                         )
-                                        .child(Label::new("Go Back"))
+                                        .child(Label::new("返回"))
                                         .on_click(cx.listener(|this, _, window, cx| {
                                             this.mode =
                                                 Mode::default_mode(&this.ssh_config_servers, cx);
@@ -2701,13 +2701,13 @@ impl RemoteServerProjects {
                 window: &mut Window,
                 cx: &mut App,
             ) {
-                let prompt_message = format!("Remove WSL distro `{}`?", distro_name);
+                let prompt_message = format!("移除 WSL 发行版 `{}`？", distro_name);
 
                 let confirmation = window.prompt(
                     PromptLevel::Warning,
                     &prompt_message,
                     None,
-                    &["Yes, remove it", "No, keep it"],
+                    &["是，删除", "不，保留"],
                     cx,
                 );
 
@@ -2741,7 +2741,7 @@ impl RemoteServerProjects {
                         .inset(true)
                         .spacing(ui::ListItemSpacing::Sparse)
                         .start_slot(Icon::new(IconName::Trash).color(Color::Error))
-                        .child(Label::new("Remove Distro").color(Color::Error))
+                        .child(Label::new("移除发行版").color(Color::Error))
                         .on_click(cx.listener(move |_, _, window, cx| {
                             remove_wsl_distro(cx.entity(), index, distro_name.clone(), window, cx);
                             cx.focus_self(window);
@@ -2763,9 +2763,9 @@ impl RemoteServerProjects {
         v_flex()
             .child({
                 let label = if connection.nickname.is_some() {
-                    "Edit Nickname"
+                    "编辑昵称"
                 } else {
-                    "Add Nickname to Server"
+                    "添加服务器昵称"
                 };
                 div()
                     .id("ssh-options-add-nickname")
@@ -2800,7 +2800,7 @@ impl RemoteServerProjects {
                         .update(cx, |this, cx| {
                             struct SshServerAddressCopiedToClipboard;
                             let notification = format!(
-                                "Copied server address ({}) to clipboard",
+                                "复制服务器地址 ({}) 到剪贴板",
                                 connection_string
                             );
 
@@ -2833,7 +2833,7 @@ impl RemoteServerProjects {
                             .inset(true)
                             .spacing(ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Copy).color(Color::Muted))
-                            .child(Label::new("Copy Server Address"))
+                            .child(Label::new("复制服务器地址"))
                             .end_slot(Label::new(connection_string.clone()).color(Color::Muted))
                             .show_end_slot_on_hover()
                             .on_click({
@@ -2852,13 +2852,13 @@ impl RemoteServerProjects {
                     window: &mut Window,
                     cx: &mut App,
                 ) {
-                    let prompt_message = format!("Remove server `{}`?", connection_string);
+                    let prompt_message = format!("远程服务器 `{}`?", connection_string);
 
                     let confirmation = window.prompt(
                         PromptLevel::Warning,
                         &prompt_message,
                         None,
-                        &["Yes, remove it", "No, keep it"],
+                        &["是，删除", "不，保留"],
                         cx,
                     );
 
@@ -2898,7 +2898,7 @@ impl RemoteServerProjects {
                             .inset(true)
                             .spacing(ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Trash).color(Color::Error))
-                            .child(Label::new("Remove Server").color(Color::Error))
+                            .child(Label::new("删除服务器").color(Color::Error))
                             .on_click(cx.listener(move |_, _, window, cx| {
                                 remove_ssh_server(
                                     cx.entity(),

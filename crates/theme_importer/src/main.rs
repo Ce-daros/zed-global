@@ -85,7 +85,7 @@ fn main() -> Result<()> {
         TerminalMode::Stderr,
         ColorChoice::Auto,
     )
-    .expect("could not initialize logger");
+    .expect("无法初始化记录器");
 
     let theme_file_path = args.theme_path;
 

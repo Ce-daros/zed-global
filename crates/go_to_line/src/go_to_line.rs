@@ -134,7 +134,7 @@ impl GoToLine {
         let line_editor_change = cx.subscribe_in(&line_editor, window, Self::on_line_editor_event);
 
         let current_text = format!(
-            "Current Line: {} of {} (column {})",
+            "当前行：{} / {}（列 {}）",
             line,
             last_line + 1,
             column
@@ -313,13 +313,13 @@ impl Render for GoToLine {
             } else {
                 self.current_line.saturating_sub(offset.unsigned_abs())
             };
-            format!("Go to line {target_line} ({offset:+} from current)").into()
+            format!("跳转到第 {target_line} 行（相对当前 {offset:+}）").into()
         } else {
             match self.line_and_char_from_query(cx) {
                 Some((line, Some(character))) => {
-                    format!("Go to line {line}, character {character}").into()
+                    format!("转到第 {line} 行，第 {character} 字符").into()
                 }
-                Some((line, None)) => format!("Go to line {line}").into(),
+                Some((line, None)) => format!("转到第 {line} 行").into(),
                 None => self.current_text.clone(),
             }
         };
@@ -417,7 +417,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "Initially opened go to line modal should not highlight any rows"
+            "初次打开转到行模式时不应高亮任何行"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -425,7 +425,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             vec![0],
-            "Go to line modal should highlight a row, corresponding to the query"
+            "转到行模式应高亮与查询对应的行"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -433,7 +433,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             vec![13],
-            "If the query is too large, the last row should be highlighted"
+            "如果查询过大，应高亮最后一行"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -443,7 +443,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "After cancelling and closing the modal, no rows should be highlighted"
+            "取消并关闭模式后，不应高亮任何行"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -451,7 +451,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "Reopened modal should not highlight any rows"
+            "重新打开模式时不应高亮任何行"
         );
         assert_single_caret_at_row(&editor, 0, cx);
 
@@ -468,7 +468,7 @@ mod tests {
         assert_eq!(
             highlighted_display_rows(&editor, cx),
             Vec::<u32>::new(),
-            "After confirming and closing the modal, no rows should be highlighted"
+            "确认并关闭模式后，不应高亮任何行"
         );
         // On confirm, should place the caret on the highlighted row.
         assert_single_caret_at_row(&editor, expected_highlighted_row, cx);
@@ -479,7 +479,7 @@ mod tests {
         init_test(cx);
         let cx = cx.add_empty_window();
         let file_content = (1..=60)
-            .map(|line| format!("line {line}"))
+            .map(|line| format!("第 {line} 行"))
             .collect::<Vec<_>>()
             .join("\n");
         let buffer = cx.new(|cx| Buffer::local(file_content, cx));
@@ -577,10 +577,10 @@ mod tests {
                     .status_bar()
                     .read(cx)
                     .item_of_type::<CursorPosition>()
-                    .expect("missing cursor position item")
+                    .expect("缺少光标位置项")
                     .read(cx)
                     .selection_stats(),
-                "No selections should be initially"
+                "初始时不应有任何选择"
             );
         });
         editor.update_in(cx, |editor, window, cx| {
@@ -598,10 +598,10 @@ mod tests {
                     .status_bar()
                     .read(cx)
                     .item_of_type::<CursorPosition>()
-                    .expect("missing cursor position item")
+                    .expect("缺少光标位置项")
                     .read(cx)
                     .selection_stats(),
-                "After selecting a text with multibyte unicode characters, the character count should be correct"
+                "选择包含多字节 Unicode 字符的文本后，字符计数应正确"
             );
         });
     }
@@ -658,7 +658,7 @@ mod tests {
         assert_eq!(
             user_caret_position(1, 1),
             current_position(&workspace, cx),
-            "Beginning of the line should be at first line, before any characters"
+            "行的开头应在第一行，位于任何字符之前"
         );
 
         for (i, c) in text.chars().enumerate() {
@@ -670,7 +670,7 @@ mod tests {
             assert_eq!(
                 user_caret_position(1, i + 1),
                 current_position(&workspace, cx),
-                "Wrong position for char '{c}' in string '{text}'",
+                "字符 '{c}' 在字符串 '{text}' 中的位置错误",
             );
         }
 
@@ -681,7 +681,7 @@ mod tests {
         assert_eq!(
             user_caret_position(1, text.chars().count() as u32 + 1),
             current_position(&workspace, cx),
-            "After reaching the end of the text, position should not change when moving right"
+            "到达文本末尾后，向右移动时位置不应改变"
         );
     }
 
@@ -744,7 +744,7 @@ mod tests {
             assert_eq!(
                 point,
                 current_position(&workspace, cx),
-                "When going to {point:?}, expecting the cursor to be at char '{c}' in string '{text}'",
+                "当转到 {point:?} 时，预期光标位于字符串 '{text}' 中的字符 '{c}' 处",
             );
         }
 
@@ -758,7 +758,7 @@ mod tests {
         assert_eq!(
             user_caret_position(1, text.chars().count() as u32 + 1),
             current_position(&workspace, cx),
-            "When going into too large point, should go to the end of the text"
+            "当转到过大的位置时，应转到文本末尾"
         );
     }
 
@@ -771,10 +771,10 @@ mod tests {
                 .status_bar()
                 .read(cx)
                 .item_of_type::<CursorPosition>()
-                .expect("missing cursor position item")
+                .expect("缺少光标位置项")
                 .read(cx)
                 .position()
-                .expect("No position found")
+                .expect("未找到位置")
         })
     }
 
@@ -797,7 +797,7 @@ mod tests {
                 go_to_line_view.line_editor.update(cx, |line_editor, cx| {
                     line_editor
                         .placeholder_text(cx)
-                        .expect("No placeholder text")
+                        .expect("没有占位符文本")
                 }),
                 format!(
                     "{}:{}",
@@ -870,7 +870,7 @@ mod tests {
         });
         assert!(
             selections.len() == 1,
-            "Expected one caret selection but got: {selections:?}"
+            "预期一个插入符选择，但得到：{selections:?}"
         );
         let selection = selections
             .into_iter()
@@ -878,7 +878,7 @@ mod tests {
             .expect("checked selection count");
         assert!(
             selection.start == selection.end,
-            "Expected a single caret selection, but got: {selection:?}"
+            "预期一个插入符选择，但得到：{selection:?}"
         );
         selection
     }

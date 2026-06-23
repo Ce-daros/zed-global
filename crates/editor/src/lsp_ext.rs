@@ -176,7 +176,7 @@ pub fn lsp_tasks(
         })
         .with_timeout(Duration::from_millis(200), &cx.background_executor())
         .unwrap_or_else(|_| {
-            log::debug!("Timed out waiting for LSP tasks");
+            log::debug!("等待 LSP 任务超时");
             Vec::new()
         })
         .await

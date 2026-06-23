@@ -217,7 +217,7 @@ impl Database {
                 )
                 .one(&*tx)
                 .await?
-                .context("no such contact")?;
+                .context("无此联系人")?;
 
             contact::Entity::delete_by_id(contact.id).exec(&*tx).await?;
 
@@ -273,7 +273,7 @@ impl Database {
                 .exec(&*tx)
                 .await?;
             if result.rows_affected == 0 {
-                Err(anyhow!("no such contact request"))?
+                Err(anyhow!("无此联系人请求"))?
             } else {
                 Ok(())
             }
@@ -326,7 +326,7 @@ impl Database {
             };
 
             if rows_affected == 0 {
-                Err(anyhow!("no such contact request"))?
+                Err(anyhow!("无此联系人请求"))?
             }
 
             let mut notifications = Vec::new();

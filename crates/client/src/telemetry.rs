@@ -124,7 +124,7 @@ pub fn os_version() -> String {
     cfg_select! {
        feature = "test-support" => {
            // MacOS branch in particular is quite slow, hence we ought to "avoid" it in tests.
-           "test binary".to_owned()
+           "测试二进制".to_owned()
        }
        target_os = "macos" => {
            static MACOS_VERSION_REGEX: LazyLock<Regex> = LazyLock::new(|| {
@@ -133,10 +133,10 @@ pub fn os_version() -> String {
            use objc2_foundation::NSProcessInfo;
            let process_info = NSProcessInfo::processInfo();
            let version_nsstring = process_info.operatingSystemVersionString();
-           // "Version 15.6.1 (Build 24G90)" -> "15.6.1 (Build 24G90)"
+           // "版本 15.6.1（构建 24G90）" -> "15.6.1（构建 24G90）"
            let version_string = version_nsstring.to_string().replace("Version ", "");
-           // "15.6.1 (Build 24G90)" -> "15.6.1"
-           // "26.0.0 (Build 25A5349a)" -> unchanged (Beta or Rapid Security Response; ends with letter)
+           // "15.6.1（构建 24G90）" -> "15.6.1"
+           // "26.0.0（构建 25A5349a）" -> unchanged (Beta or Rapid Security Response; ends with letter)
            MACOS_VERSION_REGEX
                .replace_all(&version_string, "")
                .to_string()
@@ -152,7 +152,7 @@ pub fn os_version() -> String {
                file
            } else {
                log::error!(
-                   "Failed to load /etc/os-release, /usr/lib/os-release, or /var/run/os-release"
+                   "无法加载 /etc/os-release、/usr/lib/os-release 或 /var/run/os-release"
                );
                "".to_string()
            };
@@ -269,7 +269,7 @@ impl Telemetry {
     // TestAppContext ends up calling this function on shutdown and it panics when trying to find the TelemetrySettings
     #[cfg(not(any(test, feature = "test-support")))]
     fn shutdown_telemetry(self: &Arc<Self>) -> impl Future<Output = ()> + use<> {
-        telemetry::event!("App Closed");
+        telemetry::event!("应用已关闭");
         // TODO: close final edit period and make sure it's sent
         Task::ready(())
     }
@@ -307,7 +307,7 @@ impl Telemetry {
         let content = fs
             .load_bytes(&path)
             .await
-            .with_context(|| format!("failed to load telemetry log from {:?}", path))?;
+            .with_context(|| format!("从 {:?} 加载遥测日志失败", path))?;
 
         let start_offset = if content.len() > MAX_LOG_READ {
             let skip = content.len() - MAX_LOG_READ;
@@ -321,7 +321,7 @@ impl Telemetry {
         };
 
         let content_str = std::str::from_utf8(&content[start_offset..])
-            .context("telemetry log file contains invalid UTF-8")?;
+            .context("遥测日志文件包含无效的 UTF-8")?;
 
         let mut events = Vec::new();
         let mut parse_error_count = 0;
@@ -388,10 +388,10 @@ impl Telemetry {
 
     pub fn report_assistant_event(self: &Arc<Self>, event: AssistantEventData) {
         let event_type = match event.phase {
-            AssistantPhase::Response => "Assistant Responded",
-            AssistantPhase::Invoked => "Assistant Invoked",
-            AssistantPhase::Accepted => "Assistant Response Accepted",
-            AssistantPhase::Rejected => "Assistant Response Rejected",
+            AssistantPhase::Response => "助手已响应",
+            AssistantPhase::Invoked => "助手已调用",
+            AssistantPhase::Accepted => "助手回复已接受",
+            AssistantPhase::Rejected => "助手回复已拒绝",
         };
 
         telemetry::event!(
@@ -432,7 +432,7 @@ impl Telemetry {
                     .as_millis() as i64;
 
                 telemetry::event!(
-                    "Editor Edited",
+                    "编辑器已编辑",
                     duration = duration,
                     environment = environment,
                     is_via_ssh = is_via_ssh
@@ -452,7 +452,7 @@ impl Telemetry {
         };
 
         for project_type in project_types {
-            telemetry::event!("Project Opened", project_type = project_type);
+            telemetry::event!("项目已打开", project_type = project_type);
         }
     }
 
@@ -519,7 +519,7 @@ impl Telemetry {
         // The remote server forwards a bare `telemetry_events::FlexibleEvent`
         // (the type behind `telemetry::event!`), not the tagged `Event` enum.
         let mut flexible: telemetry_events::FlexibleEvent =
-            serde_json::from_str(event_json).context("invalid remote telemetry event")?;
+            serde_json::from_str(event_json).context("无效的远程遥测事件")?;
         flexible
             .event_properties
             .insert("remote".into(), true.into());
@@ -695,7 +695,7 @@ impl Telemetry {
         let request = self.build_request(json_bytes, &request_body)?;
         let response = self.http_client.send(request).await?;
         if response.status() != 200 {
-            log::error!("Failed to send events: HTTP {:?}", response.status());
+            log::error!("发送事件失败: HTTP {:?}", response.status());
         }
 
         anyhow::Ok(())

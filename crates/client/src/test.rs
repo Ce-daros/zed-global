@@ -187,7 +187,7 @@ impl FakeServer {
             .lock()
             .incoming
             .as_mut()
-            .expect("not connected")
+            .expect("未连接")
             .next()
             .await
             .context("other half hung up")?;
@@ -209,7 +209,7 @@ impl FakeServer {
     }
 
     fn connection_id(&self) -> ConnectionId {
-        self.state.lock().connection_id.expect("not connected")
+        self.state.lock().connection_id.expect("未连接")
     }
 }
 

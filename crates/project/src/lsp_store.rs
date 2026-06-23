@@ -2531,7 +2531,7 @@ impl LocalLspStore {
                 if let Some(buffer_abs_path) = buffer.abs_path.as_ref() {
                     arg.replace("{buffer_path}", &buffer_abs_path.to_string_lossy())
                 } else {
-                    arg.replace("{buffer_path}", "Untitled")
+                    arg.replace("{buffer_path}", "未命名")
                 }
             }));
         }
@@ -5642,7 +5642,7 @@ impl LspStore {
                     .request(request)
                     .await?
                     .transaction
-                    .context("missing transaction")?;
+                    .context("缺少事务")?;
 
                 buffer_store
                     .update(cx, |buffer_store, cx| {
@@ -5774,7 +5774,7 @@ impl LspStore {
                             .collect(),
                     })
                     .await
-                    .and_then(|result| result.transaction.context("missing transaction"));
+                    .and_then(|result| result.transaction.context("缺少事务"));
                 lsp_store.update(cx, |lsp_store, _| {
                     lsp_store.update_last_formatting_failure(&result);
                 })?;
@@ -11137,7 +11137,7 @@ impl LspStore {
                         buffer_ranges,
                     })
                     .await
-                    .and_then(|result| result.transaction.context("missing transaction"));
+                    .and_then(|result| result.transaction.context("缺少事务"));
                 request_timer.end();
 
                 zlog::trace!(logger => "Remote format request resolved to {:?}", result.as_ref().map(|_| "<project_transaction>"));

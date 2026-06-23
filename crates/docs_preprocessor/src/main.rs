@@ -70,7 +70,7 @@ fn main() -> Result<()> {
 
     match args.get(0).map(String::as_str) {
         Some("supports") => {
-            let renderer = args.get(1).expect("Required argument");
+            let renderer = args.get(1).expect("需要参数");
             let supported = renderer != "not-supported";
             if supported {
                 process::exit(0);

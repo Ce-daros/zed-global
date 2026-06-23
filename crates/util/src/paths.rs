@@ -77,7 +77,7 @@ pub trait PathExt {
                         OsStr::from_encoded_bytes_unchecked(bytes)
                     }))
                 })
-                .with_context(|| format!("Invalid WTF-8 sequence: {bytes:?}"))
+                .with_context(|| format!("无效 WTF-8 序列：{bytes:?}"))
         }
     }
 

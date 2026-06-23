@@ -251,7 +251,7 @@ impl ToolchainStore {
         this.update(&mut cx, |this, cx| {
             let language_name = LanguageName::from_proto(envelope.payload.language_name);
             let Some(toolchain) = envelope.payload.toolchain else {
-                bail!("Missing `toolchain` in payload");
+                bail!("在有效载荷中缺少 `toolchain`");
             };
             let toolchain = Toolchain {
                 name: toolchain.name.into(),

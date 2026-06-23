@@ -187,7 +187,7 @@ impl ImageItem {
         self.reload_task = Some(cx.spawn(async move |this, cx| {
             if let Some(image) = content
                 .await
-                .context("Failed to load image content")
+                .context("加载图像内容失败")
                 .and_then(create_gpui_image)
                 .log_err()
             {
@@ -386,7 +386,7 @@ impl ImageStore {
             .read(cx)
             .worktree_for_id(project_path.worktree_id, cx)
         else {
-            return Task::ready(Err(anyhow::anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow::anyhow!("无效的工作树")));
         };
 
         let loading_watch = match self.loading_images_by_path.entry(project_path.clone()) {
@@ -570,7 +570,7 @@ impl RemoteImageStore {
                     let worktree = worktree_store
                         .read(cx)
                         .worktree_for_id(worktree_id, cx)
-                        .context("worktree not found")?;
+                        .context("工作树未找到")?;
 
                     let file = Arc::new(
                         worktree::File::from_proto(proto_file, worktree, cx)
@@ -720,7 +720,7 @@ impl ImageStoreImpl for Entity<RemoteImageStore> {
         _cx: &mut Context<ImageStore>,
     ) -> Task<Result<()>> {
         Task::ready(Err(anyhow::anyhow!(
-            "Reloading images from remote is not supported"
+            "不支持从远程重新加载图像"
         )))
     }
 

@@ -170,7 +170,7 @@ impl RemoteBufferStore {
         capability: Capability,
         cx: &mut Context<BufferStore>,
     ) -> Result<Option<Entity<Buffer>>> {
-        match envelope.payload.variant.context("missing variant")? {
+        match envelope.payload.variant.context("缺失变体")? {
             proto::create_buffer_for_peer::Variant::State(mut state) => {
                 let buffer_id = BufferId::new(state.id)?;
 
@@ -183,7 +183,7 @@ impl RemoteBufferStore {
                             .read(cx)
                             .worktree_for_id(worktree_id, cx)
                             .with_context(|| {
-                                format!("no worktree found for id {}", file.worktree_id)
+                                format!("未找到 id 为 {} 的工作树", file.worktree_id)
                             })?;
                         buffer_file = Some(Arc::new(File::from_proto(file, worktree, cx)?)
                             as Arc<dyn language::File>);
@@ -372,7 +372,7 @@ impl RemoteBufferStore {
         });
 
         cx.spawn(async move |this, cx| {
-            let response = request.await?.transaction.context("missing transaction")?;
+            let response = request.await?.transaction.context("缺少事务")?;
             this.update(cx, |this, cx| {
                 this.deserialize_project_transaction(response, push_to_history, cx)
             })?
@@ -613,7 +613,7 @@ impl LocalBufferStore {
         cx: &mut Context<BufferStore>,
     ) -> Task<Result<()>> {
         let Some(file) = File::from_dyn(buffer.read(cx).file()) else {
-            return Task::ready(Err(anyhow!("buffer doesn't have a file")));
+            return Task::ready(Err(anyhow!("缓冲区没有文件")));
         };
         let worktree = file.worktree.clone();
         self.save_local_buffer(buffer, worktree, file.path.clone(), false, cx)
@@ -630,7 +630,7 @@ impl LocalBufferStore {
             .read(cx)
             .worktree_for_id(path.worktree_id, cx)
         else {
-            return Task::ready(Err(anyhow!("no such worktree")));
+            return Task::ready(Err(anyhow!("无效的工作树")));
         };
         self.save_local_buffer(buffer, worktree, path.path, true, cx)
     }
@@ -869,7 +869,7 @@ impl BufferStore {
                     .read(cx)
                     .worktree_for_id(project_path.worktree_id, cx)
                 else {
-                    return Task::ready(Err(anyhow!("no such worktree")));
+                    return Task::ready(Err(anyhow!("无效的工作树")));
                 };
                 let load_buffer = match &self.state {
                     BufferStoreState::Local(this) => this.open_buffer(path, worktree, cx),
@@ -1343,7 +1343,7 @@ impl BufferStore {
                     .worktree_store
                     .read(cx)
                     .worktree_for_id(WorktreeId::from_proto(file.worktree_id), cx)
-                    .context("no such worktree")?;
+                    .context("无效的工作树")?;
                 let file = File::from_proto(file, worktree, cx)?;
                 let old_file = buffer.update(cx, |buffer, cx| {
                     let old_file = buffer.file().cloned();

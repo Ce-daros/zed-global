@@ -403,7 +403,7 @@ impl Worktree {
         let metadata = fs
             .metadata(&abs_path)
             .await
-            .context("failed to stat worktree path")?;
+            .context("无法统计工作树路径")?;
 
         let fs_case_sensitive = fs.is_case_sensitive().await;
 
@@ -814,7 +814,7 @@ impl Worktree {
         match self {
             Worktree::Local(this) => this.load_file(path, cx),
             Worktree::Remote(_) => {
-                Task::ready(Err(anyhow!("remote worktrees can't yet load files")))
+                Task::ready(Err(anyhow!("远程工作树尚不能加载文件")))
             }
         }
     }
@@ -827,7 +827,7 @@ impl Worktree {
         match self {
             Worktree::Local(this) => this.load_binary_file(path, cx),
             Worktree::Remote(_) => {
-                Task::ready(Err(anyhow!("remote worktrees can't yet load binary files")))
+                Task::ready(Err(anyhow!("远程工作树尚不能加载二进制文件")))
             }
         }
     }
@@ -846,7 +846,7 @@ impl Worktree {
                 this.write_file(path, text, line_ending, encoding, has_bom, cx)
             }
             Worktree::Remote(_) => {
-                Task::ready(Err(anyhow!("remote worktree can't yet write files")))
+                Task::ready(Err(anyhow!("远程工作树尚不能写入文件")))
             }
         }
     }
@@ -1062,7 +1062,7 @@ impl Worktree {
                 ),
             )
         });
-        task.ok_or_else(|| anyhow::anyhow!("invalid entry"))?
+        task.ok_or_else(|| anyhow::anyhow!("无效条目"))?
             .await?;
         Ok(proto::ProjectEntryResponse {
             entry: None,
@@ -1078,7 +1078,7 @@ impl Worktree {
         let task = this.update(&mut cx, |this, cx| {
             this.expand_entry(ProjectEntryId::from_proto(request.entry_id), cx)
         });
-        task.ok_or_else(|| anyhow::anyhow!("no such entry"))?
+        task.ok_or_else(|| anyhow::anyhow!("无此条目"))?
             .await?;
         let scan_id = this.read_with(&cx, |this, _| this.scan_id());
         Ok(proto::ExpandProjectEntryResponse {
@@ -1094,7 +1094,7 @@ impl Worktree {
         let task = this.update(&mut cx, |this, cx| {
             this.expand_all_for_entry(ProjectEntryId::from_proto(request.entry_id), cx)
         });
-        task.ok_or_else(|| anyhow::anyhow!("no such entry"))?
+        task.ok_or_else(|| anyhow::anyhow!("无此条目"))?
             .await?;
         let scan_id = this.read_with(&cx, |this, _| this.scan_id());
         Ok(proto::ExpandAllForProjectEntryResponse {
@@ -1159,7 +1159,7 @@ impl LocalWorktree {
         self.start_background_scanner(scan_requests_rx, path_prefixes_to_scan_rx, cx);
         let always_included_entries = mem::take(&mut self.snapshot.always_included_entries);
         log::debug!(
-            "refreshing entries for the following always included paths: {:?}",
+            "刷新以下始终包含路径的条目: {:?}",
             always_included_entries
         );
 
@@ -1469,7 +1469,7 @@ impl LocalWorktree {
         cx.background_spawn(async move {
             let content = fs.load_bytes(&abs_path).await?;
 
-            let worktree = worktree.upgrade().context("worktree was dropped")?;
+            let worktree = worktree.upgrade().context("工作树已删除")?;
             let file = match entry.await? {
                 Some(entry) => File::for_entry(entry, worktree),
                 None => {
@@ -1477,10 +1477,10 @@ impl LocalWorktree {
                         .metadata(&abs_path)
                         .await
                         .with_context(|| {
-                            format!("Loading metadata for excluded file {abs_path:?}")
+                            format!("正在加载排除文件的元数据 {abs_path:?}")
                         })?
                         .with_context(|| {
-                            format!("Excluded file {abs_path:?} got removed during loading")
+                            format!("排除文件 {abs_path:?} 在加载过程中被删除")
                         })?;
                     Arc::new(File {
                         entry_id: None,
@@ -1526,7 +1526,7 @@ impl LocalWorktree {
             }
             let (text, encoding, has_bom) = decode_file_text(fs.as_ref(), &abs_path).await?;
 
-            let worktree = this.upgrade().context("worktree was dropped")?;
+            let worktree = this.upgrade().context("工作树已删除")?;
             let file = match entry.await? {
                 Some(entry) => File::for_entry(entry, worktree),
                 None => {
@@ -1534,10 +1534,10 @@ impl LocalWorktree {
                         .metadata(&abs_path)
                         .await
                         .with_context(|| {
-                            format!("Loading metadata for excluded file {abs_path:?}")
+                            format!("正在加载排除文件的元数据 {abs_path:?}")
                         })?
                         .with_context(|| {
-                            format!("Excluded file {abs_path:?} got removed during loading")
+                            format!("排除文件 {abs_path:?} 在加载过程中被删除")
                         })?;
                     Arc::new(File {
                         entry_id: None,
@@ -1590,11 +1590,11 @@ impl LocalWorktree {
             if is_dir {
                 fs.create_dir(&task_abs_path)
                     .await
-                    .with_context(|| format!("creating directory {task_abs_path:?}"))
+                    .with_context(|| format!("创建目录 {task_abs_path:?}"))
             } else {
                 fs.write(&task_abs_path, content.as_deref().unwrap_or(&[]))
                     .await
-                    .with_context(|| format!("creating file {task_abs_path:?}"))
+                    .with_context(|| format!("创建文件 {task_abs_path:?}"))
             }
         });
 
@@ -1725,7 +1725,7 @@ impl LocalWorktree {
                         .refresh_entry(path.clone(), None, cx)
                 })?
                 .await?;
-            let worktree = this.upgrade().context("worktree dropped")?;
+            let worktree = this.upgrade().context("工作树已删除")?;
             if let Some(entry) = entry {
                 Ok(File::for_entry(entry, worktree))
             } else {
@@ -1733,10 +1733,10 @@ impl LocalWorktree {
                     .metadata(&abs_path)
                     .await
                     .with_context(|| {
-                        format!("Fetching metadata after saving the excluded buffer {abs_path:?}")
+                        format!("保存排除缓冲区后获取元数据 {abs_path:?}")
                     })?
                     .with_context(|| {
-                        format!("Excluded buffer {path:?} got removed during saving")
+                        format!("排除缓冲区 {path:?} 在保存过程中被删除")
                     })?;
                 Ok(Arc::new(File {
                     worktree,
@@ -1889,7 +1889,7 @@ impl LocalWorktree {
                     )
                     .await
                     .with_context(|| {
-                        format!("Failed to copy file from {source:?} to {target:?}")
+                        format!("无法将文件从 {source:?} 复制到 {target:?}")
                     })?;
                 }
                 anyhow::Ok(())
@@ -1897,11 +1897,11 @@ impl LocalWorktree {
             .await
             .log_err();
             let mut refresh = cx.read_entity(
-                &this.upgrade().with_context(|| "Dropped worktree")?,
+                &this.upgrade().with_context(|| "工作树已删除")?,
                 |this, _| {
                     anyhow::Ok::<postage::barrier::Receiver>(
                         this.as_local()
-                            .with_context(|| "Worktree is not local")?
+                            .with_context(|| "工作树不是本地的")?
                             .refresh_entries_for_paths(paths_to_refresh.clone()),
                     )
                 },
@@ -1914,7 +1914,7 @@ impl LocalWorktree {
             .await
             .log_err();
 
-            let this = this.upgrade().with_context(|| "Dropped worktree")?;
+            let this = this.upgrade().with_context(|| "工作树已删除")?;
             Ok(cx.read_entity(&this, |this, _| {
                 paths_to_refresh
                     .iter()
@@ -1999,7 +1999,7 @@ impl LocalWorktree {
         // todo(lw): Hot foreground spawn
         cx.spawn(async move |this, cx| {
             refresh.recv().await;
-            log::trace!("refreshed entry {path:?} in {:?}", t0.elapsed());
+            log::trace!("刷新了 {:?} 中的条目 {path:?}", t0.elapsed());
             let new_entry = this.read_with(cx, |this, _| {
                 this.entry_for_path(&path).cloned().with_context(|| {
                     format!("Could not find entry in worktree for {path:?} after refresh")
@@ -2044,7 +2044,7 @@ impl LocalWorktree {
                         if result.await {
                             break;
                         } else {
-                            log::info!("waiting to resume updates");
+                            log::info!("等待恢复更新");
                             if resume_updates_rx.next().await.is_none() {
                                 return Some(());
                             }
@@ -2116,7 +2116,7 @@ impl RemoteWorktree {
         if let Some(updates_tx) = &self.updates_tx {
             updates_tx
                 .unbounded_send(update)
-                .expect("consumer runs to completion");
+                .expect("消费者运行完成");
         }
     }
 
@@ -2505,7 +2505,7 @@ impl Snapshot {
         always_included_paths: &PathMatcher,
     ) {
         log::debug!(
-            "applying remote worktree update. {} entries updated, {} removed",
+            "应用远程工作树更新。{} 条目已更新，{} 条目已删除",
             update.updated_entries.len(),
             update.removed_entries.len()
         );
@@ -2811,7 +2811,7 @@ impl LocalSnapshot {
                 }
                 Err(error) => {
                     log::error!(
-                        "error loading .gitignore file {:?} - {:?}",
+                        "加载 .gitignore 文件 {:?} 时出错 - {:?}",
                         &entry.path,
                         error
                     );
@@ -2931,7 +2931,7 @@ impl LocalSnapshot {
                 .collect::<collections::BTreeSet<_>>()
                 .into_iter()
                 .collect::<Vec<_>>(),
-            "entries_by_path and entries_by_id are inconsistent"
+            "entries_by_path 和 entries_by_id 不一致"
         );
 
         let mut files = self.files(true, 0);
@@ -3108,7 +3108,7 @@ impl BackgroundScannerState {
             parent_entry.clone()
         } else {
             log::warn!(
-                "populating a directory {:?} that has been removed",
+                "填充已删除的目录 {:?}",
                 parent_path
             );
             return;
@@ -3293,7 +3293,7 @@ impl BackgroundScannerState {
                     .any(|component| component == DOT_GIT)
                 {
                     log::debug!(
-                        "not building git repository for nested `.git` directory, `.git` path in the worktree: {dot_git_path:?}"
+                        "不为嵌套的 `.git` 目录构建 git 仓库，工作树中的 `.git` 路径：{dot_git_path:?}"
                     );
                     return;
                 };
@@ -3304,7 +3304,7 @@ impl BackgroundScannerState {
                 // `dot_git_path.parent().is_none()` means `.git` directory is the opened worktree itself,
                 // no files inside that directory are tracked by git, so no need to build the repo around it
                 log::debug!(
-                    "not building git repository for the worktree itself, `.git` path in the worktree: {dot_git_path:?}"
+                    "不为工作树本身构建 git 仓库，工作树中的 `.git` 路径：{dot_git_path:?}"
                 );
                 return;
             }
@@ -3590,11 +3590,11 @@ impl File {
         worktree: Entity<Worktree>,
         cx: &App,
     ) -> Result<Self> {
-        let worktree_id = worktree.read(cx).as_remote().context("not remote")?.id();
+        let worktree_id = worktree.read(cx).as_remote().context("无远程")?.id();
 
         anyhow::ensure!(
             worktree_id.to_proto() == proto.worktree_id,
-            "worktree id does not match file"
+            "工作树 ID 与文件不匹配"
         );
 
         let disk_state = if proto.is_historic {
@@ -4247,7 +4247,7 @@ impl BackgroundScanner {
                         continue;
                     }
 
-                    log::trace!("adding path prefix {:?}", request.path);
+                    log::trace!("添加路径前缀 {:?}", request.path);
 
                     let did_scan = self.forcibly_load_paths(std::slice::from_ref(&request.path)).await;
                     if did_scan {
@@ -4871,7 +4871,7 @@ impl BackgroundScanner {
                                     let Ok(job) = job else { break };
                                     if let Err(err) = self.scan_dir(&job).await
                                         && job.path.is_empty() {
-                                            log::error!("error scanning directory {:?}: {}", job.abs_path, err);
+                                            log::error!("扫描目录出错 {:?}: {}", job.abs_path, err);
                                         }
                                 }
                             }
@@ -4921,10 +4921,10 @@ impl BackgroundScanner {
         {
             let snapshot = &self.state.lock().await.snapshot;
             if self.settings.is_path_excluded(&job.path) {
-                log::error!("skipping excluded directory {:?}", job.path);
+                log::error!("跳过排除的目录 {:?}", job.path);
                 return Ok(());
             }
-            log::trace!("scanning directory {:?}", job.path);
+            log::trace!("正在扫描目录 {:?}", job.path);
             root_abs_path = snapshot.abs_path().clone();
             root_char_bag = snapshot.root_char_bag;
         }
@@ -4943,7 +4943,7 @@ impl BackgroundScanner {
                 match entry {
                     Ok(entry) => Some(entry),
                     Err(error) => {
-                        log::error!("error processing entry {:?}", error);
+                        log::error!("处理条目出错 {:?}", error);
                         None
                     }
                 }
@@ -4993,7 +4993,7 @@ impl BackgroundScanner {
                         }
                         Err(error) => {
                             log::error!(
-                                "error loading .gitignore file {:?} - {:?}",
+                                "加载 .gitignore 文件 {:?} 时出错 - {:?}",
                                 child_name,
                                 error
                             );
@@ -5003,7 +5003,7 @@ impl BackgroundScanner {
             }
 
             if self.settings.is_path_excluded(&child_path) {
-                log::debug!("skipping excluded child entry {child_path:?}");
+                log::debug!("跳过排除的子条目 {child_path:?}");
 
                 self.state
                     .lock()
@@ -5051,7 +5051,7 @@ impl BackgroundScanner {
                     None => match self.fs.canonicalize(&root_abs_path).await {
                         Ok(path) => root_canonical_path.insert(path),
                         Err(err) => {
-                            log::error!("error canonicalizing root {:?}: {:?}", root_abs_path, err);
+                            log::error!("规范化根路径出错 {:?}: {:?}", root_abs_path, err);
                             continue;
                         }
                     },
@@ -5111,7 +5111,7 @@ impl BackgroundScanner {
                     .path
                     .join(RelPath::unix(child_name.to_str().unwrap()).unwrap());
                 if self.is_path_private(&relative_path) {
-                    log::debug!("detected private file: {relative_path:?}");
+                    log::debug!("检测到私有文件: {relative_path:?}");
                     child_entry.is_private = true;
                 }
                 if self.settings.is_path_hidden(&relative_path) {
@@ -5132,7 +5132,7 @@ impl BackgroundScanner {
                 if self.should_scan_directory(&state, entry) {
                     job_ix += 1;
                 } else {
-                    log::debug!("defer scanning directory {:?}", entry.path);
+                    log::debug!("推迟扫描目录 {:?}", entry.path);
                     entry.kind = EntryKind::UnloadedDir;
                     new_jobs.remove(job_ix);
                 }
@@ -5194,7 +5194,7 @@ impl BackgroundScanner {
         for new_job in new_jobs.into_iter().flatten() {
             job.scan_queue
                 .try_send(new_job)
-                .expect("channel is unbounded");
+                .expect("通道是无界的");
         }
 
         Ok(())
@@ -5355,7 +5355,7 @@ impl BackgroundScanner {
                     );
                 }
                 Err(err) => {
-                    log::error!("error reading file {abs_path:?} on event: {err:#}");
+                    log::error!("在事件中读取文件 {abs_path:?} 出错: {err:#}");
                     state.unwatch_path(
                         self.watcher.as_ref(),
                         path,
@@ -5552,7 +5552,7 @@ impl BackgroundScanner {
     }
 
     async fn update_ignore_status(&self, job: UpdateIgnoreStatusJob, snapshot: &LocalSnapshot) {
-        log::trace!("update ignore status {:?}", job.abs_path);
+        log::trace!("更新忽略状态 {:?}", job.abs_path);
 
         let mut ignore_stack = job.ignore_stack;
         if let Some((ignore, _)) = snapshot.ignores_by_parent_abs_path.get(&job.abs_path) {
@@ -5651,7 +5651,7 @@ impl BackgroundScanner {
     }
 
     async fn update_git_repositories(&self, dot_git_paths: Vec<PathBuf>) -> Vec<Arc<Path>> {
-        log::trace!("reloading repositories: {dot_git_paths:?}");
+        log::trace!("重新加载仓库: {dot_git_paths:?}");
         let mut state = self.state.lock().await;
         let scan_id = state.snapshot.scan_id;
         let mut affected_repo_roots = Vec::new();

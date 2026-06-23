@@ -1016,7 +1016,7 @@ impl Vim {
                     file.path().display(file.path_style(cx)).into_owned()
                 }
             } else {
-                "[No Name]".into()
+                "[未命名]".into()
             };
             let buffer = buffer.read(cx);
             let lines = buffer.max_point().row + 1;
@@ -1025,7 +1025,7 @@ impl Vim {
             let modified = if buffer.is_dirty() { " [modified]" } else { "" };
             vim.set_status_label(
                 format!(
-                    "{}{} {} lines --{:.0}%--",
+                    "{}{} {} 行 --{:.0}%--",
                     filename,
                     modified,
                     lines,

@@ -47,7 +47,7 @@ impl Assets {
                 let font_bytes = cx
                     .asset_source()
                     .load(&font_path)?
-                    .expect("Assets should never return None");
+                    .expect("资源永远不应返回空");
                 embedded_fonts.push(font_bytes);
             }
         }

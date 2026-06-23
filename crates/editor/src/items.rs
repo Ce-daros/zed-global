@@ -994,7 +994,7 @@ impl Item for Editor {
             .buffer()
             .read(cx)
             .as_singleton()
-            .expect("cannot call save_as on an excerpt list");
+            .expect("不能在摘要列表上调用 save_as");
 
         let file_extension = path.path.extension().map(|a| a.to_string());
         self.report_editor_event(
@@ -1195,14 +1195,14 @@ impl Item for Editor {
 
         if is_markdown {
             actions.push((
-                "Open Markdown Preview".into(),
+                "打开 Markdown 预览".into(),
                 Box::new(OpenMarkdownPreview) as Box<dyn gpui::Action>,
             ));
         }
 
         if is_svg {
             actions.push((
-                "Open SVG Preview".into(),
+                "打开 SVG 预览".into(),
                 Box::new(OpenSvgPreview) as Box<dyn gpui::Action>,
             ));
         }
@@ -1217,7 +1217,7 @@ impl Item for Editor {
 
 impl SerializableItem for Editor {
     fn serialized_item_kind() -> &'static str {
-        "Editor"
+        "编辑器"
     }
 
     fn cleanup(
@@ -1245,7 +1245,7 @@ impl SerializableItem for Editor {
     ) -> Task<Result<Entity<Self>>> {
         let serialized_editor = match EditorDb::global(cx)
             .get_serialized_editor(item_id, workspace_id)
-            .context("Failed to query editor state")
+            .context("查询编辑器状态失败")
         {
             Ok(Some(serialized_editor)) => {
                 if ProjectSettings::get_global(cx)
@@ -1264,7 +1264,7 @@ impl SerializableItem for Editor {
             }
             Ok(None) => {
                 return Task::ready(Err(anyhow!(
-                    "Unable to deserialize editor: No entry in database for item_id: {item_id} and workspace_id {workspace_id:?}"
+                    "无法反序列化编辑器：数据库中找不到 item_id 为 {item_id}、workspace_id 为 {workspace_id:?} 的条目"
                 )));
             }
             Err(error) => {
@@ -1342,7 +1342,7 @@ impl SerializableItem for Editor {
                     Some(opened_buffer) => window.spawn(cx, async move |cx| {
                         let (_, buffer) = opened_buffer
                             .await
-                            .context("Failed to open path in project")?;
+                            .context("无法在项目中打开路径")?;
 
                         if let Some(contents) = contents {
                             buffer.update(cx, |buffer, cx| {
@@ -1371,7 +1371,7 @@ impl SerializableItem for Editor {
                                 .update(cx, |project, cx| project.open_local_buffer(&abs_path, cx))
                                 .await
                                 .with_context(|| {
-                                    format!("Failed to open buffer for {abs_path:?}")
+                                    format!("无法打开 {abs_path:?} 的缓冲区")
                                 })?;
 
                             if let Some(contents) = contents {
@@ -1400,7 +1400,7 @@ impl SerializableItem for Editor {
                 let buffer = project
                     .update(cx, |project, cx| project.create_buffer(None, true, cx))
                     .await
-                    .context("Failed to create buffer")?;
+                    .context("无法创建缓冲区")?;
 
                 cx.update(|window, cx| {
                     cx.new(|cx| {
@@ -1478,10 +1478,10 @@ impl SerializableItem for Editor {
                 log::debug!("Serializing editor {item_id:?} in workspace {workspace_id:?}");
                 db.save_serialized_editor(item_id, workspace_id, editor)
                     .await
-                    .context("failed to save serialized editor")
+                    .context("保存序列化编辑器失败")
             })
             .await
-            .context("failed to save contents of buffer")?;
+            .context("保存缓冲区内容失败")?;
 
             Ok(())
         }))
@@ -1515,7 +1515,7 @@ impl ProjectItem for Editor {
     type Item = Buffer;
 
     fn project_item_kind() -> Option<ProjectItemKind> {
-        Some(ProjectItemKind("Editor"))
+        Some(ProjectItemKind("编辑器"))
     }
 
     fn for_project_item(
