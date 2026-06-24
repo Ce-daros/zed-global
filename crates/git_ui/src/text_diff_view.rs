@@ -229,7 +229,7 @@ impl TextDiffView {
 
         Self {
             diff_editor,
-            title: format!("Clipboard ↔ {selection_location_title}").into(),
+            title: format!("剪贴板 ↔ {selection_location_title}").into(),
             path: Some(format!("Clipboard ↔ {selection_location_path}").into()),
             buffer_changes_tx,
             _recalculate_diff_task: cx.spawn(async move |_, cx| {

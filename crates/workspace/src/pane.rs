@@ -4218,13 +4218,13 @@ fn default_render_tab_bar_buttons(
                 .with_handle(pane.new_item_context_menu_handle.clone())
                 .menu(move |window, cx| {
                     Some(ContextMenu::build(window, cx, |menu, _, _| {
-                        menu.action("New File", NewFile.boxed_clone())
-                            .action("Open File", ToggleFileFinder::default().boxed_clone())
+                        menu.action("新建文件", NewFile.boxed_clone())
+                            .action("打开文件", ToggleFileFinder::default().boxed_clone())
                             .separator()
-                            .action("Search Project", DeploySearch::default().boxed_clone())
-                            .action("Search Symbols", ToggleProjectSymbols.boxed_clone())
+                            .action("搜索项目", DeploySearch::default().boxed_clone())
+                            .action("搜索符号", ToggleProjectSymbols.boxed_clone())
                             .separator()
-                            .action("New Terminal", NewTerminal::default().boxed_clone())
+                            .action("新建终端", NewTerminal::default().boxed_clone())
                             .action(
                                 "New Center Terminal",
                                 NewCenterTerminal::default().boxed_clone(),
@@ -4238,7 +4238,7 @@ fn default_render_tab_bar_buttons(
                     IconButton::new("split", IconName::Split)
                         .icon_size(IconSize::Small)
                         .disabled(!can_clone && !can_split_move),
-                    Tooltip::text("Split Pane"),
+                    Tooltip::text("拆分窗格"),
                 )
                 .anchor(Anchor::TopRight)
                 .with_handle(pane.split_item_context_menu_handle.clone())
@@ -4246,15 +4246,15 @@ fn default_render_tab_bar_buttons(
                     ContextMenu::build(window, cx, |menu, _, _| {
                         let mode = SplitMode::MovePane;
                         if can_split_move {
-                            menu.action("Split Right", SplitRight { mode }.boxed_clone())
-                                .action("Split Left", SplitLeft { mode }.boxed_clone())
-                                .action("Split Up", SplitUp { mode }.boxed_clone())
-                                .action("Split Down", SplitDown { mode }.boxed_clone())
+                            menu.action("向右拆分", SplitRight { mode }.boxed_clone())
+                                .action("向左拆分", SplitLeft { mode }.boxed_clone())
+                                .action("向上拆分", SplitUp { mode }.boxed_clone())
+                                .action("向下拆分", SplitDown { mode }.boxed_clone())
                         } else {
-                            menu.action("Split Right", SplitRight::default().boxed_clone())
-                                .action("Split Left", SplitLeft::default().boxed_clone())
-                                .action("Split Up", SplitUp::default().boxed_clone())
-                                .action("Split Down", SplitDown::default().boxed_clone())
+                            menu.action("向右拆分", SplitRight::default().boxed_clone())
+                                .action("向左拆分", SplitLeft::default().boxed_clone())
+                                .action("向上拆分", SplitUp::default().boxed_clone())
+                                .action("向下拆分", SplitDown::default().boxed_clone())
                         }
                     })
                     .into()

@@ -326,9 +326,9 @@ impl From<TerminalDockPosition> for DockPosition {
 impl DockPosition {
     fn label(&self) -> &'static str {
         match self {
-            Self::Left => "Left",
-            Self::Bottom => "Bottom",
-            Self::Right => "Right",
+            Self::Left => "左侧",
+            Self::Bottom => "底部",
+            Self::Right => "右侧",
         }
     }
 
@@ -1246,8 +1246,7 @@ impl Render for PanelButtons {
                 let (action, tooltip) = if is_active_button {
                     let action = dock.toggle_action();
 
-                    let tooltip: SharedString =
-                        format!("Close {} Dock", dock.position.label()).into();
+                    let tooltip: SharedString = format!("关闭{}停靠栏", dock.position.label()).into();
 
                     (action, tooltip)
                 } else {

@@ -3080,7 +3080,7 @@ impl GitPanel {
             let selection = cx
                 .update(|window, cx| {
                     picker_prompt::prompt(
-                        "Pick which remote to fetch",
+                        "选择要拉取的远程仓库",
                         remotes.iter().map(|r| r.name()).collect(),
                         workspace,
                         window,
@@ -3171,9 +3171,9 @@ impl GitPanel {
         } else if worktrees.is_empty() {
             let result = window.prompt(
                 PromptLevel::Warning,
-                "Unable to initialize a git repository",
-                Some("Open a directory first"),
-                &["OK"],
+                "无法初始化 Git 仓库",
+                Some("请先打开一个目录"),
+                &["确定"],
                 cx,
             );
             cx.background_executor()
@@ -3199,7 +3199,7 @@ impl GitPanel {
                 })
                 .collect_vec();
             let prompt = picker_prompt::prompt(
-                "Where would you like to initialize this git repository?",
+                "要在哪个位置初始化这个 Git 仓库？",
                 worktree_directories,
                 self.workspace.clone(),
                 window,
@@ -3338,7 +3338,7 @@ impl GitPanel {
                     this.update(cx, |this, cx| {
                         this.show_error_toast(
                             "push",
-                            anyhow::anyhow!("No remote available to push to. Add a remote to be able to publish changes."),
+                            anyhow::anyhow!("没有可推送的远程仓库。请先添加远程仓库再发布更改。"),
                             cx,
                         )
                     })
@@ -3436,13 +3436,13 @@ impl GitPanel {
                 )
             };
 
-            let branch = branch.ok_or_else(|| anyhow::anyhow!("No active branch"))?;
+            let branch = branch.ok_or_else(|| anyhow::anyhow!("没有活动分支"))?;
             let source_branch = branch
                 .upstream
                 .as_ref()
                 .filter(|upstream| matches!(upstream.tracking, UpstreamTracking::Tracked(_)))
                 .and_then(|upstream| upstream.branch_name())
-                .ok_or_else(|| anyhow::anyhow!("No remote configured for repository"))?;
+                .ok_or_else(|| anyhow::anyhow!("仓库未配置远程仓库"))?;
             let source_branch = source_branch.to_string();
 
             let remote_url = branch
@@ -3455,19 +3455,19 @@ impl GitPanel {
                 })
                 .or(remote_origin.as_deref())
                 .or(remote_upstream.as_deref())
-                .ok_or_else(|| anyhow::anyhow!("No remote configured for repository"))?;
+                .ok_or_else(|| anyhow::anyhow!("仓库未配置远程仓库"))?;
             let remote_url = remote_url.to_string();
 
             let provider_registry = GitHostingProviderRegistry::global(cx);
             let Some((provider, parsed_remote)) =
                 git::parse_git_remote_url(provider_registry, &remote_url)
             else {
-                return Err(anyhow::anyhow!("Unsupported remote URL: {}", remote_url));
+                return Err(anyhow::anyhow!("不支持的远程 URL：{}", remote_url));
             };
 
             let Some(url) = provider.build_create_pull_request_url(&parsed_remote, &source_branch)
             else {
-                return Err(anyhow::anyhow!("Unable to construct pull request URL"));
+                return Err(anyhow::anyhow!("无法构造拉取请求 URL"));
             };
 
             cx.open_url(url.as_str());
@@ -3526,7 +3526,7 @@ impl GitPanel {
                     let current_branch = if always_select {
                         None
                     } else {
-                        let current_branch = repo.branch.as_ref().context("No active branch")?;
+                        let current_branch = repo.branch.as_ref().context("没有活动分支")?;
                         Some(current_branch.name().to_string())
                     };
                     anyhow::Ok(repo.get_remotes(current_branch, is_push))
@@ -3540,7 +3540,7 @@ impl GitPanel {
             let selection = cx
                 .update(|window, cx| {
                     picker_prompt::prompt(
-                        "Pick which remote to push to",
+                        "选择要推送到的远程仓库",
                         current_remotes.clone(),
                         workspace,
                         window,
@@ -4363,7 +4363,7 @@ impl GitPanel {
     {
         if let Ok(Some(workspace)) = weak_this.update(cx, |this, _cx| this.workspace.upgrade()) {
             let _ = workspace.update(cx, |workspace, cx| {
-                workspace.show_error(format!("Failed to generate commit message: {err}"), cx);
+                workspace.show_error(format!("生成提交信息失败：{err}"), cx);
             });
         }
     }
@@ -4394,14 +4394,14 @@ impl GitPanel {
                 );
                 match (style, is_push) {
                     (Toast | ToastWithLog { .. }, true) => {
-                        this.action("Create Pull Request", move |window, cx| {
+                        this.action("创建拉取请求", move |window, cx| {
                             window
                                 .dispatch_action(Box::new(zed_actions::git::CreatePullRequest), cx);
                         })
                     }
                     (Toast, false) => this,
                     (ToastWithLog { output }, false) => {
-                        this.action("View Log", move |window, cx| {
+                        this.action("查看日志", move |window, cx| {
                             let output = output.clone();
                             let output =
                                 format!("stdout:\n{}\nstderr:\n{}", output.stdout, output.stderr);
@@ -5075,7 +5075,7 @@ impl GitPanel {
                                     .tooltip({
                                         move |_window, cx| {
                                             Tooltip::for_action_in(
-                                                "Open Commit Modal",
+                                                "打开提交弹窗",
                                                 &git::ExpandCommitEditor,
                                                 &editor_focus_handle,
                                                 cx,
@@ -5093,9 +5093,9 @@ impl GitPanel {
                             )
                             .child({
                                 let (icon, label) = if self.commit_editor_expanded {
-                                    (IconName::Minimize, "Collapse Commit Editor")
+                                    (IconName::Minimize, "折叠提交编辑器")
                                 } else {
-                                    (IconName::Maximize, "Expand Commit Editor")
+                                    (IconName::Maximize, "展开提交编辑器")
                                 };
                                 let focus_handle = self.focus_handle.clone();
 
@@ -5688,7 +5688,7 @@ impl GitPanel {
                                             Some(data.author_email.clone()),
                                             Some(data.commit_timestamp),
                                         ),
-                                        None => ("Loading…".into(), "".into(), None, None),
+                                        None => ("正在加载…".into(), "".into(), None, None),
                                     };
 
                                     let relative_time: SharedString = timestamp
@@ -5785,7 +5785,7 @@ impl GitPanel {
                                         )
                                         .tooltip(move |_, cx| {
                                             Tooltip::with_meta(
-                                                "View Commit",
+                                                "查看提交",
                                                 None,
                                                 short_sha.clone(),
                                                 cx,
@@ -7388,7 +7388,7 @@ impl RenderOnce for PanelRepoFooter {
                     if single_repo {
                         cx.new(|_| Empty).into()
                     } else {
-                        Tooltip::simple("Switch Active Repository", cx)
+                        Tooltip::simple("切换活动仓库", cx)
                     }
                 },
             )
@@ -7415,7 +7415,7 @@ impl RenderOnce for PanelRepoFooter {
             })
             .trigger_with_tooltip(
                 branch_selector_button,
-                Tooltip::for_action_title("Switch Branch", &zed_actions::git::Switch),
+                Tooltip::for_action_title("切换分支", &zed_actions::git::Switch),
             )
             .anchor(Anchor::BottomLeft)
             .offset(gpui::Point {
@@ -7767,7 +7767,7 @@ pub(crate) fn show_error_toast(
                             .size(IconSize::Small)
                             .color(Color::Error),
                     )
-                    .action("View Log", move |window, cx| {
+                    .action("查看日志", move |window, cx| {
                         let message = message.clone();
                         let action = action.clone();
                         workspace_weak

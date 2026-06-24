@@ -198,7 +198,7 @@ impl Render for SecurityModal {
                     )
                     .child(
                         v_flex()
-                            .child(Label::new("Restricted Mode prevents:").color(Color::Muted))
+                            .child(Label::new("受限模式会阻止：").color(Color::Muted))
                             .child(ListBulletItem::new("Project settings from being applied"))
                             .child(ListBulletItem::new("Language servers from running"))
                             .child(ListBulletItem::new("MCP Server integrations from installing")),
@@ -271,7 +271,7 @@ impl Render for SecurityModal {
                     .gap_1()
                     .justify_end()
                     .child(
-                        Button::new("rm", "Stay in Restricted Mode")
+                        Button::new("rm", "保持受限模式")
                             .key_binding(
                                 KeyBinding::for_action(
                                     &ToggleWorktreeSecurity,
@@ -286,7 +286,7 @@ impl Render for SecurityModal {
                             })),
                     )
                     .child(
-                        Button::new("tc", "Trust and Continue")
+                        Button::new("tc", "信任并继续")
                             .style(ButtonStyle::Filled)
                             .layer(ui::ElevationIndex::ModalSurface)
                             .key_binding(

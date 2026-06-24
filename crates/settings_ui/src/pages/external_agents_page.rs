@@ -857,7 +857,7 @@ fn build_settings_from_values(
         .split_whitespace()
         .map(|arg| arg.to_string())
         .collect::<Vec<_>>();
-    let env = collect_kv(&values.env, "environment variable")?;
+    let env = collect_kv(&values.env, "环境变量")?;
 
     let content = CustomAgentServerSettings::Custom {
         path: command.into(),
@@ -1114,7 +1114,7 @@ mod tests {
         values.env = vec![("FOO".into(), "1".into()), ("FOO".into(), "2".into())];
         assert_eq!(
             build_settings_from_values(values).unwrap_err().as_ref(),
-            "重复的environment variable“FOO”。"
+            "重复的环境变量“FOO”。"
         );
     }
 

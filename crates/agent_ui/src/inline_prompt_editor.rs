@@ -129,7 +129,7 @@ impl<T: 'static> Render for PromptEditor<T> {
             .icon_color(Color::Muted)
             .when(!menu_visible, |this| {
                 this.tooltip(move |_window, cx| {
-                    Tooltip::with_meta("Add Context", None, "Or type @ to include context", cx)
+                    Tooltip::with_meta("添加上下文", None, "也可以输入 @ 添加上下文", cx)
                 })
             })
             .on_click(cx.listener(move |this, _, window, cx| {

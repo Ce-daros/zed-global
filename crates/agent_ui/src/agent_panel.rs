@@ -7382,7 +7382,7 @@ mod tests {
 
         let metadata = TerminalThreadMetadata {
             terminal_id: TerminalId::new(),
-            title: "Dev Server".into(),
+            title: "开发服务器".into(),
             custom_title: None,
             created_at: Utc::now(),
             worktree_paths: project.read_with(cx, |project, cx| project.worktree_paths(cx)),
@@ -7464,7 +7464,7 @@ mod tests {
 
         let metadata = TerminalThreadMetadata {
             terminal_id: TerminalId::new(),
-            title: "Restored Terminal".into(),
+            title: "已恢复的终端".into(),
             custom_title: None,
             created_at: Utc::now(),
             worktree_paths: WorktreePaths::from_folder_paths(&PathList::new(&[PathBuf::from(
@@ -7637,7 +7637,7 @@ mod tests {
 
         let metadata = TerminalThreadMetadata {
             terminal_id: TerminalId::new(),
-            title: "Restored Terminal".into(),
+            title: "已恢复的终端".into(),
             custom_title: None,
             created_at: Utc::now(),
             worktree_paths: WorktreePaths::from_folder_paths(&PathList::new(&[PathBuf::from(

@@ -304,7 +304,7 @@ impl ChangedFileEntry {
                 } else {
                     format!("{}/{}", dir_path, file_name).into()
                 };
-                move |_, cx| Tooltip::with_meta("View Changes", None, meta.clone(), cx)
+                move |_, cx| Tooltip::with_meta("查看更改", None, meta.clone(), cx)
             })
             .on_click({
                 let entry = self.clone();
@@ -403,7 +403,7 @@ impl ChangedFileDirectoryEntry {
             )
             .tooltip({
                 let name = self.name.clone();
-                move |_, cx| Tooltip::with_meta("Toggle Folder", None, name.clone(), cx)
+                move |_, cx| Tooltip::with_meta("切换文件夹", None, name.clone(), cx)
             })
             .on_click(move |_, _, cx| {
                 git_graph
@@ -1825,7 +1825,7 @@ impl GitGraph {
                     author_name = data.author_name.clone();
                     formatted_time = format_timestamp(data.commit_timestamp);
                 } else {
-                    subject = "Loading…".into();
+                    subject = "正在加载…".into();
                     author_name = "".into();
                 }
 
@@ -2491,7 +2491,7 @@ impl GitGraph {
                 .context(focus_handle)
                 .header(header)
                 .entry(
-                    "View Commit",
+                    "查看提交",
                     Some(OpenCommitView.boxed_clone()),
                     window.handler_for(&git_graph, move |this, window, cx| {
                         this.open_commit_view(index, window, cx);
@@ -2505,7 +2505,7 @@ impl GitGraph {
                     }),
                 )
                 .when_some(ref_name.clone(), |menu, ref_name| {
-                    menu.entry("Copy Ref Name", None, move |_window, cx| {
+                    menu.entry("复制引用名称", None, move |_window, cx| {
                         cx.write_to_clipboard(ClipboardItem::new_string(ref_name.to_string()));
                     })
                 })
@@ -2823,7 +2823,7 @@ impl GitGraph {
                 Some(data.commit_timestamp),
                 data.subject.clone(),
             ),
-            CommitDataState::Loading(_) => ("Loading…".into(), "".into(), None, "Loading…".into()),
+            CommitDataState::Loading(_) => ("正在加载…".into(), "".into(), None, "正在加载…".into()),
         };
 
         let date_string = commit_timestamp
@@ -3229,7 +3229,7 @@ impl GitGraph {
             .child(Divider::horizontal())
             .child(
                 h_flex().p_1p5().w_full().child(
-                    Button::new("view-commit", "View Commit")
+                    Button::new("view-commit", "查看提交")
                         .full_width()
                         .style(ButtonStyle::OutlinedGhost)
                         .on_click(cx.listener(|this, _, window, cx| {
@@ -3794,28 +3794,28 @@ impl Render for GitGraph {
                             if !is_path_history {
                                 TableRow::from_vec(
                                     vec![
-                                        Label::new("Graph")
+                                        Label::new("图谱")
                                             .color(Color::Muted)
                                             .truncate()
                                             .into_any_element(),
-                                        Label::new("Description")
+                                        Label::new("描述")
                                             .color(Color::Muted)
                                             .into_any_element(),
-                                        Label::new("Date").color(Color::Muted).into_any_element(),
-                                        Label::new("Author").color(Color::Muted).into_any_element(),
-                                        Label::new("Commit").color(Color::Muted).into_any_element(),
+                                        Label::new("日期").color(Color::Muted).into_any_element(),
+                                        Label::new("作者").color(Color::Muted).into_any_element(),
+                                        Label::new("提交").color(Color::Muted).into_any_element(),
                                     ],
                                     5,
                                 )
                             } else {
                                 TableRow::from_vec(
                                     vec![
-                                        Label::new("Description")
+                                        Label::new("描述")
                                             .color(Color::Muted)
                                             .into_any_element(),
-                                        Label::new("Date").color(Color::Muted).into_any_element(),
-                                        Label::new("Author").color(Color::Muted).into_any_element(),
-                                        Label::new("Commit").color(Color::Muted).into_any_element(),
+                                        Label::new("日期").color(Color::Muted).into_any_element(),
+                                        Label::new("作者").color(Color::Muted).into_any_element(),
+                                        Label::new("提交").color(Color::Muted).into_any_element(),
                                     ],
                                     4,
                                 )
@@ -4171,7 +4171,7 @@ impl workspace::SerializableItem for GitGraph {
             search_case_sensitive,
         )) = db.get_git_graph(item_id, workspace_id).ok().flatten()
         else {
-            return Task::ready(Err(anyhow::anyhow!("No git graph to deserialize")));
+            return Task::ready(Err(anyhow::anyhow!("没有可反序列化的 Git 图谱")));
         };
 
         let state = persistence::SerializedGitGraphState {

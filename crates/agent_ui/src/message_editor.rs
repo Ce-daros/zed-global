@@ -476,8 +476,8 @@ impl MessageEditor {
                             "Copy",
                             Box::new(editor::actions::Copy),
                         )
-                        .action("Paste", Box::new(editor::actions::Paste))
-                        .action("Paste as Plain Text", Box::new(PasteRaw))
+                        .action("粘贴", Box::new(editor::actions::Paste))
+                        .action("粘贴为纯文本", Box::new(PasteRaw))
                 }))
             });
 

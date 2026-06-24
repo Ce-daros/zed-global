@@ -283,7 +283,7 @@ impl RenderOnce for SettingsInputField {
                                     .icon_size(IconSize::Small)
                                     .icon_color(Color::Muted)
                                     .aria_label("Clear")
-                                    .tooltip(Tooltip::text("Clear"))
+                                    .tooltip(Tooltip::text("清除"))
                                     .on_click(move |_, window, cx| {
                                         let Some(editor) = weak_editor_for_clear.upgrade() else {
                                             return;
@@ -303,7 +303,7 @@ impl RenderOnce for SettingsInputField {
                                     .icon_size(IconSize::Small)
                                     .icon_color(Color::Success)
                                     .aria_label("Confirm")
-                                    .tooltip(Tooltip::text("Enter to Confirm"))
+                                    .tooltip(Tooltip::text("按 Enter 确认"))
                                     .on_click(move |_, window, cx| {
                                         let Some(confirm) = confirm_for_button.as_ref() else {
                                             return;

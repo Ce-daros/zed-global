@@ -822,8 +822,7 @@ fn render_invalid_patterns_section(
         )
         .child(
             Label::new(
-                "These patterns failed to compile as regular expressions. \
-                 The tool will be blocked until they are fixed or removed.",
+                "这些模式无法编译为正则表达式。修复或移除前，该工具将被阻止。",
             )
             .size(LabelSize::Small)
             .color(Color::Muted),

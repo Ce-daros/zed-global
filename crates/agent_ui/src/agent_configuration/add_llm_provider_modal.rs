@@ -470,9 +470,9 @@ impl AddLlmProviderModal {
             .child(
                 h_flex()
                     .justify_between()
-                    .child(Label::new("Models").size(LabelSize::Small))
+                    .child(Label::new("模型").size(LabelSize::Small))
                     .child(
-                        Button::new("add-model", "Add Model")
+                        Button::new("add-model", "添加模型")
                             .start_icon(
                                 Icon::new(IconName::Plus)
                                     .size(IconSize::XSmall)
@@ -543,7 +543,7 @@ impl AddLlmProviderModal {
                     .child(
                         v_flex()
                             .gap_1()
-                            .child(Label::new("Default reasoning effort").size(LabelSize::Small))
+                            .child(Label::new("默认推理强度").size(LabelSize::Small))
                             .child(
                                 DropdownMenu::new(
                                     ElementId::Name(
@@ -691,7 +691,7 @@ impl AddLlmProviderModal {
             )
             .when(has_more_than_one_model, |this| {
                 this.child(
-                    Button::new(("remove-model", ix), "Remove Model")
+                    Button::new(("remove-model", ix), "移除模型")
                         .start_icon(
                             Icon::new(IconName::Trash)
                                 .size(IconSize::XSmall)
@@ -761,7 +761,7 @@ impl Render for AddLlmProviderModal {
                 Modal::new("configure-context-server", None)
                     .header(
                         ModalHeader::new()
-                            .headline("Add LLM Provider")
+                            .headline("添加 LLM 提供商")
                             .description(self.provider.description()),
                     )
                     .when_some(self.last_error.clone(), |this, error| {
@@ -800,7 +800,7 @@ impl Render for AddLlmProviderModal {
                             h_flex()
                                 .gap_1()
                                 .child(
-                                    Button::new("cancel", "Cancel")
+                                    Button::new("cancel", "取消")
                                         .key_binding(
                                             KeyBinding::for_action_in(
                                                 &menu::Cancel,
@@ -814,7 +814,7 @@ impl Render for AddLlmProviderModal {
                                         })),
                                 )
                                 .child(
-                                    Button::new("save-server", "Save Provider")
+                                    Button::new("save-server", "保存提供商")
                                         .key_binding(
                                             KeyBinding::for_action_in(
                                                 &menu::Confirm,

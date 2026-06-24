@@ -743,7 +743,7 @@ impl SkillCreatorPage {
             .child(
                 v_flex()
                     .gap_2()
-                    .child(Label::new("Front matter 信息"))
+                    .child(Label::new("元信息"))
                     .child(self.name_editor.clone())
                     .child(self.description_editor.clone()),
             )

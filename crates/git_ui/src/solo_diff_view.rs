@@ -550,7 +550,7 @@ impl Render for SoloDiffStyleToolbar {
                 IconButton::new("solo-diff-unified", IconName::DiffUnified)
                     .icon_size(IconSize::Small)
                     .toggle_state(diff_view_style == DiffViewStyle::Unified)
-                    .tooltip(Tooltip::text("Unified"))
+                    .tooltip(Tooltip::text("统一视图"))
                     .on_click(cx.listener(|this, _, window, cx| {
                         this.set_diff_view_style(DiffViewStyle::Unified, window, cx);
                     })),
@@ -559,7 +559,7 @@ impl Render for SoloDiffStyleToolbar {
                 IconButton::new("solo-diff-split", split_icon)
                     .icon_size(IconSize::Small)
                     .toggle_state(diff_view_style == DiffViewStyle::Split)
-                    .tooltip(Tooltip::text("Split"))
+                    .tooltip(Tooltip::text("拆分视图"))
                     .on_click(cx.listener(|this, _, window, cx| {
                         this.set_diff_view_style(DiffViewStyle::Split, window, cx);
                     })),
@@ -663,7 +663,7 @@ impl Render for SoloDiffGitToolbar {
                 h_group_sm()
                     .when(button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Toggle Staged")
+                            Button::new("stage", "切换暂存")
                                 .tooltip(Tooltip::for_action_title_in(
                                     "Toggle Staged",
                                     &ToggleStaged,
@@ -677,7 +677,7 @@ impl Render for SoloDiffGitToolbar {
                     })
                     .when(!button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Stage")
+                            Button::new("stage", "暂存")
                                 .tooltip(Tooltip::for_action_title_in(
                                     "Stage and go to next hunk",
                                     &StageAndNext,
@@ -689,7 +689,7 @@ impl Render for SoloDiffGitToolbar {
                                 })),
                         )
                         .child(
-                            Button::new("unstage", "Unstage")
+                            Button::new("unstage", "取消暂存")
                                 .tooltip(Tooltip::for_action_title_in(
                                     "Unstage and go to next hunk",
                                     &UnstageAndNext,
@@ -702,7 +702,7 @@ impl Render for SoloDiffGitToolbar {
                         )
                     })
                     .child(
-                        Button::new("restore", "Restore")
+                        Button::new("restore", "还原")
                             .tooltip(Tooltip::for_action_title_in(
                                 "Restore selected hunk",
                                 &Restore,
@@ -747,7 +747,7 @@ impl Render for SoloDiffGitToolbar {
             .child(
                 h_group_sm()
                     .child(
-                        Button::new("stage-file", "Stage File")
+                        Button::new("stage-file", "暂存文件")
                             .tooltip(Tooltip::for_action_title_in(
                                 "Stage file",
                                 &StageFile,
@@ -759,7 +759,7 @@ impl Render for SoloDiffGitToolbar {
                             ),
                     )
                     .child(
-                        Button::new("unstage-file", "Unstage File")
+                        Button::new("unstage-file", "取消暂存文件")
                             .tooltip(Tooltip::for_action_title_in(
                                 "Unstage file",
                                 &UnstageFile,
@@ -772,7 +772,7 @@ impl Render for SoloDiffGitToolbar {
                     )
                     .child(Divider::vertical())
                     .child(
-                        Button::new("commit", "Commit")
+                        Button::new("commit", "提交")
                             .tooltip(Tooltip::for_action_title_in(
                                 "Commit",
                                 &Commit,
