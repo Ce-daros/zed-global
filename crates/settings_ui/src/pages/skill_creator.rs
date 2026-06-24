@@ -183,7 +183,7 @@ impl SkillCreatorPage {
 
         let name_editor = cx.new(|cx| {
             InputField::new(window, cx, "my-new-skill")
-                .label("Name")
+                .label("名称")
                 .tab_index(NAME_FIELD_TAB_INDEX)
                 .tab_stop(true)
         });
@@ -194,9 +194,9 @@ impl SkillCreatorPage {
             InputField::new(
                 window,
                 cx,
-                "e.g., Fill the PR description following this template.",
+                "例如：按这个模板补全 PR 描述。",
             )
-            .label("Description")
+            .label("描述")
             .tab_index(DESCRIPTION_FIELD_TAB_INDEX)
             .tab_stop(true)
         });
@@ -208,7 +208,7 @@ impl SkillCreatorPage {
                 buffer
             });
             let mut editor = Editor::for_buffer(buffer, None, window, cx);
-            editor.set_placeholder_text("Add skill content…", window, cx);
+            editor.set_placeholder_text("添加技能内容…", window, cx);
             editor.set_soft_wrap_mode(SoftWrap::EditorWidth, cx);
             editor.set_show_gutter(false, cx);
             editor.set_show_wrap_guides(false, cx);
@@ -412,7 +412,7 @@ impl SkillCreatorPage {
     fn recompute_body_error(&mut self, cx: &App) {
         let body = self.current_body(cx);
         self.body_error = if body.trim().is_empty() {
-            Some("Body is required.")
+            Some("必须填写正文。")
         } else {
             None
         };
@@ -458,7 +458,7 @@ impl SkillCreatorPage {
             Ok(imported) => self.apply_imported_skill(imported, window, cx),
             Err(err) => {
                 self.save_error = Some(SharedString::from(format!(
-                    "Couldn't read shared skill: {err}"
+                    "无法读取分享的技能：{err}"
                 )));
                 cx.notify();
             }
@@ -703,20 +703,20 @@ impl SkillCreatorPage {
             .child(
                 h_flex()
                     .gap_1()
-                    .child(Label::new("Import from URL"))
-                    .child(Label::new("(optional)").color(Color::Muted)),
+                    .child(Label::new("从 URL 导入"))
+                    .child(Label::new("（可选）").color(Color::Muted)),
             )
             .child(self.url_editor.clone())
             .child(match &self.url_import_status {
                 UrlImportStatus::Idle => Label::new(
-                    "Paste a GitHub .md URL to fetch it and fill out the form. \
-                     For private files, Zed retries using GITHUB_TOKEN, if set.",
+                    "粘贴 GitHub 的 .md URL 后即可抓取内容并自动填写表单。\
+                     若为私有文件，设置了 GITHUB_TOKEN 时 Zed 会自动重试。",
                 )
                 .size(LabelSize::Small)
                 .color(Color::Muted)
                 .into_any_element(),
                 UrlImportStatus::Fetching => {
-                    LoadingLabel::new("Fetching and parsing…").into_any_element()
+                    LoadingLabel::new("正在抓取并解析…").into_any_element()
                 }
                 UrlImportStatus::Error(error) => h_flex()
                     .gap_1()
@@ -743,7 +743,7 @@ impl SkillCreatorPage {
             .child(
                 v_flex()
                     .gap_2()
-                    .child(Label::new("Front-matter"))
+                    .child(Label::new("Front matter 信息"))
                     .child(self.name_editor.clone())
                     .child(self.description_editor.clone()),
             )
@@ -754,7 +754,7 @@ impl SkillCreatorPage {
                     .flex_grow_1()
                     .flex_shrink_0()
                     .gap_2()
-                    .child(Label::new("Skill Content"))
+                    .child(Label::new("技能内容"))
                     .child(self.render_body_field(window, cx))
                     .when_some(self.body_error, |this, error| {
                         this.child(Label::new(error).size(LabelSize::Small).color(Color::Error))
@@ -767,9 +767,9 @@ impl SkillCreatorPage {
 
         SwitchField::new(
             "disable-model-invocation",
-            Some("Disable model invocation"),
+            Some("禁用模型调用"),
             Some(
-                "Hide this skill from the model's catalog. It can still be invoked via slash command."
+                "将此技能从模型目录中隐藏。它仍然可以通过斜杠命令调用。"
                     .into(),
             ),
             toggle_state,
@@ -835,7 +835,7 @@ impl SkillCreatorPage {
 
     fn render_footer(&self, _window: &Window, cx: &mut Context<Self>) -> impl IntoElement {
         let saving = self.saving;
-        let main_action = if saving { "Saving…" } else { "Save Skill" };
+        let main_action = if saving { "保存中…" } else { "保存技能" };
 
         v_flex()
             .w_full()
@@ -987,12 +987,12 @@ async fn fetch_imported_skill_from_url_with_github_token(
 
     if body.len() > MAX_SKILL_FILE_SIZE {
         anyhow::bail!(
-            "SKILL.md file exceeds maximum size of {}KB",
+            "SKILL.md 文件超过最大大小 {}KB",
             MAX_SKILL_FILE_SIZE / 1024
         );
     }
 
-    let content = String::from_utf8(body).context("GitHub response was not valid UTF-8")?;
+    let content = String::from_utf8(body).context("GitHub 返回的内容不是有效的 UTF-8")?;
     parse_imported_skill(&content, raw_url.as_str())
 }
 
@@ -1027,7 +1027,7 @@ async fn fetch_skill_url(
     let status = response.status();
     if github_token.is_some() && status.is_redirection() {
         anyhow::bail!(
-            "GitHub returned an unexpected redirect ({}) for the authenticated request to {raw_url}",
+            "GitHub 在带认证的请求 {raw_url} 中返回了意外重定向 ({})",
             status.as_u16()
         );
     }
@@ -1037,18 +1037,18 @@ async fn fetch_skill_url(
         .take(MAX_SKILL_FILE_SIZE as u64 + 1)
         .read_to_end(&mut body)
         .await
-        .context("failed to read response body")?;
+        .context("读取响应内容失败")?;
 
     Ok((status, body))
 }
 
 fn github_fetch_error(status: StatusCode, body: &[u8]) -> anyhow::Error {
     let mut message = if status == StatusCode::NOT_FOUND {
-        "GitHub returned 404 while fetching the skill; no repository exists at this URL, or it is private"
+        "抓取技能时 GitHub 返回 404；该 URL 对应的仓库不存在，或仓库为私有"
             .to_string()
     } else {
         format!(
-            "GitHub returned {} while fetching the skill",
+            "抓取技能时 GitHub 返回 {}",
             status.as_u16()
         )
     };
@@ -1067,17 +1067,17 @@ pub(crate) fn is_supported_skill_url(input: &str) -> bool {
 }
 
 fn github_raw_url(input: &str) -> Result<String> {
-    let url = Url::parse(input.trim()).context("Enter a valid GitHub URL")?;
+    let url = Url::parse(input.trim()).context("请输入有效的 GitHub URL")?;
     if url.scheme() != "https" {
-        anyhow::bail!("GitHub skill URLs must use https://");
+        anyhow::bail!("GitHub 技能 URL 必须使用 https://");
     }
 
     let host = url
         .host_str()
-        .ok_or_else(|| anyhow!("Enter a valid GitHub URL"))?;
+        .ok_or_else(|| anyhow!("请输入有效的 GitHub URL"))?;
     let path_segments = url
         .path_segments()
-        .ok_or_else(|| anyhow!("Enter a valid GitHub URL"))?
+        .ok_or_else(|| anyhow!("请输入有效的 GitHub URL"))?
         .collect::<Vec<_>>();
 
     match host {
@@ -1086,17 +1086,17 @@ fn github_raw_url(input: &str) -> Result<String> {
             ensure_markdown_path(&path_segments)?;
             Ok(url.into())
         }
-        _ => anyhow::bail!("Paste a GitHub .md URL"),
+        _ => anyhow::bail!("请粘贴 GitHub 的 .md URL"),
     }
 }
 
 fn github_blob_raw_url(path_segments: &[&str]) -> Result<String> {
     let [owner, repo, kind, reference, file_path @ ..] = path_segments else {
-        anyhow::bail!("Paste a GitHub blob URL that points to a .md file");
+        anyhow::bail!("请粘贴指向 .md 文件的 GitHub blob URL");
     };
 
     if *kind != "blob" {
-        anyhow::bail!("Paste a GitHub blob URL that points to a .md file");
+        anyhow::bail!("请粘贴指向 .md 文件的 GitHub blob URL");
     }
 
     ensure_markdown_path(file_path)?;
@@ -1108,11 +1108,11 @@ fn github_blob_raw_url(path_segments: &[&str]) -> Result<String> {
 
 fn ensure_markdown_path(path_segments: &[&str]) -> Result<()> {
     let Some(file_name) = path_segments.last() else {
-        anyhow::bail!("Paste a GitHub .md URL");
+        anyhow::bail!("请粘贴 GitHub 的 .md URL");
     };
 
     if !file_name.to_ascii_lowercase().ends_with(".md") {
-        anyhow::bail!("Paste a GitHub URL that points to a .md file");
+        anyhow::bail!("请粘贴指向 .md 文件的 GitHub URL");
     }
 
     Ok(())
@@ -1206,7 +1206,7 @@ async fn write_skill_to_disk(
     match fs.metadata(&skill_dir).await {
         Ok(Some(metadata)) if metadata.is_dir => {
             anyhow::bail!(
-                "A skill named \"{name}\" already exists at {}. Pick a different name.",
+                "名为“{name}”的技能已存在于 {}。请换一个名称。",
                 skill_dir.display()
             );
         }
@@ -1217,8 +1217,8 @@ async fn write_skill_to_disk(
             // real fs returns a generic "File exists" IO error that gives
             // the user no idea what's wrong or how to recover.
             anyhow::bail!(
-                "A file (not a skill directory) already exists at {}. \
-                 Delete it or pick a different skill name.",
+                "{} 已存在一个文件（而不是技能目录）。\
+                 请删除它，或换一个技能名称。",
                 skill_dir.display()
             );
         }
@@ -1258,7 +1258,7 @@ fn format_skill_file(
         disable_model_invocation,
     };
     let frontmatter = serde_yaml_ng::to_string(&metadata)
-        .context("failed to serialize skill frontmatter as YAML")?;
+        .context("将技能 frontmatter 序列化为 YAML 失败")?;
 
     let mut content = String::with_capacity(frontmatter.len() + body.len() + 16);
     content.push_str("---\n");

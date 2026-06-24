@@ -4500,7 +4500,7 @@ impl GitPanel {
             .trigger_with_tooltip(
                 IconButton::new("view-options-menu-trigger", IconName::Sliders)
                     .icon_size(IconSize::Small),
-                Tooltip::text("View Options"),
+                Tooltip::text("查看选项"),
             )
             .menu(move |window, cx| {
                 Some(git_panel_view_options_menu(
@@ -4529,14 +4529,14 @@ impl GitPanel {
                             .icon_color(Color::Error)
                             .icon_size(IconSize::Small)
                             .style(ButtonStyle::Tinted(TintColor::Error))
-                            .tooltip(Tooltip::text("Cancel Commit Message Generation"))
+                            .tooltip(Tooltip::text("取消生成提交信息"))
                             .on_click(cx.listener(|this, _event, _window, cx| {
                                 this.generate_commit_message_task.take();
                                 cx.notify();
                             })),
                     )
                     .child(
-                        Label::new("Generating Commit…")
+                        Label::new("正在生成提交信息…")
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     )
@@ -4562,12 +4562,12 @@ impl GitPanel {
                 })
                 .tooltip(move |_window, cx| {
                     if !can_commit {
-                        Tooltip::simple("No Changes to Commit", cx)
+                        Tooltip::simple("没有可提交的更改", cx)
                     } else if has_commit_model_configuration_error {
-                        Tooltip::simple("Configure an LLM provider to generate commit messages", cx)
+                        Tooltip::simple("请先配置 LLM 提供方后再生成提交信息", cx)
                     } else {
                         Tooltip::for_action_in(
-                            "Generate Commit Message",
+                            "生成提交信息",
                             &git::GenerateCommitMessage,
                             &editor_focus_handle,
                             cx,
@@ -4586,9 +4586,9 @@ impl GitPanel {
         let potential_co_authors = self.potential_co_authors(cx);
 
         let (tooltip_label, icon) = if self.add_coauthors {
-            ("Remove co-authored-by", IconName::Person)
+            ("移除 co-authored-by", IconName::Person)
         } else {
-            ("Add co-authored-by", IconName::UserCheck)
+            ("添加 co-authored-by", IconName::UserCheck)
         };
 
         if potential_co_authors.is_empty() {
@@ -4660,7 +4660,7 @@ impl GitPanel {
                             })
                             .when(has_previous_commit, |this| {
                                 this.toggleable_entry(
-                                    "Amend",
+                                    "修订",
                                     amend,
                                     IconPosition::Start,
                                     Some(Box::new(Amend)),
@@ -4677,7 +4677,7 @@ impl GitPanel {
                                 )
                             })
                             .toggleable_entry(
-                                "Signoff",
+                                "签署",
                                 signoff,
                                 IconPosition::Start,
                                 Some(Box::new(Signoff)),
@@ -4691,15 +4691,15 @@ impl GitPanel {
 
     pub fn configure_commit_button(&self, cx: &mut Context<Self>) -> (bool, &'static str) {
         if self.has_unstaged_conflicts() {
-            (false, "You must resolve conflicts before committing")
+            (false, "提交前必须先解决冲突")
         } else if !self.has_staged_changes() && !self.has_tracked_changes() && !self.amend_pending {
             (false, "无更改可提交")
         } else if self.pending_commit.is_some() {
-            (false, "Commit in progress")
+            (false, "提交进行中")
         } else if !self.has_commit_message(cx) {
-            (false, "No commit message")
+            (false, "没有提交信息")
         } else if !self.has_write_access(cx) {
-            (false, "You do not have write access to this project")
+            (false, "你没有此项目的写入权限")
         } else {
             (true, self.commit_button_title())
         }
@@ -4708,16 +4708,16 @@ impl GitPanel {
     pub fn commit_button_title(&self) -> &'static str {
         if self.amend_pending {
             if self.has_staged_changes() {
-                "Amend"
+                "修订"
             } else if self.has_tracked_changes() {
-                "Amend Tracked"
+                "修订已跟踪"
             } else {
-                "Amend"
+                "修订"
             }
         } else if self.has_staged_changes() {
-            "Commit"
+            "提交"
         } else {
-            "Commit Tracked"
+            "提交已跟踪"
         }
     }
 
@@ -4868,7 +4868,7 @@ impl GitPanel {
                                         .color(Color::Muted),
                                 )
                                 .child(
-                                    Label::new("View Diff")
+                                    Label::new("查看差异")
                                         .size(LabelSize::Small)
                                         .color(Color::Muted),
                                 )
@@ -4885,7 +4885,7 @@ impl GitPanel {
                                 ),
                         )
                         .tooltip(Tooltip::for_action_title_in(
-                            "View Diff",
+                            "查看差异",
                             &Diff,
                             &self.focus_handle,
                         ))
@@ -5221,7 +5221,7 @@ impl GitPanel {
                     .overflow_hidden()
                     .max_w(relative(0.85))
                     .child(
-                        Label::new("This will update your most recent commit.")
+                        Label::new("这将更新你最近一次提交。")
                             .size(LabelSize::Small)
                             .truncate(),
                     ),
@@ -5304,7 +5304,7 @@ impl GitPanel {
                                     .icon_size(IconSize::Small)
                                     .tooltip(move |_window, cx| {
                                         Tooltip::with_meta(
-                                            "Uncommit",
+                                            "撤销提交",
                                             Some(&git::Uncommit),
                                             if has_unstaged {
                                                 "git reset HEAD^ --soft"
@@ -5326,7 +5326,7 @@ impl GitPanel {
                                 .icon_size(IconSize::Small)
                                 .tooltip(|_window, cx| {
                                     Tooltip::for_action(
-                                        "Open Git Graph",
+                                        "打开 Git 图",
                                         &crate::git_graph::Open,
                                         cx,
                                     )
@@ -5391,7 +5391,7 @@ impl GitPanel {
                 ElementId::Name("changes-tab".into()),
                 active_tab == GitPanelTab::Changes,
                 true,
-                "Changes".into(),
+                "更改".into(),
                 GitPanelTab::Changes,
                 ActivateChangesTab.boxed_clone(),
             ))
@@ -5400,7 +5400,7 @@ impl GitPanel {
                 ElementId::Name("history-tab".into()),
                 active_tab != GitPanelTab::Changes,
                 false,
-                "History".into(),
+                "历史".into(),
                 GitPanelTab::History,
                 ActivateHistoryTab.boxed_clone(),
             ))
@@ -5419,14 +5419,14 @@ impl GitPanel {
                     h_flex()
                         .flex_1()
                         .justify_center()
-                        .child(Label::new("Loading Commit History…").color(Color::Muted)),
+                        .child(Label::new("正在加载提交历史…").color(Color::Muted)),
                 )
             } else if !has_repo || !has_commits {
                 this.child(
                     h_flex()
                         .flex_1()
                         .justify_center()
-                        .child(Label::new("No commits yet").color(Color::Muted)),
+                        .child(Label::new("还没有提交记录").color(Color::Muted)),
                 )
             } else {
                 match self.render_commit_history(window, cx) {
@@ -5435,7 +5435,7 @@ impl GitPanel {
                         h_flex()
                             .flex_1()
                             .justify_center()
-                            .child(Label::new("Failed to load commits").color(Color::Muted)),
+                            .child(Label::new("加载提交记录失败").color(Color::Muted)),
                     ),
                 }
             }
@@ -5850,7 +5850,7 @@ impl GitPanel {
             .child(Label::new("无更改可提交").color(Color::Muted))
             .when(show_branch_diff, |this| {
                 this.child(
-                    Button::new("view_branch_diff", "View Branch Diff")
+                    Button::new("view_branch_diff", "查看分支差异")
                         .label_size(LabelSize::Small)
                         .style(ButtonStyle::Outlined)
                         .on_click(move |_, _, cx| {
@@ -5873,9 +5873,9 @@ impl GitPanel {
         });
 
         let message = format!(
-            "Detected dubious ownership in repository at {}. \
-            This happens when the .git/ directory is not owned by the current user. \
-            If you want to learn more about safe directories, visit git's documentation.",
+            "检测到仓库 {} 的所有权可疑。\
+            这通常是因为 .git/ 目录不属于当前用户。\
+            如需了解 safe.directory，请查看 Git 文档。",
             directory.display()
         );
 
@@ -5888,7 +5888,7 @@ impl GitPanel {
                         .flex_wrap()
                         .gap_1()
                         .child(
-                            Button::new("trust_directory", "Trust Directory")
+                            Button::new("trust_directory", "信任目录")
                             .label_size(LabelSize::Small)
                             .layer(ElevationIndex::ModalSurface)
                             .style(ButtonStyle::Filled)
@@ -5902,7 +5902,7 @@ impl GitPanel {
                             )
                     )
                     .child(
-                        Button::new("learn_more", "Learn More")
+                        Button::new("learn_more", "了解更多")
                             .label_size(LabelSize::Small)
                             .style(ButtonStyle::Outlined)
                             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small).color(Color::Muted))
@@ -5918,9 +5918,9 @@ impl GitPanel {
             v_flex()
                 .gap_1()
                 .items_center()
-                .child(Label::new("No Git Repositories").color(Color::Muted))
+                .child(Label::new("没有 Git 仓库").color(Color::Muted))
                 .child(
-                    Button::new("initialize_repository", "Initialize Repository")
+                    Button::new("initialize_repository", "初始化仓库")
                         .label_size(LabelSize::Small)
                         .style(ButtonStyle::Outlined)
                         .tooltip(Tooltip::for_action_title_in(
@@ -6267,12 +6267,12 @@ impl GitPanel {
             return;
         };
         let stage_title = if entry.status.staging().is_fully_staged() {
-            "Unstage File"
+            "取消暂存文件"
         } else {
-            "Stage File"
+            "暂存文件"
         };
         let restore_title = if entry.status.is_created() {
-            "Trash File"
+            "移入废纸篓"
         } else {
             "放弃更改"
         };
@@ -6285,22 +6285,22 @@ impl GitPanel {
                 .separator()
                 .action_disabled_when(
                     !is_created,
-                    "Add to .gitignore",
+                    "添加到 .gitignore",
                     git::AddToGitignore.boxed_clone(),
                 )
                 .action_disabled_when(
                     !is_created,
-                    "Add to .git/info/exclude",
+                    "添加到 .git/info/exclude",
                     git::AddToGitInfoExclude.boxed_clone(),
                 )
                 .separator()
-                .action("Open Diff", menu::Confirm.boxed_clone())
-                .action("Open Diff (File)", menu::SecondaryConfirm.boxed_clone())
-                .action("View File", ViewFile.boxed_clone())
+                .action("打开差异", menu::Confirm.boxed_clone())
+                .action("打开差异（文件）", menu::SecondaryConfirm.boxed_clone())
+                .action("查看文件", ViewFile.boxed_clone())
                 .when(!is_created, |context_menu| {
                     context_menu
                         .separator()
-                        .action("View File History", Box::new(git::FileHistory))
+                        .action("查看文件历史", Box::new(git::FileHistory))
                 })
         });
         self.selected_entry = Some(ix);
