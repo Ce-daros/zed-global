@@ -546,37 +546,48 @@ fn general_page(cx: &App) -> SettingsPage {
 fn appearance_page() -> SettingsPage {
     fn theme_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("主题"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.theme.section",
+            )),
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "主题模式",
-                    description: "选择固定主题，或根据外观和明暗模式动态选择主题。",
+                    title: localization::static_text("settings.appearance.theme_selection.title"),
+                    description: localization::static_text(
+                        "settings.appearance.theme_selection.description",
+                    ),
                     field: Box::new(SettingField {
                         organization_override: None,
                         json_path: Some("theme$"),
                         pick: |settings_content| {
-                            Some(&dynamic_variants::<settings::ThemeSelection>()[
-                                settings_content
+                            Some(
+                                &dynamic_variants::<settings::ThemeSelection>()[settings_content
                                     .theme
                                     .theme
                                     .as_ref()?
-                                    .discriminant() as usize])
+                                    .discriminant()
+                                    as usize],
+                            )
                         },
                         write: |settings_content, value, app: &App| {
                             let Some(value) = value else {
                                 settings_content.theme.theme = None;
                                 return;
                             };
-                            let settings_value = settings_content.theme.theme.get_or_insert_default();
+                            let settings_value =
+                                settings_content.theme.theme.get_or_insert_default();
                             *settings_value = match value {
                                 settings::ThemeSelectionDiscriminants::Static => {
                                     let name = match settings_value {
                                         settings::ThemeSelection::Static(_) => return,
                                         settings::ThemeSelection::Dynamic { mode, light, dark } => {
                                             match mode {
-                                                theme_settings::ThemeAppearanceMode::Light => light.clone(),
-                                                theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
+                                                theme_settings::ThemeAppearanceMode::Light => {
+                                                    light.clone()
+                                                }
+                                                theme_settings::ThemeAppearanceMode::Dark => {
+                                                    dark.clone()
+                                                }
                                                 theme_settings::ThemeAppearanceMode::System => {
                                                     if SystemAppearance::global(app).is_light() {
                                                         light.clone()
@@ -585,14 +596,16 @@ fn appearance_page() -> SettingsPage {
                                                     }
                                                 }
                                             }
-                                        },
+                                        }
                                     };
                                     settings::ThemeSelection::Static(name)
-                                },
+                                }
                                 settings::ThemeSelectionDiscriminants::Dynamic => {
                                     let static_name = match settings_value {
-                                        settings::ThemeSelection::Static(theme_name) => theme_name.clone(),
-                                        settings::ThemeSelection::Dynamic {..} => return,
+                                        settings::ThemeSelection::Static(theme_name) => {
+                                            theme_name.clone()
+                                        }
+                                        settings::ThemeSelection::Dynamic { .. } => return,
                                     };
 
                                     settings::ThemeSelection::Dynamic {
@@ -600,7 +613,7 @@ fn appearance_page() -> SettingsPage {
                                         light: static_name.clone(),
                                         dark: static_name,
                                     }
-                                },
+                                }
                             };
                         },
                     }),
@@ -609,171 +622,214 @@ fn appearance_page() -> SettingsPage {
                 pick_discriminant: |settings_content| {
                     Some(settings_content.theme.theme.as_ref()?.discriminant() as usize)
                 },
-                fields: dynamic_variants::<settings::ThemeSelection>().into_iter().map(|variant| {
-                    match variant {
-                        settings::ThemeSelectionDiscriminants::Static => vec![
-                            SettingItem {
-                                files: USER,
-                                title: "主题名称",
-                                description: "所选主题的名称。",
-                                field: Box::new(SettingField {
-                                    organization_override: None,
-                                    json_path: Some("theme"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Static(name)) => Some(name),
-                                            _ => None
+                fields: dynamic_variants::<settings::ThemeSelection>()
+                    .into_iter()
+                    .map(|variant| match variant {
+                        settings::ThemeSelectionDiscriminants::Static => vec![SettingItem {
+                            files: USER,
+                            title: localization::static_text(
+                                "settings.appearance.theme_name.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.appearance.theme_name.description",
+                            ),
+                            field: Box::new(SettingField {
+                                organization_override: None,
+                                json_path: Some("theme"),
+                                pick: |settings_content| match settings_content.theme.theme.as_ref()
+                                {
+                                    Some(settings::ThemeSelection::Static(name)) => Some(name),
+                                    _ => None,
+                                },
+                                write: |settings_content, value, _| {
+                                    let Some(value) = value else {
+                                        return;
+                                    };
+                                    match settings_content.theme.theme.get_or_insert_default() {
+                                        settings::ThemeSelection::Static(theme_name) => {
+                                            *theme_name = value
                                         }
-                                    },
-                                    write: |settings_content, value, _| {
-                                        let Some(value) = value else {
-                                            return;
-                                        };
-                                        match settings_content
-                                            .theme
-                                            .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Static(theme_name) => *theme_name = value,
-                                                _ => return
-                                            }
-                                    },
-                                }),
-                                metadata: None,
-                            }
-                        ],
+                                        _ => return,
+                                    }
+                                },
+                            }),
+                            metadata: None,
+                        }],
                         settings::ThemeSelectionDiscriminants::Dynamic => vec![
                             SettingItem {
                                 files: USER,
-                                title: "模式",
-                                description: "选择使用所选浅色或深色主题，或跟随操作系统外观设置。",
+                                title: localization::static_text(
+                                    "settings.appearance.theme_mode.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.theme_mode.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("theme.mode"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { mode, ..}) => Some(mode),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::ThemeSelection::Dynamic {
+                                            mode, ..
+                                        }) => Some(mode),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ mode, ..} => *mode = value,
-                                                _ => return
+                                        match settings_content.theme.theme.get_or_insert_default() {
+                                            settings::ThemeSelection::Dynamic { mode, .. } => {
+                                                *mode = value
                                             }
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
                             },
                             SettingItem {
                                 files: USER,
-                                title: "浅色主题",
-                                description: "当模式为浅色，或模式为系统且系统处于浅色时使用的主题。",
+                                title: localization::static_text(
+                                    "settings.appearance.light_theme.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.light_theme.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("theme.light"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { light, ..}) => Some(light),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::ThemeSelection::Dynamic {
+                                            light, ..
+                                        }) => Some(light),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ light, ..} => *light = value,
-                                                _ => return
+                                        match settings_content.theme.theme.get_or_insert_default() {
+                                            settings::ThemeSelection::Dynamic { light, .. } => {
+                                                *light = value
                                             }
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
                             },
                             SettingItem {
                                 files: USER,
-                                title: "深色主题",
-                                description: "当模式为深色，或模式为系统且系统处于深色时使用的主题。",
+                                title: localization::static_text(
+                                    "settings.appearance.dark_theme.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.dark_theme.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("theme.dark"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { dark, ..}) => Some(dark),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::ThemeSelection::Dynamic {
+                                            dark, ..
+                                        }) => Some(dark),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ dark, ..} => *dark = value,
-                                                _ => return
+                                        match settings_content.theme.theme.get_or_insert_default() {
+                                            settings::ThemeSelection::Dynamic { dark, .. } => {
+                                                *dark = value
                                             }
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
-                            }
+                            },
                         ],
-                    }
-                }).collect(),
+                    })
+                    .collect(),
             }),
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "图标主题",
-                    description: "Zed 用于文件和目录的自定义图标集。",
+                    title: localization::static_text(
+                        "settings.appearance.icon_theme_selection.title",
+                    ),
+                    description: localization::static_text(
+                        "settings.appearance.icon_theme_selection.description",
+                    ),
                     field: Box::new(SettingField {
                         organization_override: None,
                         json_path: Some("icon_theme$"),
                         pick: |settings_content| {
-                            Some(&dynamic_variants::<settings::IconThemeSelection>()[
-                                settings_content
+                            Some(
+                                &dynamic_variants::<settings::IconThemeSelection>()[settings_content
                                     .theme
                                     .icon_theme
                                     .as_ref()?
-                                    .discriminant() as usize])
+                                    .discriminant()
+                                    as usize],
+                            )
                         },
                         write: |settings_content, value, app| {
                             let Some(value) = value else {
                                 settings_content.theme.icon_theme = None;
                                 return;
                             };
-                            let settings_value = settings_content.theme.icon_theme.get_or_insert_with(|| {
-                                settings::IconThemeSelection::Static(settings::IconThemeName(theme::default_icon_theme().name.clone().into()))
-                            });
+                            let settings_value =
+                                settings_content.theme.icon_theme.get_or_insert_with(|| {
+                                    settings::IconThemeSelection::Static(settings::IconThemeName(
+                                        theme::default_icon_theme().name.clone().into(),
+                                    ))
+                                });
                             *settings_value = match value {
                                 settings::IconThemeSelectionDiscriminants::Static => {
                                     let name = match settings_value {
                                         settings::IconThemeSelection::Static(_) => return,
-                                        settings::IconThemeSelection::Dynamic { mode, light, dark } => {
-                                            match mode {
-                                                theme_settings::ThemeAppearanceMode::Light => light.clone(),
-                                                theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
-                                                theme_settings::ThemeAppearanceMode::System => {
-                                                    if SystemAppearance::global(app).is_light() {
-                                                        light.clone()
-                                                    } else {
-                                                        dark.clone()
-                                                    }
+                                        settings::IconThemeSelection::Dynamic {
+                                            mode,
+                                            light,
+                                            dark,
+                                        } => match mode {
+                                            theme_settings::ThemeAppearanceMode::Light => {
+                                                light.clone()
+                                            }
+                                            theme_settings::ThemeAppearanceMode::Dark => {
+                                                dark.clone()
+                                            }
+                                            theme_settings::ThemeAppearanceMode::System => {
+                                                if SystemAppearance::global(app).is_light() {
+                                                    light.clone()
+                                                } else {
+                                                    dark.clone()
                                                 }
                                             }
                                         },
                                     };
                                     settings::IconThemeSelection::Static(name)
-                                },
+                                }
                                 settings::IconThemeSelectionDiscriminants::Dynamic => {
                                     let static_name = match settings_value {
-                                        settings::IconThemeSelection::Static(theme_name) => theme_name.clone(),
-                                        settings::IconThemeSelection::Dynamic {..} => return,
+                                        settings::IconThemeSelection::Static(theme_name) => {
+                                            theme_name.clone()
+                                        }
+                                        settings::IconThemeSelection::Dynamic { .. } => return,
                                     };
 
                                     settings::IconThemeSelection::Dynamic {
@@ -781,7 +837,7 @@ fn appearance_page() -> SettingsPage {
                                         light: static_name.clone(),
                                         dark: static_name,
                                     }
-                                },
+                                }
                             };
                         },
                     }),
@@ -790,122 +846,157 @@ fn appearance_page() -> SettingsPage {
                 pick_discriminant: |settings_content| {
                     Some(settings_content.theme.icon_theme.as_ref()?.discriminant() as usize)
                 },
-                fields: dynamic_variants::<settings::IconThemeSelection>().into_iter().map(|variant| {
-                    match variant {
-                        settings::IconThemeSelectionDiscriminants::Static => vec![
-                            SettingItem {
-                                files: USER,
-                                title: "图标主题名称",
-                                description: "所选图标主题的名称。",
-                                field: Box::new(SettingField {
-                                    organization_override: None,
-                                    json_path: Some("icon_theme$string"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Static(name)) => Some(name),
-                                            _ => None
+                fields: dynamic_variants::<settings::IconThemeSelection>()
+                    .into_iter()
+                    .map(|variant| match variant {
+                        settings::IconThemeSelectionDiscriminants::Static => vec![SettingItem {
+                            files: USER,
+                            title: localization::static_text(
+                                "settings.appearance.icon_theme_name.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.appearance.icon_theme_name.description",
+                            ),
+                            field: Box::new(SettingField {
+                                organization_override: None,
+                                json_path: Some("icon_theme$string"),
+                                pick: |settings_content| match settings_content
+                                    .theme
+                                    .icon_theme
+                                    .as_ref()
+                                {
+                                    Some(settings::IconThemeSelection::Static(name)) => Some(name),
+                                    _ => None,
+                                },
+                                write: |settings_content, value, _| {
+                                    let Some(value) = value else {
+                                        return;
+                                    };
+                                    match settings_content.theme.icon_theme.as_mut() {
+                                        Some(settings::IconThemeSelection::Static(theme_name)) => {
+                                            *theme_name = value
                                         }
-                                    },
-                                    write: |settings_content, value, _| {
-                                        let Some(value) = value else {
-                                            return;
-                                        };
-                                        match settings_content
-                                            .theme
-                                            .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Static(theme_name)) => *theme_name = value,
-                                                _ => return
-                                            }
-                                    },
-                                }),
-                                metadata: None,
-                            }
-                        ],
+                                        _ => return,
+                                    }
+                                },
+                            }),
+                            metadata: None,
+                        }],
                         settings::IconThemeSelectionDiscriminants::Dynamic => vec![
                             SettingItem {
                                 files: USER,
-                                title: "模式",
-                                description: "选择使用所选浅色或深色图标主题，或跟随操作系统外观设置。",
+                                title: localization::static_text(
+                                    "settings.appearance.icon_theme_mode.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.icon_theme_mode.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("icon_theme"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { mode, ..}) => Some(mode),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .icon_theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::IconThemeSelection::Dynamic {
+                                            mode,
+                                            ..
+                                        }) => Some(mode),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ mode, ..}) => *mode = value,
-                                                _ => return
-                                            }
+                                        match settings_content.theme.icon_theme.as_mut() {
+                                            Some(settings::IconThemeSelection::Dynamic {
+                                                mode,
+                                                ..
+                                            }) => *mode = value,
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
                             },
                             SettingItem {
                                 files: USER,
-                                title: "浅色图标主题",
-                                description: "当模式为浅色，或模式为系统且系统处于浅色时使用的图标主题。",
+                                title: localization::static_text(
+                                    "settings.appearance.light_icon_theme.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.light_icon_theme.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("icon_theme.light"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { light, ..}) => Some(light),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .icon_theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::IconThemeSelection::Dynamic {
+                                            light,
+                                            ..
+                                        }) => Some(light),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ light, ..}) => *light = value,
-                                                _ => return
-                                            }
+                                        match settings_content.theme.icon_theme.as_mut() {
+                                            Some(settings::IconThemeSelection::Dynamic {
+                                                light,
+                                                ..
+                                            }) => *light = value,
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
                             },
                             SettingItem {
                                 files: USER,
-                                title: "深色图标主题",
-                                description: "当模式为深色，或模式为系统且系统处于深色时使用的图标主题。",
+                                title: localization::static_text(
+                                    "settings.appearance.dark_icon_theme.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.appearance.dark_icon_theme.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("icon_theme.dark"),
-                                    pick: |settings_content| {
-                                        match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { dark, ..}) => Some(dark),
-                                            _ => None
-                                        }
+                                    pick: |settings_content| match settings_content
+                                        .theme
+                                        .icon_theme
+                                        .as_ref()
+                                    {
+                                        Some(settings::IconThemeSelection::Dynamic {
+                                            dark,
+                                            ..
+                                        }) => Some(dark),
+                                        _ => None,
                                     },
                                     write: |settings_content, value, _| {
                                         let Some(value) = value else {
                                             return;
                                         };
-                                        match settings_content
-                                            .theme
-                                            .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ dark, ..}) => *dark = value,
-                                                _ => return
-                                            }
+                                        match settings_content.theme.icon_theme.as_mut() {
+                                            Some(settings::IconThemeSelection::Dynamic {
+                                                dark,
+                                                ..
+                                            }) => *dark = value,
+                                            _ => return,
+                                        }
                                     },
                                 }),
                                 metadata: None,
-                            }
+                            },
                         ],
-                    }
-                }).collect(),
+                    })
+                    .collect(),
             }),
         ]
     }
