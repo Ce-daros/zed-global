@@ -1,0 +1,8 @@
+{
+  "agent.thread.copied_context": "{name} をコピーしました",
+  "agent.thread.go_to_file": "ファイルに移動",
+  "common.close": "閉じる",
+  "git.commit": "コミット",
+  "git.stage_file": "ファイルをステージする",
+  "git.unstage_file": "ファイルをステージから外す"
+}
