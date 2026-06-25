@@ -1,0 +1,8 @@
+{
+  "agent.thread.copied_context": "已複製 {name}",
+  "agent.thread.go_to_file": "前往檔案",
+  "common.close": "關閉",
+  "git.commit": "提交",
+  "git.stage_file": "暫存檔案",
+  "git.unstage_file": "取消暫存檔案"
+}
