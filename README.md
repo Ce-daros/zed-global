@@ -1,57 +1,166 @@
-# Zed
+# Zed Global
 
-[![Zed](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/zed-industries/zed/main/assets/badge/v0.json)](https://zed.dev)
-[![CI](https://github.com/zed-industries/zed/actions/workflows/run_tests.yml/badge.svg)](https://github.com/zed-industries/zed/actions/workflows/run_tests.yml)
+Language: [English](#english) | [简体中文](#简体中文) | [繁體中文（台灣）](#繁體中文台灣) | [日本語](#日本語) | [한국어](#한국어) | [Español](#español) | [Русский](#русский)
 
-Welcome to Zed, a high-performance, multiplayer code editor from the creators of [Atom](https://github.com/atom/atom) and [Tree-sitter](https://github.com/tree-sitter/tree-sitter).
+## English
 
----
+Zed Global is a multilingual fork of [Zed](https://github.com/zed-industries/zed), a high-performance code editor from the creators of Atom and Tree-sitter.
 
-### Installation
+This fork keeps close to upstream Zed while adding compiled localization resources for:
 
-On macOS, Linux, and Windows you can [download Zed directly](https://zed.dev/download) or install Zed via your local package manager ([macOS](https://zed.dev/docs/installation#macos)/[Linux](https://zed.dev/docs/linux#installing-via-a-package-manager)/[Windows](https://zed.dev/docs/windows#package-managers)).
+- English (United States): `en-US`
+- Simplified Chinese: `zh-Hans`
+- Traditional Chinese (Hong Kong): `zh-Hant-HK`
+- Traditional Chinese (Taiwan): `zh-Hant-TW`
+- Japanese: `ja-JP`
+- Korean: `ko-KR`
+- Spanish (Spain): `es-ES`
+- Russian: `ru-RU`
 
-Other platforms are not yet available:
+### Builds
 
-- Web ([tracking discussion](https://github.com/zed-industries/zed/discussions/26195))
+Windows builds are produced by the manual GitHub Actions workflow `build-global`.
 
-### Developing Zed
+### Development
 
 - [Building Zed for macOS](./docs/src/development/macos.md)
 - [Building Zed for Linux](./docs/src/development/linux.md)
 - [Building Zed for Windows](./docs/src/development/windows.md)
 
-### Contributing
+### Upstream
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for ways you can contribute to Zed.
+Upstream Zed lives at [zed-industries/zed](https://github.com/zed-industries/zed).
 
-Also... we're hiring! Check out our [jobs](https://zed.dev/jobs) page for open roles.
-
-### Licensing
+### License
 
 Zed source code is licensed primarily under GPL-3.0-or-later, with Apache-2.0 components where marked.
 
-License information for third party dependencies must be correctly provided for CI to pass.
+## 简体中文
 
-We use [`cargo-about`](https://github.com/EmbarkStudios/cargo-about) to automatically comply with open source licenses. If CI is failing, check the following:
+Zed Global 是 [Zed](https://github.com/zed-industries/zed) 的多语言分支。Zed 是一款高性能代码编辑器，由 Atom 和 Tree-sitter 的创建者打造。
 
-- Is it showing a `no license specified` error for a crate you've created? If so, add `publish = false` under `[package]` in your crate's Cargo.toml.
-- Is the error `failed to satisfy license requirements` for a dependency? If so, first determine what license the project has and whether this system is sufficient to comply with this license's requirements. If you're unsure, ask a lawyer. Once you've verified that this system is acceptable add the license's SPDX identifier to the `accepted` array in `script/licenses/zed-licenses.toml`.
-- Is `cargo-about` unable to find the license for a dependency? If so, add a clarification field at the end of `script/licenses/zed-licenses.toml`, as specified in the [cargo-about book](https://embarkstudios.github.io/cargo-about/cli/generate/config.html#crate-configuration).
+这个分支尽量跟随上游 Zed，同时加入编译进程序的本地化资源。
 
-## Sponsorship
+支持语言：
 
-Zed is developed by **Zed Industries, Inc.**, a for-profit company.
+- 英语（美国）：`en-US`
+- 简体中文：`zh-Hans`
+- 繁体中文（香港）：`zh-Hant-HK`
+- 繁体中文（台湾）：`zh-Hant-TW`
+- 日语：`ja-JP`
+- 韩语：`ko-KR`
+- 西班牙语（西班牙）：`es-ES`
+- 俄语：`ru-RU`
 
-If you’d like to financially support the project, you can do so via GitHub Sponsors.
-Sponsorships go directly to Zed Industries and are used as general company revenue.
-There are no perks or entitlements associated with sponsorship.
+Windows 构建通过手动 GitHub Actions 工作流 `build-global` 生成。
 
+开发文档：
 
+- [macOS 构建说明](./docs/src/development/macos.md)
+- [Linux 构建说明](./docs/src/development/linux.md)
+- [Windows 构建说明](./docs/src/development/windows.md)
 
-- me: do a nixos integration test (using KVM)
-- agent: i need to turn off the sandbox
-- me: "allow for this thread"
-- agent: runs the tests unsandboxed
-- me: use the terminal to ls this directory
-- agent: runs `ls` *sandboxed*
+上游仓库：[zed-industries/zed](https://github.com/zed-industries/zed)。
+
+## 繁體中文（台灣）
+
+Zed Global 是 [Zed](https://github.com/zed-industries/zed) 的多語言分支。Zed 是一款高效能程式碼編輯器，由 Atom 與 Tree-sitter 的建立者打造。
+
+這個分支盡量跟隨上游 Zed，同時加入編譯進程式的在地化資源。
+
+支援語言：
+
+- 英文（美國）：`en-US`
+- 簡體中文：`zh-Hans`
+- 繁體中文（香港）：`zh-Hant-HK`
+- 繁體中文（台灣）：`zh-Hant-TW`
+- 日文：`ja-JP`
+- 韓文：`ko-KR`
+- 西班牙文（西班牙）：`es-ES`
+- 俄文：`ru-RU`
+
+Windows 建置由手動 GitHub Actions 工作流程 `build-global` 產生。
+
+開發文件：
+
+- [macOS 建置說明](./docs/src/development/macos.md)
+- [Linux 建置說明](./docs/src/development/linux.md)
+- [Windows 建置說明](./docs/src/development/windows.md)
+
+上游儲存庫：[zed-industries/zed](https://github.com/zed-industries/zed)。
+
+## 日本語
+
+Zed Global は [Zed](https://github.com/zed-industries/zed) の多言語フォークです。Zed は Atom と Tree-sitter の開発者による高性能なコードエディターです。
+
+このフォークは upstream Zed に追従しながら、ビルドに組み込まれるローカライズリソースを追加します。
+
+対応ロケール:
+
+- English (United States): `en-US`
+- 简体中文: `zh-Hans`
+- 繁體中文（香港）: `zh-Hant-HK`
+- 繁體中文（台灣）: `zh-Hant-TW`
+- 日本語: `ja-JP`
+- 한국어: `ko-KR`
+- Español (España): `es-ES`
+- Русский: `ru-RU`
+
+Windows ビルドは手動 GitHub Actions ワークフロー `build-global` で作成されます。
+
+## 한국어
+
+Zed Global은 [Zed](https://github.com/zed-industries/zed)의 다국어 포크입니다. Zed는 Atom과 Tree-sitter 제작진이 만든 고성능 코드 편집기입니다.
+
+이 포크는 upstream Zed를 따라가면서 빌드에 포함되는 현지화 리소스를 추가합니다.
+
+지원 로캘:
+
+- English (United States): `en-US`
+- 简体中文: `zh-Hans`
+- 繁體中文（香港）: `zh-Hant-HK`
+- 繁體中文（台灣）: `zh-Hant-TW`
+- 日本語: `ja-JP`
+- 한국어: `ko-KR`
+- Español (España): `es-ES`
+- Русский: `ru-RU`
+
+Windows 빌드는 수동 GitHub Actions 워크플로 `build-global`에서 생성됩니다.
+
+## Español
+
+Zed Global es una bifurcación multilingüe de [Zed](https://github.com/zed-industries/zed), un editor de código de alto rendimiento creado por los autores de Atom y Tree-sitter.
+
+Esta bifurcación sigue de cerca a upstream Zed y añade recursos de localización compilados en la aplicación.
+
+Idiomas incluidos:
+
+- English (United States): `en-US`
+- 简体中文: `zh-Hans`
+- 繁體中文（香港）: `zh-Hant-HK`
+- 繁體中文（台灣）: `zh-Hant-TW`
+- 日本語: `ja-JP`
+- 한국어: `ko-KR`
+- Español (España): `es-ES`
+- Русский: `ru-RU`
+
+Las compilaciones de Windows se generan con el flujo manual de GitHub Actions `build-global`.
+
+## Русский
+
+Zed Global — многоязычный форк [Zed](https://github.com/zed-industries/zed), производительного редактора кода от создателей Atom и Tree-sitter.
+
+Этот форк следует upstream Zed и добавляет локализационные ресурсы, встраиваемые при сборке.
+
+Поддерживаемые локали:
+
+- English (United States): `en-US`
+- 简体中文: `zh-Hans`
+- 繁體中文（香港）: `zh-Hant-HK`
+- 繁體中文（台灣）: `zh-Hant-TW`
+- 日本語: `ja-JP`
+- 한국어: `ko-KR`
+- Español (España): `es-ES`
+- Русский: `ru-RU`
+
+Сборки для Windows создаются вручную через workflow GitHub Actions `build-global`.

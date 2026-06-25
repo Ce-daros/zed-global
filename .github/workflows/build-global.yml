@@ -1,4 +1,4 @@
-name: build-cn
+name: build-global
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         type: boolean
         default: true
       tag_name:
-        description: "Release tag. Empty uses zh-<run number>-<date>."
+        description: "Release tag. Empty uses global-<run number>-<date>."
         type: string
         default: ""
 
@@ -70,7 +70,7 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zed-cn-windows
+          name: zed-global-windows
           path: |
             target/release/zed.exe
             target/release/cli.exe
@@ -93,13 +93,13 @@ jobs:
         run: |
           tag="${{ inputs.tag_name }}"
           if [ -z "$tag" ]; then
-            tag="zh-${GITHUB_RUN_NUMBER}-$(date +'%Y%m%d')"
+            tag="global-${GITHUB_RUN_NUMBER}-$(date +'%Y%m%d')"
           fi
-          mkdir -p zed-cn-windows
-          mv artifacts/zed-cn-windows/zed.exe zed-cn-windows/
-          mv artifacts/zed-cn-windows/cli.exe zed-cn-windows/
-          zip -r zed-cn-windows.zip zed-cn-windows
-          sha256sum zed-cn-windows.zip > sha256sums.txt
+          mkdir -p zed-global-windows
+          mv artifacts/zed-global-windows/zed.exe zed-global-windows/
+          mv artifacts/zed-global-windows/cli.exe zed-global-windows/
+          zip -r zed-global-windows.zip zed-global-windows
+          sha256sum zed-global-windows.zip > sha256sums.txt
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release
@@ -107,8 +107,20 @@ jobs:
         with:
           name: ${{ steps.release.outputs.tag }}
           tag_name: ${{ steps.release.outputs.tag }}
+          body: |
+            Zed Global build with compiled localization resources.
+
+            Included locales:
+            - English (United States)
+            - Simplified Chinese
+            - Traditional Chinese (Hong Kong)
+            - Traditional Chinese (Taiwan)
+            - Japanese
+            - Korean
+            - Spanish (Spain)
+            - Russian
           draft: false
           make_latest: true
           files: |
-            zed-cn-windows.zip
+            zed-global-windows.zip
             sha256sums.txt
