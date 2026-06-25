@@ -500,6 +500,7 @@ dependencies = [
  "language_model",
  "language_models",
  "languages",
+ "localization",
  "log",
  "lru",
  "lsp",
@@ -7381,6 +7382,7 @@ dependencies = [
  "itertools 0.14.0",
  "language",
  "language_model",
+ "localization",
  "log",
  "markdown",
  "menu",
@@ -10374,6 +10376,15 @@ dependencies = [
  "schemars 1.0.4",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "localization"
+version = "0.1.0"
+dependencies = [
+ "parking_lot",
+ "serde_json",
+ "sys-locale",
 ]
 
 [[package]]

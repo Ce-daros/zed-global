@@ -9831,7 +9831,10 @@ impl ThreadView {
             .when_some(location, |this, _loc| {
                 this.child(
                     h_flex().w_full().justify_end().child(
-                        Button::new(("go-to-file", entry_ix), "转到文件")
+                        Button::new(
+                            ("go-to-file", entry_ix),
+                            localization::text("agent.thread.go_to_file"),
+                        )
                             .label_size(LabelSize::Small)
                             .on_click(cx.listener(move |this, _, window, cx| {
                                 this.open_tool_call_location(entry_ix, 0, window, cx);

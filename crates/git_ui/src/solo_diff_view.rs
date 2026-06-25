@@ -748,7 +748,7 @@ impl Render for SoloDiffGitToolbar {
             .child(
                 h_group_sm()
                     .child(if button_states.stage_file {
-                        Button::new("stage-file", "暂存文件")
+                        Button::new("stage-file", localization::text("git.stage_file"))
                             .tooltip(Tooltip::for_action_title_in(
                                 "Stage file",
                                 &StageFile,
@@ -759,7 +759,7 @@ impl Render for SoloDiffGitToolbar {
                                 cx.listener(|this, _, window, cx| this.stage_file(window, cx)),
                             )
                     } else {
-                        Button::new("unstage-file", "取消暂存文件")
+                        Button::new("unstage-file", localization::text("git.unstage_file"))
                             .tooltip(Tooltip::for_action_title_in(
                                 "Unstage file",
                                 &UnstageFile,
@@ -771,7 +771,7 @@ impl Render for SoloDiffGitToolbar {
                             )
                     })
                     .child(
-                        Button::new("commit", "提交")
+                        Button::new("commit", localization::text("git.commit"))
                             .tooltip(Tooltip::for_action_title_in(
                                 "Commit",
                                 &Commit,
