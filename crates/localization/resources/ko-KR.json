@@ -1,0 +1,8 @@
+{
+  "agent.thread.copied_context": "{name} 복사됨",
+  "agent.thread.go_to_file": "파일로 이동",
+  "common.close": "닫기",
+  "git.commit": "커밋",
+  "git.stage_file": "파일 스테이징",
+  "git.unstage_file": "파일 스테이징 취소"
+}
