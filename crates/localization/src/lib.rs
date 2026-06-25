@@ -38,6 +38,10 @@ const RESOURCES: &[LocaleResource] = &[
         tag: "es-ES",
         json: include_str!("../resources/es-ES.json"),
     },
+    LocaleResource {
+        tag: "ru-RU",
+        json: include_str!("../resources/ru-RU.json"),
+    },
 ];
 
 static ACTIVE_LOCALE: OnceLock<RwLock<String>> = OnceLock::new();
@@ -60,6 +64,7 @@ pub fn available_locales() -> &'static [&'static str] {
         "ja-JP",
         "ko-KR",
         "es-ES",
+        "ru-RU",
     ]
 }
 

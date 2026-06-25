@@ -1,0 +1,8 @@
+{
+  "agent.thread.copied_context": "Скопировано {name}",
+  "agent.thread.go_to_file": "Перейти к файлу",
+  "common.close": "Закрыть",
+  "git.commit": "Коммит",
+  "git.stage_file": "Добавить файл в индекс",
+  "git.unstage_file": "Убрать файл из индекса"
+}
