@@ -7285,10 +7285,14 @@ fn panels_page() -> SettingsPage {
 fn debugger_page() -> SettingsPage {
     fn general_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("常规"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.debugger.general.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "步进粒度",
-                description: "决定调试操作的步进粒度。",
+                title: localization::static_text("settings.debugger.stepping_granularity.title"),
+                description: localization::static_text(
+                    "settings.debugger.stepping_granularity.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.stepping_granularity"),
@@ -7310,8 +7314,10 @@ fn debugger_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "保存断点",
-                description: "是否在不同 Zed 会话之间复用断点。",
+                title: localization::static_text("settings.debugger.save_breakpoints.title"),
+                description: localization::static_text(
+                    "settings.debugger.save_breakpoints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.save_breakpoints"),
@@ -7333,8 +7339,8 @@ fn debugger_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "超时",
-                description: "连接 TCP 调试适配器时触发超时错误前等待的毫秒数。",
+                title: localization::static_text("settings.debugger.timeout.title"),
+                description: localization::static_text("settings.debugger.timeout.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.timeout"),
@@ -7347,8 +7353,10 @@ fn debugger_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "记录 DAP 通信",
-                description: "是否记录活动调试适配器与 Zed 之间的消息。",
+                title: localization::static_text("settings.debugger.log_dap_communications.title"),
+                description: localization::static_text(
+                    "settings.debugger.log_dap_communications.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.log_dap_communications"),
@@ -7370,8 +7378,10 @@ fn debugger_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "格式化 DAP 日志消息",
-                description: "写入调试适配器日志时是否格式化 DAP 消息。",
+                title: localization::static_text("settings.debugger.format_dap_log_messages.title"),
+                description: localization::static_text(
+                    "settings.debugger.format_dap_log_messages.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.format_dap_log_messages"),
@@ -7396,7 +7406,7 @@ fn debugger_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "调试器",
+        title: localization::static_text("settings.debugger.page.title"),
         items: concat_sections![general_section()],
     }
 }
@@ -8316,12 +8326,16 @@ fn terminal_page() -> SettingsPage {
 fn version_control_page() -> SettingsPage {
     fn git_integration_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("Git 集成"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.git_integration.section",
+            )),
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "禁用 Git 集成",
-                    description: "禁用 Zed 中的所有 Git 集成功能。",
+                    title: localization::static_text("settings.version_control.disable_git.title"),
+                    description: localization::static_text(
+                        "settings.version_control.disable_git.description",
+                    ),
                     field: Box::new(SettingField::<bool> {
                         organization_override: None,
                         json_path: Some("git.disable_git"),
@@ -8360,8 +8374,12 @@ fn version_control_page() -> SettingsPage {
                     vec![
                         SettingItem {
                             files: USER,
-                            title: "启用 Git 状态",
-                            description: "在编辑器中显示 Git 状态信息。",
+                            title: localization::static_text(
+                                "settings.version_control.enable_git_status.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.version_control.enable_git_status.description",
+                            ),
                             field: Box::new(SettingField::<bool> {
                                 organization_override: None,
                                 json_path: Some("git.enable_status"),
@@ -8387,8 +8405,12 @@ fn version_control_page() -> SettingsPage {
                         },
                         SettingItem {
                             files: USER,
-                            title: "启用 Git 差异",
-                            description: "在编辑器中显示 Git 差异信息。",
+                            title: localization::static_text(
+                                "settings.version_control.enable_git_diff.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.version_control.enable_git_diff.description",
+                            ),
                             field: Box::new(SettingField::<bool> {
                                 organization_override: None,
                                 json_path: Some("git.enable_diff"),
@@ -8420,10 +8442,14 @@ fn version_control_page() -> SettingsPage {
 
     fn git_gutter_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("Git 边栏"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.git_gutter.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示",
-                description: "控制是否在编辑器边栏中显示 Git 状态。",
+                title: localization::static_text("settings.version_control.git_gutter_show.title"),
+                description: localization::static_text(
+                    "settings.version_control.git_gutter_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.git_gutter"),
@@ -8437,8 +8463,12 @@ fn version_control_page() -> SettingsPage {
             }),
             // todo(settings_ui): Figure out the right default for this value in default.json
             SettingsPageItem::SettingItem(SettingItem {
-                title: "防抖",
-                description: "变更反映到 Git 边栏前的防抖阈值，单位为毫秒。",
+                title: localization::static_text(
+                    "settings.version_control.git_gutter_debounce.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.git_gutter_debounce.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.gutter_debounce"),
@@ -8457,10 +8487,16 @@ fn version_control_page() -> SettingsPage {
 
     fn inline_git_blame_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("内联 Git 追溯"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.inline_git_blame.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用",
-                description: "是否在当前聚焦行内显示 Git blame 信息。",
+                title: localization::static_text(
+                    "settings.version_control.inline_git_blame_enabled.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.inline_git_blame_enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.inline_blame.enabled"),
@@ -8486,8 +8522,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "延迟",
-                description: "显示内联追溯信息前的延迟。",
+                title: localization::static_text(
+                    "settings.version_control.inline_git_blame_delay_ms.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.inline_git_blame_delay_ms.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.inline_blame.delay_ms"),
@@ -8513,8 +8553,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "间距",
-                description: "源代码行末尾与内联追溯起点之间的列间距。",
+                title: localization::static_text(
+                    "settings.version_control.inline_git_blame_padding.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.inline_git_blame_padding.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.inline_blame.padding"),
@@ -8540,8 +8584,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "最小列",
-                description: "显示内联追溯信息的最小列号。",
+                title: localization::static_text(
+                    "settings.version_control.inline_git_blame_min_column.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.inline_git_blame_min_column.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.inline_blame.min_column"),
@@ -8567,8 +8615,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示提交摘要",
-                description: "在内联追溯中显示提交摘要。",
+                title: localization::static_text(
+                    "settings.version_control.inline_git_blame_show_commit_summary.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.inline_git_blame_show_commit_summary.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.inline_blame.show_commit_summary"),
@@ -8598,10 +8650,16 @@ fn version_control_page() -> SettingsPage {
 
     fn git_blame_view_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("Git 追溯视图"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.git_blame_view.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示头像",
-                description: "显示提交作者的头像。",
+                title: localization::static_text(
+                    "settings.version_control.git_blame_show_avatar.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.git_blame_show_avatar.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.blame.show_avatar"),
@@ -8631,10 +8689,16 @@ fn version_control_page() -> SettingsPage {
 
     fn branch_picker_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("分支选择器"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.branch_picker.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示作者名",
-                description: "在分支选择器的提交信息中显示作者名。",
+                title: localization::static_text(
+                    "settings.version_control.branch_picker_show_author_name.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.branch_picker_show_author_name.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.branch_picker.show_author_name"),
@@ -8664,10 +8728,16 @@ fn version_control_page() -> SettingsPage {
 
     fn git_hunks_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("Git 代码块"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.version_control.git_hunks.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代码块样式",
-                description: "Git 差异块在编辑器中的显示方式。",
+                title: localization::static_text(
+                    "settings.version_control.git_hunks_hunk_style.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.git_hunks_hunk_style.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.hunk_style"),
@@ -8680,8 +8750,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "路径样式",
-                description: "Git 视图中优先显示名称还是路径。",
+                title: localization::static_text(
+                    "settings.version_control.git_hunks_path_style.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.git_hunks_path_style.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.path_style"),
@@ -8694,8 +8768,12 @@ fn version_control_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示暂存/恢复按钮",
-                description: "是否在差异块上显示暂存和还原按钮。",
+                title: localization::static_text(
+                    "settings.version_control.git_hunks_show_stage_restore_buttons.title",
+                ),
+                description: localization::static_text(
+                    "settings.version_control.git_hunks_show_stage_restore_buttons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.show_stage_restore_buttons"),
@@ -8720,7 +8798,7 @@ fn version_control_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "版本控制",
+        title: localization::static_text("settings.version_control.page.title"),
         items: concat_sections![
             git_integration_section(),
             git_gutter_section(),
@@ -8735,10 +8813,14 @@ fn version_control_page() -> SettingsPage {
 fn collaboration_page() -> SettingsPage {
     fn calls_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("通话"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.collaboration.calls.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "加入时静音",
-                description: "加入频道或通话时是否静音麦克风。",
+                title: localization::static_text("settings.collaboration.mute_on_join.title"),
+                description: localization::static_text(
+                    "settings.collaboration.mute_on_join.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("calls.mute_on_join"),
@@ -8751,8 +8833,10 @@ fn collaboration_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "加入时共享",
-                description: "加入空频道时是否共享当前项目。",
+                title: localization::static_text("settings.collaboration.share_on_join.title"),
+                description: localization::static_text(
+                    "settings.collaboration.share_on_join.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("calls.share_on_join"),
@@ -8772,17 +8856,25 @@ fn collaboration_page() -> SettingsPage {
     fn audio_settings() -> [SettingsPageItem; 3] {
         [
             SettingsPageItem::ActionLink(ActionLink {
-                title: "测试音频".into(),
-                description: Some("测试麦克风和扬声器设置".into()),
-                button_text: "测试音频".into(),
+                title: localization::static_text("settings.collaboration.audio_test.title").into(),
+                description: Some(
+                    localization::static_text("settings.collaboration.audio_test.description")
+                        .into(),
+                ),
+                button_text: localization::static_text("settings.collaboration.audio_test.button")
+                    .into(),
                 on_click: Arc::new(|_settings_window, window, cx| {
                     open_audio_test_window(window, cx);
                 }),
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "输出音频设备",
-                description: "选择音频输出设备",
+                title: localization::static_text(
+                    "settings.collaboration.output_audio_device.title",
+                ),
+                description: localization::static_text(
+                    "settings.collaboration.output_audio_device.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("audio.experimental.output_audio_device"),
@@ -8805,8 +8897,10 @@ fn collaboration_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "输入音频设备",
-                description: "选择音频输入设备",
+                title: localization::static_text("settings.collaboration.input_audio_device.title"),
+                description: localization::static_text(
+                    "settings.collaboration.input_audio_device.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("audio.experimental.input_audio_device"),
@@ -8832,7 +8926,7 @@ fn collaboration_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "协作",
+        title: localization::static_text("settings.collaboration.page.title"),
         items: concat_sections![calls_section(), audio_settings()],
     }
 }
@@ -9369,10 +9463,12 @@ fn ai_page(cx: &App) -> SettingsPage {
 fn network_page() -> SettingsPage {
     fn network_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("网络"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.network.network.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理",
-                description: "用于网络请求的代理。",
+                title: localization::static_text("settings.network.proxy.title"),
+                description: localization::static_text("settings.network.proxy.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("proxy"),
@@ -9388,8 +9484,8 @@ fn network_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "服务器 URL",
-                description: "要连接的 Zed 服务器 URL。",
+                title: localization::static_text("settings.network.server_url.title"),
+                description: localization::static_text("settings.network.server_url.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("server_url"),
@@ -9408,7 +9504,7 @@ fn network_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "网络",
+        title: localization::static_text("settings.network.page.title"),
         items: concat_sections![network_section()],
     }
 }
