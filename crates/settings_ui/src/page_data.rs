@@ -1003,10 +1003,14 @@ fn appearance_page() -> SettingsPage {
 
     fn buffer_font_section() -> [SettingsPageItem; 7] {
         [
-            SettingsPageItem::SectionHeader("缓冲区字体"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.buffer_font.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字体族",
-                description: "编辑器文本的字体族。",
+                title: localization::static_text("settings.appearance.buffer_font_family.title"),
+                description: localization::static_text(
+                    "settings.appearance.buffer_font_family.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("buffer_font_family"),
@@ -1019,8 +1023,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字号",
-                description: "编辑器文本的字号。",
+                title: localization::static_text("settings.appearance.buffer_font_size.title"),
+                description: localization::static_text(
+                    "settings.appearance.buffer_font_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("buffer_font_size"),
@@ -1033,8 +1039,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字重",
-                description: "编辑器文本的字重（100-900）。",
+                title: localization::static_text("settings.appearance.buffer_font_weight.title"),
+                description: localization::static_text(
+                    "settings.appearance.buffer_font_weight.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("buffer_font_weight"),
@@ -1049,8 +1057,12 @@ fn appearance_page() -> SettingsPage {
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "行高",
-                    description: "编辑器文本的行高。",
+                    title: localization::static_text(
+                        "settings.appearance.buffer_line_height.title",
+                    ),
+                    description: localization::static_text(
+                        "settings.appearance.buffer_line_height.description",
+                    ),
                     field: Box::new(SettingField {
                         organization_override: None,
                         json_path: Some("buffer_line_height$"),
@@ -1107,8 +1119,12 @@ fn appearance_page() -> SettingsPage {
                         settings::BufferLineHeightDiscriminants::Standard => vec![],
                         settings::BufferLineHeightDiscriminants::Custom => vec![SettingItem {
                             files: USER,
-                            title: "自定义行高",
-                            description: "自定义行高值（必须至少为 1.0）。",
+                            title: localization::static_text(
+                                "settings.appearance.custom_line_height.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.appearance.custom_line_height.description",
+                            ),
                             field: Box::new(SettingField {
                                 organization_override: None,
                                 json_path: Some("buffer_line_height"),
@@ -1139,8 +1155,10 @@ fn appearance_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "字体特性",
-                description: "用于文本缓冲区渲染的 OpenType 特性。",
+                title: localization::static_text("settings.appearance.buffer_font_features.title"),
+                description: localization::static_text(
+                    "settings.appearance.buffer_font_features.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -1158,8 +1176,10 @@ fn appearance_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "字体回退",
-                description: "用于文本缓冲区渲染的字体回退。",
+                title: localization::static_text("settings.appearance.buffer_font_fallbacks.title"),
+                description: localization::static_text(
+                    "settings.appearance.buffer_font_fallbacks.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -1180,10 +1200,14 @@ fn appearance_page() -> SettingsPage {
 
     fn ui_font_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("UI 字体"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.ui_font.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字体族",
-                description: "UI 元素的字体族。",
+                title: localization::static_text("settings.appearance.ui_font_family.title"),
+                description: localization::static_text(
+                    "settings.appearance.ui_font_family.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("ui_font_family"),
@@ -1196,8 +1220,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字号",
-                description: "UI 元素的字号。",
+                title: localization::static_text("settings.appearance.ui_font_size.title"),
+                description: localization::static_text(
+                    "settings.appearance.ui_font_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("ui_font_size"),
@@ -1210,8 +1236,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字重",
-                description: "UI 元素的字重（100-900）。",
+                title: localization::static_text("settings.appearance.ui_font_weight.title"),
+                description: localization::static_text(
+                    "settings.appearance.ui_font_weight.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("ui_font_weight"),
@@ -1225,8 +1253,10 @@ fn appearance_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "字体特性",
-                description: "用于 UI 元素渲染的 OpenType 特性。",
+                title: localization::static_text("settings.appearance.ui_font_features.title"),
+                description: localization::static_text(
+                    "settings.appearance.ui_font_features.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -1242,8 +1272,10 @@ fn appearance_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "字体回退",
-                description: "用于 UI 渲染的字体回退。",
+                title: localization::static_text("settings.appearance.ui_font_fallbacks.title"),
+                description: localization::static_text(
+                    "settings.appearance.ui_font_fallbacks.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -1262,10 +1294,16 @@ fn appearance_page() -> SettingsPage {
 
     fn agent_panel_font_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("代理 面板 字体"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.agent_panel_font.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "UI 字体大小",
-                description: "代理面板中代理回复文本的字号。回退到常规 UI 字号。",
+                title: localization::static_text(
+                    "settings.appearance.agent_panel_ui_font_size.title",
+                ),
+                description: localization::static_text(
+                    "settings.appearance.agent_panel_ui_font_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent_ui_font_size"),
@@ -1284,8 +1322,12 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "缓冲区字体大小",
-                description: "代理面板中用户消息文本的字号。",
+                title: localization::static_text(
+                    "settings.appearance.agent_panel_buffer_font_size.title",
+                ),
+                description: localization::static_text(
+                    "settings.appearance.agent_panel_buffer_font_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent_buffer_font_size"),
@@ -1308,10 +1350,14 @@ fn appearance_page() -> SettingsPage {
 
     fn text_rendering_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("文本渲染"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.text_rendering.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文本渲染模式",
-                description: "要使用的文本渲染模式。",
+                title: localization::static_text("settings.appearance.text_rendering_mode.title"),
+                description: localization::static_text(
+                    "settings.appearance.text_rendering_mode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("text_rendering_mode"),
@@ -1330,10 +1376,14 @@ fn appearance_page() -> SettingsPage {
 
     fn cursor_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("光标"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.cursor.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "多光标修饰键",
-                description: "用于添加多个光标的修饰键。",
+                title: localization::static_text("settings.appearance.multi_cursor_modifier.title"),
+                description: localization::static_text(
+                    "settings.appearance.multi_cursor_modifier.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("multi_cursor_modifier"),
@@ -1346,8 +1396,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标闪烁",
-                description: "光标是否在编辑器中闪烁。",
+                title: localization::static_text("settings.appearance.cursor_blink.title"),
+                description: localization::static_text(
+                    "settings.appearance.cursor_blink.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("cursor_blink"),
@@ -1360,8 +1412,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状",
-                description: "编辑器光标形状。",
+                title: localization::static_text("settings.appearance.cursor_shape.title"),
+                description: localization::static_text(
+                    "settings.appearance.cursor_shape.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("cursor_shape"),
@@ -1374,8 +1428,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "隐藏鼠标",
-                description: "何时隐藏鼠标光标。",
+                title: localization::static_text("settings.appearance.hide_mouse.title"),
+                description: localization::static_text(
+                    "settings.appearance.hide_mouse.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("hide_mouse"),
@@ -1392,10 +1448,14 @@ fn appearance_page() -> SettingsPage {
 
     fn highlighting_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("高亮"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.highlighting.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "冗余代码淡化",
-                description: "未使用代码的淡化程度（0.0 - 0.9）。",
+                title: localization::static_text("settings.appearance.unnecessary_code_fade.title"),
+                description: localization::static_text(
+                    "settings.appearance.unnecessary_code_fade.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("unnecessary_code_fade"),
@@ -1408,8 +1468,12 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "当前行高亮",
-                description: "如何高亮当前行。",
+                title: localization::static_text(
+                    "settings.appearance.current_line_highlight.title",
+                ),
+                description: localization::static_text(
+                    "settings.appearance.current_line_highlight.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("current_line_highlight"),
@@ -1424,8 +1488,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选区高亮",
-                description: "高亮所选文本的所有匹配项。",
+                title: localization::static_text("settings.appearance.selection_highlight.title"),
+                description: localization::static_text(
+                    "settings.appearance.selection_highlight.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("selection_highlight"),
@@ -1438,8 +1504,10 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "圆角选区",
-                description: "文本选区是否应使用圆角。",
+                title: localization::static_text("settings.appearance.rounded_selection.title"),
+                description: localization::static_text(
+                    "settings.appearance.rounded_selection.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("rounded_selection"),
@@ -1452,8 +1520,12 @@ fn appearance_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "高亮最小对比度",
-                description: "在高亮背景上渲染文本时要维持的最小 APCA 感知对比度。",
+                title: localization::static_text(
+                    "settings.appearance.minimum_contrast_for_highlights.title",
+                ),
+                description: localization::static_text(
+                    "settings.appearance.minimum_contrast_for_highlights.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimum_contrast_for_highlights"),
@@ -1475,10 +1547,14 @@ fn appearance_page() -> SettingsPage {
 
     fn guides_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("引导线"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.appearance.guides.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示换行引导线",
-                description: "显示换行参考线（竖直标尺）。",
+                title: localization::static_text("settings.appearance.show_wrap_guides.title"),
+                description: localization::static_text(
+                    "settings.appearance.show_wrap_guides.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("show_wrap_guides"),
@@ -1503,8 +1579,10 @@ fn appearance_page() -> SettingsPage {
             }),
             // todo(settings_ui): This needs a custom component
             SettingsPageItem::SettingItem(SettingItem {
-                title: "换行引导线",
-                description: "在这些字符数位置显示换行引导线。",
+                title: localization::static_text("settings.appearance.wrap_guides.title"),
+                description: localization::static_text(
+                    "settings.appearance.wrap_guides.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -1541,7 +1619,7 @@ fn appearance_page() -> SettingsPage {
     );
 
     SettingsPage {
-        title: "外观",
+        title: localization::static_text("settings.appearance.title"),
         items,
     }
 }
