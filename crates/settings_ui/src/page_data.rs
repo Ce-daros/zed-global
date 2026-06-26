@@ -2961,10 +2961,14 @@ fn editor_page() -> SettingsPage {
 
     fn toolbar_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("工具栏"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.editor.toolbar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "面包屑",
-                description: "显示面包屑。",
+                title: localization::static_text("settings.editor.toolbar_breadcrumbs.title"),
+                description: localization::static_text(
+                    "settings.editor.toolbar_breadcrumbs.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("toolbar.breadcrumbs"),
@@ -2988,8 +2992,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "快速操作",
-                description: "显示快速操作按钮（例如搜索、选区、编辑器控制等）。",
+                title: localization::static_text("settings.editor.toolbar_quick_actions.title"),
+                description: localization::static_text(
+                    "settings.editor.toolbar_quick_actions.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("toolbar.quick_actions"),
@@ -3013,8 +3019,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选区菜单",
-                description: "在编辑器工具栏中显示选区菜单。",
+                title: localization::static_text("settings.editor.toolbar_selections_menu.title"),
+                description: localization::static_text(
+                    "settings.editor.toolbar_selections_menu.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("toolbar.selections_menu"),
@@ -3038,8 +3046,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理审阅",
-                description: "在编辑器工具栏中显示代理审阅按钮。",
+                title: localization::static_text("settings.editor.toolbar_agent_review.title"),
+                description: localization::static_text(
+                    "settings.editor.toolbar_agent_review.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("toolbar.agent_review"),
@@ -3063,8 +3073,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代码操作",
-                description: "在编辑器工具栏中显示代码操作按钮。",
+                title: localization::static_text("settings.editor.toolbar_code_actions.title"),
+                description: localization::static_text(
+                    "settings.editor.toolbar_code_actions.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("toolbar.code_actions"),
@@ -3092,10 +3104,14 @@ fn editor_page() -> SettingsPage {
 
     fn vim_settings_section() -> [SettingsPageItem; 14] {
         [
-            SettingsPageItem::SectionHeader("Vim"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.editor.vim.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "默认 模式",
-                description: "Vim 启动时的默认模式。",
+                title: localization::static_text("settings.editor.vim_default_mode.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_default_mode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.default_mode"),
@@ -3108,8 +3124,12 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "切换相对行号",
-                description: "在 Vim 模式下切换相对行号。",
+                title: localization::static_text(
+                    "settings.editor.vim_toggle_relative_line_numbers.title",
+                ),
+                description: localization::static_text(
+                    "settings.editor.vim_toggle_relative_line_numbers.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.toggle_relative_line_numbers"),
@@ -3131,8 +3151,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用系统剪贴板",
-                description: "控制在 Vim 模式下何时使用系统剪贴板。",
+                title: localization::static_text("settings.editor.vim_use_system_clipboard.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_use_system_clipboard.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.use_system_clipboard"),
@@ -3150,8 +3172,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用智能大小写查找",
-                description: "在 Vim 模式下启用智能大小写搜索。",
+                title: localization::static_text("settings.editor.vim_use_smartcase_find.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_use_smartcase_find.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.use_smartcase_find"),
@@ -3169,8 +3193,8 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "全局替换默认行为",
-                description: "启用后，:substitute 命令默认会替换一行中的所有匹配项；g 标志会切换这一行为。",
+                title: localization::static_text("settings.editor.vim_gdefault.title"),
+                description: localization::static_text("settings.editor.vim_gdefault.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.gdefault"),
@@ -3183,8 +3207,12 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "复制后高亮持续时间",
-                description: "在 Vim 模式下高亮刚复制文本的持续时间（毫秒）。",
+                title: localization::static_text(
+                    "settings.editor.vim_highlight_on_yank_duration.title",
+                ),
+                description: localization::static_text(
+                    "settings.editor.vim_highlight_on_yank_duration.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.highlight_on_yank_duration"),
@@ -3206,8 +3234,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "正则 搜索",
-                description: "在 Vim 搜索中默认使用正则搜索。",
+                title: localization::static_text("settings.editor.vim_use_regex_search.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_use_regex_search.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.use_regex_search"),
@@ -3225,8 +3255,12 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "在普通模式下显示编辑预测",
-                description: "是否在普通模式下显示编辑预测。默认情况下，编辑预测只在插入模式和替换模式下显示。",
+                title: localization::static_text(
+                    "settings.editor.vim_show_edit_predictions_in_normal_mode.title",
+                ),
+                description: localization::static_text(
+                    "settings.editor.vim_show_edit_predictions_in_normal_mode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.show_edit_predictions_in_normal_mode"),
@@ -3248,8 +3282,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状 - 普通模式",
-                description: "普通模式下的光标形状。",
+                title: localization::static_text("settings.editor.vim_cursor_shape_normal.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_cursor_shape_normal.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.cursor_shape.normal"),
@@ -3275,8 +3311,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状 - 插入模式",
-                description: "光标 shape for insert mode. Inherit uses the editor's cursor shape.",
+                title: localization::static_text("settings.editor.vim_cursor_shape_insert.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_cursor_shape_insert.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.cursor_shape.insert"),
@@ -3302,8 +3340,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状 - 替换模式",
-                description: "替换模式下的光标形状。",
+                title: localization::static_text("settings.editor.vim_cursor_shape_replace.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_cursor_shape_replace.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.cursor_shape.replace"),
@@ -3329,8 +3369,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状 - 可视模式",
-                description: "可视模式下的光标形状。",
+                title: localization::static_text("settings.editor.vim_cursor_shape_visual.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_cursor_shape_visual.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("vim.cursor_shape.visual"),
@@ -3356,8 +3398,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自定义双字符组合",
-                description: "Vim 模式的自定义双字符组合映射。",
+                title: localization::static_text("settings.editor.vim_custom_digraphs.title"),
+                description: localization::static_text(
+                    "settings.editor.vim_custom_digraphs.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -3394,7 +3438,7 @@ fn editor_page() -> SettingsPage {
     );
 
     SettingsPage {
-        title: "编辑器",
+        title: localization::static_text("settings.editor.page.title"),
         items: items,
     }
 }
