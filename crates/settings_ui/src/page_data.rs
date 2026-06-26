@@ -4973,10 +4973,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn tab_settings_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("标签页设置"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.tab_settings.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "关闭后激活",
-                description: "关闭当前标签页后的处理方式。",
+                title: localization::static_text(
+                    "settings.window_layout.tab_settings_activate_on_close.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.tab_settings_activate_on_close.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("tabs.activate_on_close"),
@@ -4994,8 +5000,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "标签页诊断显示",
-                description: "在标签页中标记哪些包含错误/警告诊断的文件。",
+                title: localization::static_text(
+                    "settings.window_layout.tab_settings_show_diagnostics.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.tab_settings_show_diagnostics.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("tabs.show_diagnostics"),
@@ -5013,8 +5023,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示关闭按钮",
-                description: "控制标签页关闭按钮的显示方式。",
+                title: localization::static_text(
+                    "settings.window_layout.tab_settings_show_close_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.tab_settings_show_close_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("tabs.show_close_button"),
@@ -5036,10 +5050,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn preview_tabs_section() -> [SettingsPageItem; 8] {
         [
-            SettingsPageItem::SectionHeader("预览标签页"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.preview_tabs.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用预览标签页",
-                description: "将打开的编辑器显示为预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_enabled.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enabled"),
@@ -5057,8 +5077,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "从项目面板预览",
-                description: "从项目面板单击打开时使用预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_project_panel.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_project_panel.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_preview_from_project_panel"),
@@ -5080,8 +5104,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "从文件查找器预览",
-                description: "从文件查找器选择时使用预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_file_finder.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_file_finder.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_preview_from_file_finder"),
@@ -5103,8 +5131,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "从多缓冲区预览",
-                description: "从多缓冲区打开时使用预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_multibuffer.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_from_multibuffer.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_preview_from_multibuffer"),
@@ -5126,8 +5158,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用 预览 Multibuffer From Code Navigation",
-                description: "通过代码导航打开多缓冲区时是否使用预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_multibuffer_from_code_navigation.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_multibuffer_from_code_navigation.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_preview_multibuffer_from_code_navigation"),
@@ -5149,8 +5185,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用 预览 文件 From Code Navigation",
-                description: "通过代码导航打开单个文件时是否使用预览标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_file_from_code_navigation.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_file_from_code_navigation.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_preview_file_from_code_navigation"),
@@ -5172,8 +5212,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用 保留 预览 On Code Navigation",
-                description: "通过代码导航离开预览标签页时是否保持预览状态。如果同时启用了 `enable_preview_file_from_code_navigation` 或 `enable_preview_multibuffer_from_code_navigation`，新标签页可能会替换现有标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.preview_tabs_keep_preview_on_code_navigation.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.preview_tabs_keep_preview_on_code_navigation.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("preview_tabs.enable_keep_preview_on_code_navigation"),
@@ -5199,10 +5243,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn layout_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("布局"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.layout.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "底部停靠布局",
-                description: "布局 mode for the bottom dock.",
+                title: localization::static_text(
+                    "settings.window_layout.layout_bottom_dock_layout.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.layout_bottom_dock_layout.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("bottom_dock_layout"),
@@ -5216,8 +5266,12 @@ fn window_and_layout_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "居中布局左侧内边距",
-                description: "居中布局的左侧内边距。",
+                title: localization::static_text(
+                    "settings.window_layout.layout_centered_left_padding.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.layout_centered_left_padding.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("centered_layout.left_padding"),
@@ -5241,8 +5295,12 @@ fn window_and_layout_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "居中布局右侧内边距",
-                description: "居中布局的右侧内边距。",
+                title: localization::static_text(
+                    "settings.window_layout.layout_centered_right_padding.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.layout_centered_right_padding.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("centered_layout.right_padding"),
@@ -5265,8 +5323,12 @@ fn window_and_layout_page() -> SettingsPage {
                 metadata: None,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "焦点随鼠标",
-                description: "鼠标悬停到窗格上时是否切换焦点。",
+                title: localization::static_text(
+                    "settings.window_layout.layout_focus_follows_mouse.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.layout_focus_follows_mouse.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("focus_follows_mouse.enabled"),
@@ -5289,8 +5351,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "焦点随鼠标防抖毫秒",
-                description: "切换焦点前等待的时间。",
+                title: localization::static_text(
+                    "settings.window_layout.layout_focus_follows_mouse_debounce_ms.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.layout_focus_follows_mouse_debounce_ms.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("focus_follows_mouse.debounce_ms"),
@@ -5317,11 +5383,17 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn window_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("窗口"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.window.section",
+            )),
             // todo(settings_ui): Should we filter by platform.as_ref()?
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用系统窗口标签页",
-                description: "（仅限 macOS）是否允许窗口合并为标签页。",
+                title: localization::static_text(
+                    "settings.window_layout.window_use_system_window_tabs.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.window_use_system_window_tabs.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("use_system_window_tabs"),
@@ -5336,8 +5408,10 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "窗口装饰",
-                description: "（仅限 Linux）由 Zed 还是你的合成器绘制窗口装饰。",
+                title: localization::static_text("settings.window_layout.window_decorations.title"),
+                description: localization::static_text(
+                    "settings.window_layout.window_decorations.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("window_decorations"),
@@ -5354,10 +5428,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn pane_modifiers_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("面板修饰键"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.pane_modifiers.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "非活动不透明度",
-                description: "非活动面板的不透明度（0.0 - 1.0）。",
+                title: localization::static_text(
+                    "settings.window_layout.pane_modifiers_inactive_opacity.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.pane_modifiers_inactive_opacity.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("active_pane_modifiers.inactive_opacity"),
@@ -5381,8 +5461,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "边框大小",
-                description: "活动窗格周围边框的大小。",
+                title: localization::static_text(
+                    "settings.window_layout.pane_modifiers_border_size.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.pane_modifiers_border_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("active_pane_modifiers.border_size"),
@@ -5406,8 +5490,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "缩放后内边距",
-                description: "为放大的窗格显示内边距。",
+                title: localization::static_text(
+                    "settings.window_layout.pane_modifiers_zoomed_padding.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.pane_modifiers_zoomed_padding.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("zoomed_padding"),
@@ -5424,10 +5512,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn pane_split_direction_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("窗格拆分方向"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.pane_split_direction.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "垂直拆分方向",
-                description: "垂直分割方向。",
+                title: localization::static_text(
+                    "settings.window_layout.pane_split_direction_vertical.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.pane_split_direction_vertical.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("pane_split_direction_vertical"),
@@ -5445,8 +5539,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "水平拆分方向",
-                description: "水平分割方向。",
+                title: localization::static_text(
+                    "settings.window_layout.pane_split_direction_horizontal.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.pane_split_direction_horizontal.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("pane_split_direction_horizontal"),
@@ -5467,7 +5565,7 @@ fn window_and_layout_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "窗口与布局",
+        title: localization::static_text("settings.window_layout.page.title"),
         items: concat_sections![
             status_bar_section(),
             title_bar_section(),
@@ -5485,10 +5583,14 @@ fn window_and_layout_page() -> SettingsPage {
 fn panels_page() -> SettingsPage {
     fn project_panel_section() -> [SettingsPageItem; 29] {
         [
-            SettingsPageItem::SectionHeader("项目面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.project_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "项目面板停靠位置",
-                description: "项目面板停靠位置。",
+                title: localization::static_text("settings.panels.project_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.dock"),
@@ -5501,8 +5603,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "项目面板默认宽度",
-                description: "项目面板的默认宽度，单位为像素。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_default_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.default_width"),
@@ -5524,8 +5630,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "隐藏 .gitignore",
-                description: "是否在项目面板中隐藏被 gitignore 忽略的条目。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_hide_gitignore.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_hide_gitignore.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.hide_gitignore"),
@@ -5547,8 +5657,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "条目间距",
-                description: "项目面板中工作区条目之间的间距。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_entry_spacing.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_entry_spacing.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.entry_spacing"),
@@ -5570,8 +5684,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件图标",
-                description: "在项目面板中显示文件图标。",
+                title: localization::static_text("settings.panels.project_panel_file_icons.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_file_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.file_icons"),
@@ -5589,8 +5705,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件夹图标",
-                description: "在项目面板中目录是显示文件夹图标还是展开箭头。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_folder_icons.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_folder_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.folder_icons"),
@@ -5612,8 +5732,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 状态",
-                description: "在项目面板中显示 Git 状态。",
+                title: localization::static_text("settings.panels.project_panel_git_status.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_git_status.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.git_status"),
@@ -5631,8 +5753,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "缩进大小",
-                description: "嵌套项的缩进量。",
+                title: localization::static_text("settings.panels.project_panel_indent_size.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_indent_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.indent_size"),
@@ -5654,8 +5778,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动展开条目",
-                description: "当对应项目条目变为活动项时，是否在项目面板中自动定位并展开条目。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_auto_reveal_entries.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_auto_reveal_entries.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.auto_reveal_entries"),
@@ -5677,8 +5805,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "默认展开",
-                description: "项目面板是否应在启动时打开。",
+                title: localization::static_text("settings.panels.project_panel_starts_open.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_starts_open.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.starts_open"),
@@ -5700,8 +5830,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动折叠目录",
-                description: "当目录中只有一个子目录时，是否自动折叠目录并显示紧凑文件夹。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_auto_fold_dirs.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_auto_fold_dirs.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.auto_fold_dirs"),
@@ -5723,8 +5857,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件夹标签加粗",
-                description: "在项目面板中是否以粗体显示文件夹名称。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_bold_folder_labels.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_bold_folder_labels.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.bold_folder_labels"),
@@ -5746,8 +5884,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示滚动条",
-                description: "在项目面板中显示滚动条。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_scrollbar_show.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_scrollbar_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.scrollbar.show"),
@@ -5775,8 +5917,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "水平 滚动",
-                description: "是否允许项目面板水平滚动。关闭后视图会固定在最左侧，较长的文件名会被截断。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_horizontal_scroll.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_horizontal_scroll.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.scrollbar.horizontal_scroll"),
@@ -5802,8 +5948,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示 诊断",
-                description: "在项目面板中标记哪些包含错误/警告诊断的文件。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_show_diagnostics.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_show_diagnostics.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.show_diagnostics"),
@@ -5825,8 +5975,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "诊断徽标",
-                description: "显示error and warning count badges next to file names in the project panel。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_diagnostic_badges.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_diagnostic_badges.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.diagnostic_badges"),
@@ -5848,8 +6002,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 状态指示器",
-                description: "显示a git status indicator next to file names in the project panel。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_git_status_indicator.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_git_status_indicator.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.git_status_indicator"),
@@ -5871,8 +6029,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "粘性滚动",
-                description: "是否stick parent directories at top of the project panel。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_sticky_scroll.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_sticky_scroll.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.sticky_scroll"),
@@ -5895,8 +6057,12 @@ fn panels_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "显示 Indent 引导线",
-                description: "显示indent guides in the project panel。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_indent_guides_show.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_indent_guides_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.indent_guides.show"),
@@ -5921,8 +6087,12 @@ fn panels_page() -> SettingsPage {
                 metadata: None,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "拖放",
-                description: "是否enable drag-and-drop operations in the project panel。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_drag_and_drop.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_drag_and_drop.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.drag_and_drop"),
@@ -5944,8 +6114,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "隐藏 Root",
-                description: "是否hide the root entry when only one folder is open in the window。",
+                title: localization::static_text("settings.panels.project_panel_hide_root.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_hide_root.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.hide_root"),
@@ -5963,8 +6135,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "隐藏隐藏项",
-                description: "是否在项目面板中隐藏隐藏项。",
+                title: localization::static_text("settings.panels.project_panel_hide_hidden.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_hide_hidden.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.hide_hidden"),
@@ -5986,8 +6160,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "排序模式",
-                description: "项目面板中条目的排序顺序。",
+                title: localization::static_text("settings.panels.project_panel_sort_mode.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_sort_mode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.sort_mode"),
@@ -6005,8 +6181,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "排序顺序",
-                description: "是否在项目面板中区分大小写地排序文件和文件夹名称。",
+                title: localization::static_text("settings.panels.project_panel_sort_order.title"),
+                description: localization::static_text(
+                    "settings.panels.project_panel_sort_order.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     pick: |settings_content| {
@@ -6024,8 +6202,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "创建后自动打开文件",
-                description: "是否在编辑器中自动打开新建文件。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_create.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_create.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.auto_open.on_create"),
@@ -6051,8 +6233,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "粘贴后自动打开文件",
-                description: "粘贴或复制文件后是否自动打开。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_paste.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_paste.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.auto_open.on_paste"),
@@ -6078,8 +6264,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "拖入后自动打开文件",
-                description: "是否自动打开从外部拖入的文件。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_drop.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_auto_open_on_drop.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.auto_open.on_drop"),
@@ -6105,8 +6295,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "隐藏文件",
-                description: "用于匹配 \"hidden\" 文件的 glob，这些文件可在项目面板中隐藏。",
+                title: localization::static_text(
+                    "settings.panels.project_panel_hidden_files.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.project_panel_hidden_files.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -6128,10 +6322,14 @@ fn panels_page() -> SettingsPage {
 
     fn terminal_panel_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("终端面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.terminal_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "终端停靠位置",
-                description: "终端面板停靠位置。",
+                title: localization::static_text("settings.panels.terminal_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.terminal_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.dock"),
@@ -6144,8 +6342,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "终端面板弹性尺寸",
-                description: "当终端面板停靠在左侧或右侧时，是否使用灵活（按比例）尺寸。",
+                title: localization::static_text(
+                    "settings.panels.terminal_panel_flexible_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.terminal_panel_flexible_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.flexible"),
@@ -6158,8 +6360,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示计数徽标",
-                description: "在终端面板图标上显示打开终端数量的徽标。",
+                title: localization::static_text("settings.panels.terminal_panel_button.title"),
+                description: localization::static_text(
+                    "settings.panels.terminal_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.show_count_badge"),
@@ -6185,10 +6389,14 @@ fn panels_page() -> SettingsPage {
 
     fn outline_panel_section() -> [SettingsPageItem; 11] {
         [
-            SettingsPageItem::SectionHeader("大纲面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.outline_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "大纲面板按钮",
-                description: "在状态栏中显示大纲面板按钮。",
+                title: localization::static_text("settings.panels.outline_panel_button.title"),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.button"),
@@ -6206,8 +6414,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "大纲面板停靠位置",
-                description: "大纲面板停靠位置。",
+                title: localization::static_text("settings.panels.outline_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.dock"),
@@ -6220,8 +6430,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "大纲面板默认宽度",
-                description: "大纲面板的默认宽度，单位为像素。",
+                title: localization::static_text(
+                    "settings.panels.outline_panel_default_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.default_width"),
@@ -6243,8 +6457,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件图标",
-                description: "在大纲面板中显示文件图标。",
+                title: localization::static_text("settings.panels.outline_panel_file_icons.title"),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_file_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.file_icons"),
@@ -6262,8 +6478,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件夹图标",
-                description: "在大纲面板中为目录显示文件夹图标或折叠箭头。",
+                title: localization::static_text(
+                    "settings.panels.outline_panel_folder_icons.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_folder_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.folder_icons"),
@@ -6285,8 +6505,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 状态",
-                description: "在大纲面板中显示 Git 状态。",
+                title: localization::static_text("settings.panels.outline_panel_git_status.title"),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_git_status.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.git_status"),
@@ -6304,8 +6526,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "缩进大小",
-                description: "嵌套项的缩进量。",
+                title: localization::static_text("settings.panels.outline_panel_indent_size.title"),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_indent_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.indent_size"),
@@ -6327,8 +6551,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动展开条目",
-                description: "对应的大纲条目激活时是否自动显示。",
+                title: localization::static_text(
+                    "settings.panels.outline_panel_auto_reveal_entries.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_auto_reveal_entries.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.auto_reveal_entries"),
@@ -6350,8 +6578,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动折叠目录",
-                description: "当目录只包含一个子目录时，是否自动折叠目录。",
+                title: localization::static_text(
+                    "settings.panels.outline_panel_auto_fold_dirs.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_auto_fold_dirs.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.auto_fold_dirs"),
@@ -6374,8 +6606,12 @@ fn panels_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
-                title: "显示缩进引导线",
-                description: "何时在大纲面板中显示缩进引导线。",
+                title: localization::static_text(
+                    "settings.panels.outline_panel_indent_guides_show.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.outline_panel_indent_guides_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("outline_panel.indent_guides.show"),
@@ -6404,10 +6640,14 @@ fn panels_page() -> SettingsPage {
 
     fn git_panel_section() -> [SettingsPageItem; 17] {
         [
-            SettingsPageItem::SectionHeader("Git 面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.git_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 面板按钮",
-                description: "在状态栏中显示 Git 面板按钮。",
+                title: localization::static_text("settings.panels.git_panel_button.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.button"),
@@ -6420,8 +6660,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 面板停靠位置",
-                description: "Git 面板停靠位置。",
+                title: localization::static_text("settings.panels.git_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.dock"),
@@ -6434,8 +6676,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 面板默认宽度",
-                description: "Git 面板的默认宽度，单位为像素。",
+                title: localization::static_text("settings.panels.git_panel_default_width.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.default_width"),
@@ -6453,8 +6697,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 面板状态样式",
-                description: "条目状态的显示方式。",
+                title: localization::static_text("settings.panels.git_panel_status_style.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_status_style.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.status_style"),
@@ -6472,8 +6718,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "备用分支名称",
-                description: "当 Git 未设置 init.defaultbranch 时使用的默认分支名称。",
+                title: localization::static_text(
+                    "settings.panels.git_panel_fallback_branch_name.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.git_panel_fallback_branch_name.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.fallback_branch_name"),
@@ -6495,8 +6745,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "排序依据",
-                description: "Git 面板中条目的排序方式。",
+                title: localization::static_text("settings.panels.git_panel_sort_by.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_sort_by.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.sort_by"),
@@ -6509,8 +6761,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "分组依据",
-                description: "Git 面板中条目的分组方式。",
+                title: localization::static_text("settings.panels.git_panel_group_by.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_group_by.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.group_by"),
@@ -6523,8 +6777,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "折叠未跟踪差异",
-                description: "是否在差异面板中折叠未跟踪文件。",
+                title: localization::static_text(
+                    "settings.panels.git_panel_collapse_untracked_diff.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.git_panel_collapse_untracked_diff.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.collapse_untracked_diff"),
@@ -6546,8 +6804,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "树状视图",
-                description: "启用后以树状列表显示条目，关闭后以平铺列表显示。",
+                title: localization::static_text("settings.panels.git_panel_tree_style.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_tree_style.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.tree_view"),
@@ -6562,8 +6822,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件图标",
-                description: "在 Git 状态图标旁显示文件图标。",
+                title: localization::static_text("settings.panels.git_panel_file_icons.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_file_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.file_icons"),
@@ -6581,8 +6843,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件夹图标",
-                description: "在 Git 面板中为目录显示文件夹图标或折叠箭头。",
+                title: localization::static_text("settings.panels.git_panel_folder_icons.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_folder_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.folder_icons"),
@@ -6600,8 +6864,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "差异统计",
-                description: "是否在 Git 面板中每个文件旁显示新增/删除行数。",
+                title: localization::static_text("settings.panels.git_panel_diff_stat.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_diff_stat.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.diff_stats"),
@@ -6619,8 +6885,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "主键点击行为",
-                description: "在 Git 面板中点击已更改文件时的默认操作。",
+                title: localization::static_text(
+                    "settings.panels.git_panel_default_selection.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.git_panel_default_selection.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.entry_primary_click_action"),
@@ -6642,8 +6912,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示计数徽标",
-                description: "是否在 Git 面板图标上显示未提交更改数量的徽标。",
+                title: localization::static_text(
+                    "settings.panels.git_panel_show_count_badge.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.git_panel_show_count_badge.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.show_count_badge"),
@@ -6665,8 +6939,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "提交标题最大长度",
-                description: "提交信息标题超过该长度时显示警告。设为 0 可关闭。",
+                title: localization::static_text(
+                    "settings.panels.git_panel_commit_message_max_subject_length.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.git_panel_commit_message_max_subject_length.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.commit_title_max_length"),
@@ -6688,8 +6966,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "滚动条",
-                description: "滚动条应如何以及何时显示。",
+                title: localization::static_text("settings.panels.git_panel_scrollbar_show.title"),
+                description: localization::static_text(
+                    "settings.panels.git_panel_scrollbar_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_panel.scrollbar.show"),
@@ -6721,10 +7001,14 @@ fn panels_page() -> SettingsPage {
 
     fn debugger_panel_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("调试器面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.debugger_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "调试器面板停靠位置",
-                description: "调试面板的停靠位置。",
+                title: localization::static_text("settings.panels.debugger_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.debugger_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.dock"),
@@ -6741,10 +7025,16 @@ fn panels_page() -> SettingsPage {
 
     fn collaboration_panel_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("协作面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.collaboration_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "协作面板按钮",
-                description: "在状态栏中显示协作面板按钮。",
+                title: localization::static_text(
+                    "settings.panels.collaboration_panel_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.collaboration_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("collaboration_panel.button"),
@@ -6766,8 +7056,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "协作面板停靠位置",
-                description: "协作面板停靠位置。",
+                title: localization::static_text("settings.panels.collaboration_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.collaboration_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("collaboration_panel.dock"),
@@ -6785,8 +7077,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "协作面板默认宽度",
-                description: "协作面板的默认宽度，单位为像素。",
+                title: localization::static_text(
+                    "settings.panels.collaboration_panel_default_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.collaboration_panel_default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("collaboration_panel.dock"),
@@ -6812,10 +7108,14 @@ fn panels_page() -> SettingsPage {
 
     fn agent_panel_section() -> [SettingsPageItem; 7] {
         [
-            SettingsPageItem::SectionHeader("代理面板"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.panels.agent_panel.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理面板按钮",
-                description: "是否在状态栏中显示代理面板按钮。",
+                title: localization::static_text("settings.panels.agent_panel_button.title"),
+                description: localization::static_text(
+                    "settings.panels.agent_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.button"),
@@ -6828,8 +7128,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理面板停靠位置",
-                description: "代理面板停靠位置。",
+                title: localization::static_text("settings.panels.agent_panel_dock.title"),
+                description: localization::static_text(
+                    "settings.panels.agent_panel_dock.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.dock"),
@@ -6842,8 +7144,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理 面板 可伸缩 Sizing",
-                description: "当代理面板停靠在左侧或右侧时，是否使用灵活（按比例）尺寸。",
+                title: localization::static_text(
+                    "settings.panels.agent_panel_flexible_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.agent_panel_flexible_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.flexible"),
@@ -6856,8 +7162,10 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理 面板 默认 宽度",
-                description: "代理面板停靠在左侧或右侧时的默认宽度。",
+                title: localization::static_text("settings.panels.agent_panel_default_width.title"),
+                description: localization::static_text(
+                    "settings.panels.agent_panel_default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.default_width"),
@@ -6872,8 +7180,12 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理 面板 默认 高度",
-                description: "默认 height when the agent panel is docked to the bottom.",
+                title: localization::static_text(
+                    "settings.panels.agent_panel_default_height.title",
+                ),
+                description: localization::static_text(
+                    "settings.panels.agent_panel_default_height.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.default_height"),
@@ -6893,8 +7205,12 @@ fn panels_page() -> SettingsPage {
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "限制内容宽度",
-                    description: "是否constrain the agent panel content to a maximum width, centering it when the panel is wider, for optimal readability。",
+                    title: localization::static_text(
+                        "settings.panels.agent_panel_context_editing_max_width_editor.title",
+                    ),
+                    description: localization::static_text(
+                        "settings.panels.agent_panel_context_editing_max_width_editor.description",
+                    ),
                     field: Box::new(SettingField::<bool> {
                         organization_override: None,
                         json_path: Some("agent.limit_content_width"),
@@ -6926,8 +7242,12 @@ fn panels_page() -> SettingsPage {
                     vec![],
                     vec![SettingItem {
                         files: USER,
-                        title: "最大内容宽度",
-                        description: "最大 content width in pixels. Content will be centered when the panel is wider than this value.",
+                        title: localization::static_text(
+                            "settings.panels.agent_panel_context_editing_max_width.title",
+                        ),
+                        description: localization::static_text(
+                            "settings.panels.agent_panel_context_editing_max_width.description",
+                        ),
                         field: Box::new(SettingField {
                             organization_override: None,
                             json_path: Some("agent.max_content_width"),
@@ -6949,7 +7269,7 @@ fn panels_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "面板",
+        title: localization::static_text("settings.panels.page.title"),
         items: concat_sections![
             project_panel_section(),
             terminal_panel_section(),
