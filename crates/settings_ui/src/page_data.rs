@@ -4209,10 +4209,16 @@ fn search_and_files_page() -> SettingsPage {
 fn window_and_layout_page() -> SettingsPage {
     fn status_bar_section() -> [SettingsPageItem; 11] {
         [
-            SettingsPageItem::SectionHeader("状态栏"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.status_bar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "项目面板按钮",
-                description: "在状态栏中显示项目面板按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_project_panel_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_project_panel_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("project_panel.button"),
@@ -4230,8 +4236,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "当前语言按钮",
-                description: "在状态栏中显示当前语言按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_active_language_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_active_language_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("status_bar.active_language_button"),
@@ -4253,8 +4263,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "当前编码按钮",
-                description: "控制何时在状态栏中显示当前编码。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_active_encoding_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_active_encoding_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("status_bar.active_encoding_button"),
@@ -4276,8 +4290,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标位置按钮",
-                description: "在状态栏中显示光标位置按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_cursor_position_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_cursor_position_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("status_bar.cursor_position_button"),
@@ -4299,8 +4317,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "换行符按钮",
-                description: "在状态栏中显示当前换行符按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_line_endings_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_line_endings_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("status_bar.line_endings_button"),
@@ -4322,8 +4344,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "终端按钮",
-                description: "在状态栏中显示终端按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_terminal_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_terminal_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.button"),
@@ -4336,8 +4362,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "诊断按钮",
-                description: "在状态栏中显示项目诊断按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_diagnostics_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_diagnostics_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("diagnostics.button"),
@@ -4350,8 +4380,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "项目搜索按钮",
-                description: "在状态栏中显示项目搜索按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_search_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_search_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search.button"),
@@ -4370,8 +4404,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "调试器按钮",
-                description: "在状态栏中显示调试器按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_debugger_button.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_debugger_button.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.button"),
@@ -4384,8 +4422,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "当前文件名",
-                description: "在状态栏中显示当前文件名。",
+                title: localization::static_text(
+                    "settings.window_layout.status_bar_show_active_file.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.status_bar_show_active_file.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("status_bar.show_active_file"),
