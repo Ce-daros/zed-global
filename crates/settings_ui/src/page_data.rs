@@ -4453,10 +4453,16 @@ fn window_and_layout_page() -> SettingsPage {
 
     fn title_bar_section() -> [SettingsPageItem; 10] {
         [
-            SettingsPageItem::SectionHeader("标题栏"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.window_layout.title_bar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示分支状态图标",
-                description: "在标题栏的分支图标上显示 Git 状态。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_branch_status_icon.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_branch_status_icon.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_branch_status_icon"),
@@ -4478,8 +4484,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示分支名称",
-                description: "在标题栏中显示分支名称按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_branch_name.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_branch_name.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_branch_name"),
@@ -4501,8 +4511,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示项目信息",
-                description: "在标题栏中显示项目主机和项目名称。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_project_items.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_project_items.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_project_items"),
@@ -4524,8 +4538,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示引导横幅",
-                description: "在标题栏中显示新功能横幅。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_onboarding_banner.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_onboarding_banner.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_onboarding_banner"),
@@ -4547,8 +4565,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示登录按钮",
-                description: "在标题栏中显示登录按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_sign_in.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_sign_in.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_sign_in"),
@@ -4566,8 +4588,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示用户菜单",
-                description: "在标题栏中显示用户菜单按钮。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_user_menu.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_user_menu.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_user_menu"),
@@ -4585,8 +4611,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示用户头像",
-                description: "在标题栏中显示用户头像。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_user_picture.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_user_picture.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_user_picture"),
@@ -4608,8 +4638,12 @@ fn window_and_layout_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示菜单",
-                description: "在标题栏中显示菜单。",
+                title: localization::static_text(
+                    "settings.window_layout.title_bar_show_menus.title",
+                ),
+                description: localization::static_text(
+                    "settings.window_layout.title_bar_show_menus.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("title_bar.show_menus"),
@@ -4630,8 +4664,12 @@ fn window_and_layout_page() -> SettingsPage {
                 DynamicItem {
                     discriminant: SettingItem {
                         files: USER,
-                        title: "按钮 布局",
-                        description: "（仅限 Linux）选择窗口控制按钮在标题栏中的排列方式。",
+                        title: localization::static_text(
+                            "settings.window_layout.title_bar_button_layout.title",
+                        ),
+                        description: localization::static_text(
+                            "settings.window_layout.title_bar_button_layout.description",
+                        ),
                         field: Box::new(SettingField {
                             organization_override: None,
                             json_path: Some("title_bar.button_layout$"),
@@ -4713,9 +4751,12 @@ fn window_and_layout_page() -> SettingsPage {
                         settings::WindowButtonLayoutContentDiscriminants::Custom => vec![
                             SettingItem {
                                 files: USER,
-                                title: "自定义按钮布局",
-                                description:
-                                    "GNOME 风格的布局字符串，例如 \"close:minimize,maximize\"。",
+                                title: localization::static_text(
+                                    "settings.window_layout.title_bar_custom_button_layout.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.window_layout.title_bar_custom_button_layout.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("title_bar.button_layout"),
