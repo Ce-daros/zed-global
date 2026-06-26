@@ -3809,10 +3809,14 @@ fn languages_and_tools_page(cx: &App) -> SettingsPage {
 fn search_and_files_page() -> SettingsPage {
     fn search_section() -> [SettingsPageItem; 9] {
         [
-            SettingsPageItem::SectionHeader("搜索"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.search_files.search.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "整词 单词",
-                description: "默认搜索完整单词。",
+                title: localization::static_text("settings.search_files.search_whole_word.title"),
+                description: localization::static_text(
+                    "settings.search_files.search_whole_word.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search.whole_word"),
@@ -3831,8 +3835,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "区分大小写",
-                description: "默认按大小写敏感搜索。",
+                title: localization::static_text(
+                    "settings.search_files.search_case_sensitive.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.search_case_sensitive.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search.case_sensitive"),
@@ -3856,8 +3864,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用 智能大小写 搜索",
-                description: "是否根据搜索查询自动启用大小写敏感搜索。",
+                title: localization::static_text(
+                    "settings.search_files.use_smartcase_search.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.use_smartcase_search.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("use_smartcase_search"),
@@ -3870,8 +3882,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "包含被忽略的文件",
-                description: "默认在搜索结果中包含被忽略的文件。",
+                title: localization::static_text(
+                    "settings.search_files.search_include_ignored.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.search_include_ignored.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search.include_ignored"),
@@ -3895,8 +3911,10 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "正则",
-                description: "默认使用正则搜索。",
+                title: localization::static_text("settings.search_files.search_regex.title"),
+                description: localization::static_text(
+                    "settings.search_files.search_regex.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search.regex"),
@@ -3911,8 +3929,10 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "搜索循环",
-                description: "编辑器搜索结果是否循环。",
+                title: localization::static_text("settings.search_files.search_wrap.title"),
+                description: localization::static_text(
+                    "settings.search_files.search_wrap.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("search_wrap"),
@@ -3925,8 +3945,10 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "匹配项居中",
-                description: "是否在编辑器中将当前匹配项居中显示",
+                title: localization::static_text("settings.search_files.center_on_match.title"),
+                description: localization::static_text(
+                    "settings.search_files.center_on_match.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("editor.search.center_on_match"),
@@ -3949,8 +3971,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "用光标内容初始化搜索",
-                description: "何时根据光标下文本填充新搜索的查询。",
+                title: localization::static_text(
+                    "settings.search_files.seed_search_query_from_cursor.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.seed_search_query_from_cursor.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("seed_search_query_from_cursor"),
@@ -3972,11 +3998,17 @@ fn search_and_files_page() -> SettingsPage {
 
     fn file_finder_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("文件查找器"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.search_files.file_finder.section",
+            )),
             // todo: null by default
             SettingsPageItem::SettingItem(SettingItem {
-                title: "搜索时包含忽略文件",
-                description: "搜索时使用被 git 忽略的文件。",
+                title: localization::static_text(
+                    "settings.search_files.file_finder_include_ignored.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.file_finder_include_ignored.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("file_finder.include_ignored"),
@@ -3998,8 +4030,10 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件图标",
-                description: "在文件查找器中显示文件图标。",
+                title: localization::static_text("settings.search_files.file_icons.title"),
+                description: localization::static_text(
+                    "settings.search_files.file_icons.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("file_finder.file_icons"),
@@ -4017,8 +4051,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "搜索时跳过当前项聚焦",
-                description: "文件查找器是否应跳过搜索结果中的当前文件。",
+                title: localization::static_text(
+                    "settings.search_files.skip_focus_for_active_in_search.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.skip_focus_for_active_in_search.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("file_finder.skip_focus_for_active_in_search"),
@@ -4044,10 +4082,16 @@ fn search_and_files_page() -> SettingsPage {
 
     fn file_scan_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("文件 Scan"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.search_files.file_scan.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件扫描排除项",
-                description: "Zed 会完全排除的文件或文件 glob。它们会在文件扫描和文件搜索中被跳过，也不会显示在项目文件树中。优先级高于 \"File Scan Inclusions\"。",
+                title: localization::static_text(
+                    "settings.search_files.file_scan_exclusions.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.file_scan_exclusions.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -4069,8 +4113,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "文件扫描包含项",
-                description: "Zed 会包含的文件或文件 glob，即使它们被 git 忽略也会包含。适合未被 git 跟踪但对项目仍然重要的文件。过宽的 glob 可能拖慢 Zed 的文件扫描。\"File Scan Exclusions\" 优先级高于这些包含规则。",
+                title: localization::static_text(
+                    "settings.search_files.file_scan_inclusions.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.file_scan_inclusions.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -4092,8 +4140,10 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "扫描符号链接",
-                description: "何时扫描链接目录的内容",
+                title: localization::static_text("settings.search_files.scan_symlinks.title"),
+                description: localization::static_text(
+                    "settings.search_files.scan_symlinks.description",
+                ),
                 field: Box::new(SettingField {
                     json_path: Some("scan_symlinks"),
                     organization_override: None,
@@ -4108,8 +4158,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "恢复文件状态",
-                description: "恢复 previous file state when reopening.",
+                title: localization::static_text(
+                    "settings.search_files.restore_on_file_reopen.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.restore_on_file_reopen.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("restore_on_file_reopen"),
@@ -4124,8 +4178,12 @@ fn search_and_files_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "删除文件时关闭",
-                description: "自动matically close files that have been deleted.",
+                title: localization::static_text(
+                    "settings.search_files.close_on_file_delete.title",
+                ),
+                description: localization::static_text(
+                    "settings.search_files.close_on_file_delete.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("close_on_file_delete"),
@@ -4143,7 +4201,7 @@ fn search_and_files_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "搜索与文件",
+        title: localization::static_text("settings.search_files.page.title"),
         items: concat_sections![search_section(), file_finder_section(), file_scan_section()],
     }
 }
