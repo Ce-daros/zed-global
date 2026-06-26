@@ -2366,10 +2366,14 @@ fn editor_page() -> SettingsPage {
 
     fn gutter_section() -> [SettingsPageItem; 9] {
         [
-            SettingsPageItem::SectionHeader("边缘"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.editor.gutter.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示行号",
-                description: "在边栏显示行号。",
+                title: localization::static_text("settings.editor.gutter_line_numbers.title"),
+                description: localization::static_text(
+                    "settings.editor.gutter_line_numbers.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.line_numbers"),
@@ -2392,8 +2396,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "相对行号",
-                description: "控制编辑器边栏中的行号显示。\"disabled\" 显示绝对行号，\"enabled\" 为每个实际行显示相对行号，\"wrapped\" 为每一行显示相对行号，包括换行后的显示行。",
+                title: localization::static_text("settings.editor.relative_line_numbers.title"),
+                description: localization::static_text(
+                    "settings.editor.relative_line_numbers.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("relative_line_numbers"),
@@ -2406,8 +2412,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示可运行项",
-                description: "在边栏显示可运行按钮。",
+                title: localization::static_text("settings.editor.gutter_runnables.title"),
+                description: localization::static_text(
+                    "settings.editor.gutter_runnables.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.runnables"),
@@ -2430,8 +2438,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示断点",
-                description: "在边栏显示断点。",
+                title: localization::static_text("settings.editor.gutter_breakpoints.title"),
+                description: localization::static_text(
+                    "settings.editor.gutter_breakpoints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.breakpoints"),
@@ -2454,8 +2464,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示书签",
-                description: "在边栏显示书签。",
+                title: localization::static_text("settings.editor.gutter_bookmarks.title"),
+                description: localization::static_text(
+                    "settings.editor.gutter_bookmarks.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.bookmarks"),
@@ -2478,8 +2490,8 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示折叠",
-                description: "在边栏显示代码折叠控件。",
+                title: localization::static_text("settings.editor.gutter_folds.title"),
+                description: localization::static_text("settings.editor.gutter_folds.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.folds"),
@@ -2498,8 +2510,12 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "最少行号位数",
-                description: "在边栏中预留空间的最少字符数。",
+                title: localization::static_text(
+                    "settings.editor.gutter_min_line_number_digits.title",
+                ),
+                description: localization::static_text(
+                    "settings.editor.gutter_min_line_number_digits.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("gutter.min_line_number_digits"),
@@ -2522,8 +2538,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "内联代码操作",
-                description: "在缓冲区行首显示代码操作按钮。",
+                title: localization::static_text("settings.editor.inline_code_actions.title"),
+                description: localization::static_text(
+                    "settings.editor.inline_code_actions.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("inline_code_actions"),
@@ -2540,10 +2558,14 @@ fn editor_page() -> SettingsPage {
 
     fn scrollbar_section() -> [SettingsPageItem; 10] {
         [
-            SettingsPageItem::SectionHeader("滚动条"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.editor.scrollbar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示",
-                description: "何时在编辑器中显示滚动条。",
+                title: localization::static_text("settings.editor.scrollbar_show.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar"),
@@ -2562,8 +2584,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标",
-                description: "在滚动条中显示光标位置。",
+                title: localization::static_text("settings.editor.scrollbar_cursors.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_cursors.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.cursors"),
@@ -2582,8 +2606,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Git 差异",
-                description: "在滚动条中显示 Git 差异指示器。",
+                title: localization::static_text("settings.editor.scrollbar_git_diff.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_git_diff.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.git_diff"),
@@ -2607,8 +2633,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "搜索结果",
-                description: "在滚动条中显示缓冲区搜索结果指示器。",
+                title: localization::static_text("settings.editor.scrollbar_search_results.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_search_results.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.search_results"),
@@ -2632,8 +2660,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选中文本",
-                description: "在滚动条中显示所选文本的出现位置。",
+                title: localization::static_text("settings.editor.scrollbar_selected_text.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_selected_text.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.selected_text"),
@@ -2657,8 +2687,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选中的符号",
-                description: "在滚动条中显示所选符号的出现位置。",
+                title: localization::static_text("settings.editor.scrollbar_selected_symbol.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_selected_symbol.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.selected_symbol"),
@@ -2682,8 +2714,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "诊断",
-                description: "在滚动条中显示哪些诊断指示器。",
+                title: localization::static_text("settings.editor.scrollbar_diagnostics.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_diagnostics.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.diagnostics"),
@@ -2707,8 +2741,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "水平滚动条",
-                description: "为 false 时强制禁用水平滚动条。",
+                title: localization::static_text("settings.editor.scrollbar_horizontal_axis.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_horizontal_axis.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.axes.horizontal"),
@@ -2736,8 +2772,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "垂直滚动条",
-                description: "为 false 时强制禁用垂直滚动条。",
+                title: localization::static_text("settings.editor.scrollbar_vertical_axis.title"),
+                description: localization::static_text(
+                    "settings.editor.scrollbar_vertical_axis.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("scrollbar.axes.vertical"),
@@ -2769,10 +2807,12 @@ fn editor_page() -> SettingsPage {
 
     fn minimap_section() -> [SettingsPageItem; 7] {
         [
-            SettingsPageItem::SectionHeader("缩略图"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.editor.minimap.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示",
-                description: "何时在编辑器中显示缩略图。",
+                title: localization::static_text("settings.editor.minimap_show.title"),
+                description: localization::static_text("settings.editor.minimap_show.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.show"),
@@ -2787,8 +2827,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示 In",
-                description: "在编辑器中的显示位置。",
+                title: localization::static_text("settings.editor.minimap_display_in.title"),
+                description: localization::static_text(
+                    "settings.editor.minimap_display_in.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.display_in"),
@@ -2812,8 +2854,8 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "滑块",
-                description: "何时显示缩略图滑块。",
+                title: localization::static_text("settings.editor.minimap_thumb.title"),
+                description: localization::static_text("settings.editor.minimap_thumb.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.thumb"),
@@ -2832,8 +2874,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "滑块边框",
-                description: "缩略图滚动条滑块的边框样式。",
+                title: localization::static_text("settings.editor.minimap_thumb_border.title"),
+                description: localization::static_text(
+                    "settings.editor.minimap_thumb_border.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.thumb_border"),
@@ -2857,8 +2901,12 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "当前行高亮",
-                description: "如何在缩略图中高亮当前行。",
+                title: localization::static_text(
+                    "settings.editor.minimap_current_line_highlight.title",
+                ),
+                description: localization::static_text(
+                    "settings.editor.minimap_current_line_highlight.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.current_line_highlight"),
@@ -2882,8 +2930,10 @@ fn editor_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "最大列数",
-                description: "缩略图中显示的最大列数。",
+                title: localization::static_text("settings.editor.minimap_max_width_columns.title"),
+                description: localization::static_text(
+                    "settings.editor.minimap_max_width_columns.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("minimap.max_width_columns"),
