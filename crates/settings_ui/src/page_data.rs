@@ -7414,12 +7414,14 @@ fn debugger_page() -> SettingsPage {
 fn terminal_page() -> SettingsPage {
     fn environment_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("环境"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.environment.section",
+            )),
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER | PROJECT,
-                    title: "Shell",
-                    description: "打开终端时使用的 shell。",
+                    title: localization::static_text("settings.terminal.shell.title"),
+                    description: localization::static_text("settings.terminal.shell.description"),
                     field: Box::new(SettingField {
                         organization_override: None,
                         json_path: Some("terminal.shell$"),
@@ -7507,8 +7509,12 @@ fn terminal_page() -> SettingsPage {
                         settings::ShellDiscriminants::System => vec![],
                         settings::ShellDiscriminants::Program => vec![SettingItem {
                             files: USER | PROJECT,
-                            title: "程序",
-                            description: "要使用的 shell 程序。",
+                            title: localization::static_text(
+                                "settings.terminal.shell_program.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.terminal.shell_program.description",
+                            ),
                             field: Box::new(SettingField {
                                 organization_override: None,
                                 json_path: Some("terminal.shell"),
@@ -7543,8 +7549,12 @@ fn terminal_page() -> SettingsPage {
                         settings::ShellDiscriminants::WithArguments => vec![
                             SettingItem {
                                 files: USER | PROJECT,
-                                title: "程序",
-                                description: "要运行的 shell 程序。",
+                                title: localization::static_text(
+                                    "settings.terminal.shell_with_arguments_program.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.terminal.shell_with_arguments_program.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("terminal.shell.program"),
@@ -7583,8 +7593,12 @@ fn terminal_page() -> SettingsPage {
                             },
                             SettingItem {
                                 files: USER | PROJECT,
-                                title: "参数",
-                                description: "传给 shell 程序的参数。",
+                                title: localization::static_text(
+                                    "settings.terminal.shell_arguments.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.terminal.shell_arguments.description",
+                                ),
                                 field: Box::new(
                                     SettingField {
                                         organization_override: None,
@@ -7626,8 +7640,12 @@ fn terminal_page() -> SettingsPage {
                             },
                             SettingItem {
                                 files: USER | PROJECT,
-                                title: "标题覆盖",
-                                description: "可选字符串，用来覆盖终端标签页标题。",
+                                title: localization::static_text(
+                                    "settings.terminal.shell_title_override.title",
+                                ),
+                                description: localization::static_text(
+                                    "settings.terminal.shell_title_override.description",
+                                ),
                                 field: Box::new(SettingField {
                                     organization_override: None,
                                     json_path: Some("terminal.shell.title_override"),
@@ -7667,8 +7685,10 @@ fn terminal_page() -> SettingsPage {
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER | PROJECT,
-                    title: "工作目录",
-                    description: "启动终端时使用的工作目录。",
+                    title: localization::static_text("settings.terminal.working_directory.title"),
+                    description: localization::static_text(
+                        "settings.terminal.working_directory.description",
+                    ),
                     field: Box::new(SettingField {
                         organization_override: None,
                         json_path: Some("terminal.working_directory$"),
@@ -7744,8 +7764,12 @@ fn terminal_page() -> SettingsPage {
                         settings::WorkingDirectoryDiscriminants::AlwaysHome => vec![],
                         settings::WorkingDirectoryDiscriminants::Always => vec![SettingItem {
                             files: USER | PROJECT,
-                            title: "目录",
-                            description: "要使用的目录路径，会经过 shell 展开。",
+                            title: localization::static_text(
+                                "settings.terminal.working_directory_path.title",
+                            ),
+                            description: localization::static_text(
+                                "settings.terminal.working_directory_path.description",
+                            ),
                             field: Box::new(SettingField {
                                 organization_override: None,
                                 json_path: Some("terminal.working_directory.always"),
@@ -7783,8 +7807,8 @@ fn terminal_page() -> SettingsPage {
                     .collect(),
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "环境变量",
-                description: "添加到终端环境中的键值对。",
+                title: localization::static_text("settings.terminal.env.title"),
+                description: localization::static_text("settings.terminal.env.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -7806,8 +7830,8 @@ fn terminal_page() -> SettingsPage {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "检测虚拟环境",
-                description: "如果在终端工作目录中找到 Python 虚拟环境，则自动激活它。",
+                title: localization::static_text("settings.terminal.detect_venv.title"),
+                description: localization::static_text("settings.terminal.detect_venv.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -7838,10 +7862,12 @@ fn terminal_page() -> SettingsPage {
 
     fn font_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("字体"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.font.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字号",
-                description: "terminal text. If not set, defaults to buffer font size的字号。",
+                title: localization::static_text("settings.terminal.font_size.title"),
+                description: localization::static_text("settings.terminal.font_size.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.font_size"),
@@ -7860,8 +7886,8 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字体族",
-                description: "terminal text. If not set, defaults to buffer font family的字体族。",
+                title: localization::static_text("settings.terminal.font_family.title"),
+                description: localization::static_text("settings.terminal.font_family.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.font_family"),
@@ -7883,8 +7909,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字体回退",
-                description: "字体 fallbacks for terminal text. If not set, defaults to buffer font fallbacks.",
+                title: localization::static_text("settings.terminal.font_fallbacks.title"),
+                description: localization::static_text(
+                    "settings.terminal.font_fallbacks.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -7909,8 +7937,8 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字重",
-                description: "terminal text in CSS weight units (100-900)的字重。",
+                title: localization::static_text("settings.terminal.font_weight.title"),
+                description: localization::static_text("settings.terminal.font_weight.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.font_weight"),
@@ -7928,8 +7956,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "字体特性",
-                description: "字体 features for terminal text.",
+                title: localization::static_text("settings.terminal.font_features.title"),
+                description: localization::static_text(
+                    "settings.terminal.font_features.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -7958,10 +7988,12 @@ fn terminal_page() -> SettingsPage {
 
     fn display_settings_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("显示 设置"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.display.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "行高",
-                description: "terminal text的行高。",
+                title: localization::static_text("settings.terminal.line_height.title"),
+                description: localization::static_text("settings.terminal.line_height.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -7982,8 +8014,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标形状",
-                description: "终端默认光标形状（竖线、方块、下划线或空心）。",
+                title: localization::static_text("settings.terminal.cursor_shape.title"),
+                description: localization::static_text(
+                    "settings.terminal.cursor_shape.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.cursor_shape"),
@@ -8001,8 +8035,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "光标闪烁",
-                description: "设置终端中的光标闪烁行为。",
+                title: localization::static_text("settings.terminal.cursor_blink.title"),
+                description: localization::static_text(
+                    "settings.terminal.cursor_blink.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.blinking"),
@@ -8015,8 +8051,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "备用滚动",
-                description: "备用滚动模式是否默认启用（在 Vim 等应用中将鼠标滚动转换为方向键）。",
+                title: localization::static_text("settings.terminal.alternate_scroll.title"),
+                description: localization::static_text(
+                    "settings.terminal.alternate_scroll.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.alternate_scroll"),
@@ -8038,8 +8076,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "最小对比度",
-                description: "前景色与背景色之间的最小 APCA 感知对比度（0-106）。",
+                title: localization::static_text("settings.terminal.minimum_contrast.title"),
+                description: localization::static_text(
+                    "settings.terminal.minimum_contrast.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.minimum_contrast"),
@@ -8065,10 +8105,14 @@ fn terminal_page() -> SettingsPage {
 
     fn behavior_settings_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("行为设置"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.behavior.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Option 作为 Meta 键",
-                description: "Option 键是否作为 Meta 键使用。",
+                title: localization::static_text("settings.terminal.option_as_meta.title"),
+                description: localization::static_text(
+                    "settings.terminal.option_as_meta.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.option_as_meta"),
@@ -8086,8 +8130,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选中即复制",
-                description: "在终端中选中文本时是否自动复制到系统剪贴板。",
+                title: localization::static_text("settings.terminal.copy_on_select.title"),
+                description: localization::static_text(
+                    "settings.terminal.copy_on_select.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.copy_on_select"),
@@ -8105,8 +8151,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "复制后保留选区",
-                description: "复制到剪贴板后是否保留文本选区。",
+                title: localization::static_text("settings.terminal.keep_selection_on_copy.title"),
+                description: localization::static_text(
+                    "settings.terminal.keep_selection_on_copy.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.keep_selection_on_copy"),
@@ -8128,8 +8176,8 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "响铃",
-                description: "输出 BEL 字符（`\\a`、`0x07`）时是否播放声音",
+                title: localization::static_text("settings.terminal.bell.title"),
+                description: localization::static_text("settings.terminal.bell.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.bell"),
@@ -8146,10 +8194,14 @@ fn terminal_page() -> SettingsPage {
 
     fn layout_settings_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("布局设置"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.layout.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "默认宽度",
-                description: "终端停靠在左侧或右侧时的默认宽度，单位为像素。",
+                title: localization::static_text("settings.terminal.default_width.title"),
+                description: localization::static_text(
+                    "settings.terminal.default_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.default_width"),
@@ -8167,8 +8219,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "默认高度",
-                description: "终端停靠在底部时的默认高度，单位为像素。",
+                title: localization::static_text("settings.terminal.default_height.title"),
+                description: localization::static_text(
+                    "settings.terminal.default_height.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.default_height"),
@@ -8190,10 +8244,16 @@ fn terminal_page() -> SettingsPage {
 
     fn advanced_settings_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("高级设置"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.advanced.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "最大回滚行数",
-                description: "回滚历史中保留的最大行数（最大 100,000；0 表示禁用滚动）。",
+                title: localization::static_text(
+                    "settings.terminal.max_scroll_history_lines.title",
+                ),
+                description: localization::static_text(
+                    "settings.terminal.max_scroll_history_lines.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.max_scroll_history_lines"),
@@ -8215,8 +8275,10 @@ fn terminal_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "滚动倍数",
-                description: "使用鼠标滚轮滚动终端时的倍数。",
+                title: localization::static_text("settings.terminal.scroll_multiplier.title"),
+                description: localization::static_text(
+                    "settings.terminal.scroll_multiplier.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.scroll_multiplier"),
@@ -8242,10 +8304,12 @@ fn terminal_page() -> SettingsPage {
 
     fn toolbar_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("工具栏"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.toolbar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "面包屑",
-                description: "在终端窗格的面包屑中显示终端标题。",
+                title: localization::static_text("settings.terminal.breadcrumbs.title"),
+                description: localization::static_text("settings.terminal.breadcrumbs.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.toolbar.breadcrumbs"),
@@ -8275,10 +8339,14 @@ fn terminal_page() -> SettingsPage {
 
     fn scrollbar_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("滚动条"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.terminal.scrollbar.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示滚动条",
-                description: "何时在终端中显示滚动条。",
+                title: localization::static_text("settings.terminal.scrollbar_show.title"),
+                description: localization::static_text(
+                    "settings.terminal.scrollbar_show.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("terminal.scrollbar.show"),
@@ -8309,7 +8377,7 @@ fn terminal_page() -> SettingsPage {
     }
 
     SettingsPage {
-        title: "终端",
+        title: localization::static_text("settings.terminal.page.title"),
         items: concat_sections![
             environment_section(),
             font_section(),
@@ -8934,10 +9002,12 @@ fn collaboration_page() -> SettingsPage {
 fn ai_page(cx: &App) -> SettingsPage {
     fn general_section() -> [SettingsPageItem; 3] {
         [
-            SettingsPageItem::SectionHeader("常规"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.ai.general.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "禁用 AI",
-                description: "是否关闭 Zed 中的所有 AI 功能。",
+                title: localization::static_text("settings.ai.disable_ai.title"),
+                description: localization::static_text("settings.ai.disable_ai.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("disable_ai"),
@@ -8950,8 +9020,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "线程侧栏位置",
-                description: "线程侧边栏显示在窗口的哪一侧。",
+                title: localization::static_text("settings.ai.thread_sidebar_side.title"),
+                description: localization::static_text(
+                    "settings.ai.thread_sidebar_side.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.sidebar_side"),
@@ -8973,14 +9045,18 @@ fn ai_page(cx: &App) -> SettingsPage {
         // while their configuration is being moved out of the agent panel.
         let agent_settings_ui_enabled = cx.has_flag::<feature_flags::AgentSettingsUiFeatureFlag>();
 
-        let mut items = vec![SettingsPageItem::SectionHeader("代理配置")];
+        let mut items = vec![SettingsPageItem::SectionHeader(localization::static_text(
+            "settings.ai.agent_configuration.section",
+        ))];
 
         if agent_settings_ui_enabled {
             items.push(SettingsPageItem::SubPageLink(SubPageLink {
-                title: "LLM 提供商".into(),
+                title: localization::static_text("settings.ai.llm_providers.title").into(),
                 r#type: Default::default(),
                 json_path: Some("llm_providers"),
-                description: Some("配置 LLM 提供商的 API 密钥和设置。".into()),
+                description: Some(
+                    localization::static_text("settings.ai.llm_providers.description").into(),
+                ),
                 in_json: false,
                 files: USER,
                 render: render_llm_providers_page,
@@ -8989,29 +9065,33 @@ fn ai_page(cx: &App) -> SettingsPage {
 
         items.extend([
             SettingsPageItem::SubPageLink(SubPageLink {
-                title: "技能".into(),
+                title: localization::static_text("settings.ai.skills.title").into(),
                 r#type: Default::default(),
                 json_path: Some(zed_actions::AGENT_SKILLS_SETTINGS_PATH),
-                description: Some("查看和管理全局或项目工作树中安装的代理技能。".into()),
+                description: Some(
+                    localization::static_text("settings.ai.skills.description").into(),
+                ),
                 in_json: false,
                 files: USER | PROJECT,
                 render: render_skills_setup_page,
             }),
             SettingsPageItem::SubPageLink(SubPageLink {
-                title: "沙盒".into(),
+                title: localization::static_text("settings.ai.sandbox.title").into(),
                 r#type: Default::default(),
                 json_path: Some(zed_actions::AGENT_SANDBOX_SETTINGS_PATH),
-                description: Some("查看和更改无需确认即可始终允许的提升终端沙箱权限。".into()),
+                description: Some(
+                    localization::static_text("settings.ai.sandbox.description").into(),
+                ),
                 in_json: true,
                 files: USER,
                 render: render_sandbox_settings_page,
             }),
             SettingsPageItem::SubPageLink(SubPageLink {
-                title: "工具权限".into(),
+                title: localization::static_text("settings.ai.tool_permissions.title").into(),
                 r#type: Default::default(),
                 json_path: Some("agent.tool_permissions"),
                 description: Some(
-                    "为特定工具输入设置自动允许、自动拒绝或始终请求确认的正则表达式。".into(),
+                    localization::static_text("settings.ai.tool_permissions.description").into(),
                 ),
                 in_json: true,
                 files: USER,
@@ -9021,19 +9101,23 @@ fn ai_page(cx: &App) -> SettingsPage {
 
         if agent_settings_ui_enabled {
             items.push(SettingsPageItem::SubPageLink(SubPageLink {
-                title: "MCP 服务器".into(),
+                title: localization::static_text("settings.ai.mcp_servers.title").into(),
                 r#type: Default::default(),
                 json_path: Some("context_servers"),
-                description: Some("查看、添加、配置和移除模型上下文协议服务器。".into()),
+                description: Some(
+                    localization::static_text("settings.ai.mcp_servers.description").into(),
+                ),
                 in_json: false,
                 files: USER,
                 render: render_mcp_servers_page,
             }));
             items.push(SettingsPageItem::SubPageLink(SubPageLink {
-                title: "外部代理".into(),
+                title: localization::static_text("settings.ai.external_agents.title").into(),
                 r#type: Default::default(),
                 json_path: Some("agent_servers"),
-                description: Some("查看、添加和移除通过代理客户端协议连接的代理。".into()),
+                description: Some(
+                    localization::static_text("settings.ai.external_agents.description").into(),
+                ),
                 in_json: false,
                 files: USER,
                 render: render_external_agents_page,
@@ -9042,8 +9126,10 @@ fn ai_page(cx: &App) -> SettingsPage {
 
         items.extend([
             SettingsPageItem::SettingItem(SettingItem {
-                title: "单文件审阅",
-                description: "启用后，代理编辑也会显示在单文件缓冲区中供你审阅。",
+                title: localization::static_text("settings.ai.single_file_review.title"),
+                description: localization::static_text(
+                    "settings.ai.single_file_review.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.single_file_review"),
@@ -9061,13 +9147,15 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用反馈",
-                description: "为代理编辑显示点赞/点踩反馈按钮。",
+                title: localization::static_text("settings.ai.enable_feedback.title"),
+                description: localization::static_text("settings.ai.enable_feedback.description"),
                 field: Box::new(SettingField {
-                    organization_override: Some(|org_config| if org_config.is_agent_thread_feedback_enabled {
-                        None
-                    } else {
-                        Some(&false)
+                    organization_override: Some(|org_config| {
+                        if org_config.is_agent_thread_feedback_enabled {
+                            None
+                        } else {
+                            Some(&false)
+                        }
                     }),
                     json_path: Some("agent.enable_feedback"),
                     pick: |settings_content| {
@@ -9084,8 +9172,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理等待时通知",
-                description: "代理完成回复或运行工具前需要确认时，通知显示的位置。",
+                title: localization::static_text("settings.ai.notify_when_agent_waiting.title"),
+                description: localization::static_text(
+                    "settings.ai.notify_when_agent_waiting.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.notify_when_agent_waiting"),
@@ -9107,8 +9197,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "代理完成时播放声音",
-                description: "代理完成回复或需要用户输入时，何时播放提示音。",
+                title: localization::static_text("settings.ai.play_sound_when_agent_done.title"),
+                description: localization::static_text(
+                    "settings.ai.play_sound_when_agent_done.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.play_sound_when_agent_done"),
@@ -9130,8 +9222,8 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "展开编辑卡片",
-                description: "是否默认展开代理面板中的编辑卡片并显示差异预览。",
+                title: localization::static_text("settings.ai.expand_edit_card.title"),
+                description: localization::static_text("settings.ai.expand_edit_card.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.expand_edit_card"),
@@ -9149,8 +9241,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "展开终端卡片",
-                description: "是否默认展开代理面板中的终端卡片并显示完整命令输出。",
+                title: localization::static_text("settings.ai.expand_terminal_card.title"),
+                description: localization::static_text(
+                    "settings.ai.expand_terminal_card.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.expand_terminal_card"),
@@ -9172,8 +9266,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "终端线程初始化命令",
-                description: "Zed 在代理面板中创建终端线程 shell 时自动运行的命令。会在你配置的 shell 中运行。",
+                title: localization::static_text("settings.ai.terminal_init_command.title"),
+                description: localization::static_text(
+                    "settings.ai.terminal_init_command.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.terminal_init_command"),
@@ -9202,17 +9298,13 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "思考内容显示",
-                description: "思考块的默认显示方式。“自动”会在流式输出时完全展开，完成后自动折叠。“预览”会在流式输出时以高度限制自动展开。“始终展开”显示完整内容。“始终折叠”保持折叠。",
+                title: localization::static_text("settings.ai.thinking_display.title"),
+                description: localization::static_text("settings.ai.thinking_display.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.thinking_display"),
                     pick: |settings_content| {
-                        settings_content
-                            .agent
-                            .as_ref()?
-                            .thinking_display
-                            .as_ref()
+                        settings_content.agent.as_ref()?.thinking_display.as_ref()
                     },
                     write: |settings_content, value, _| {
                         settings_content
@@ -9225,8 +9317,12 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "终端停止时取消生成",
-                description: "点击正在运行的终端工具停止按钮时，是否同时取消代理生成。仅适用于停止按钮，不适用于终端内的 Ctrl+C。",
+                title: localization::static_text(
+                    "settings.ai.cancel_generation_on_terminal_stop.title",
+                ),
+                description: localization::static_text(
+                    "settings.ai.cancel_generation_on_terminal_stop.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.cancel_generation_on_terminal_stop"),
@@ -9248,8 +9344,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用修饰键发送",
-                description: "是否始终使用 Cmd+Enter（Linux 或 Windows 上为 Ctrl+Enter）发送消息。",
+                title: localization::static_text("settings.ai.use_modifier_to_send.title"),
+                description: localization::static_text(
+                    "settings.ai.use_modifier_to_send.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.use_modifier_to_send"),
@@ -9271,8 +9369,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "消息编辑器最少行数",
-                description: "最小 number of lines to display in the agent message editor.",
+                title: localization::static_text("settings.ai.message_editor_min_lines.title"),
+                description: localization::static_text(
+                    "settings.ai.message_editor_min_lines.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.message_editor_min_lines"),
@@ -9294,8 +9394,8 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示轮次统计",
-                description: "是否显示生成耗时、最终轮次耗时等轮次统计信息。",
+                title: localization::static_text("settings.ai.show_turn_stats.title"),
+                description: localization::static_text("settings.ai.show_turn_stats.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.show_turn_stats"),
@@ -9313,13 +9413,19 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示合并冲突指示器",
-                description: "是否在状态栏中显示合并冲突指示器，并提供使用代理解决冲突的入口。",
+                title: localization::static_text("settings.ai.show_merge_conflict_indicator.title"),
+                description: localization::static_text(
+                    "settings.ai.show_merge_conflict_indicator.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.show_merge_conflict_indicator"),
                     pick: |settings_content| {
-                        settings_content.agent.as_ref()?.show_merge_conflict_indicator.as_ref()
+                        settings_content
+                            .agent
+                            .as_ref()?
+                            .show_merge_conflict_indicator
+                            .as_ref()
                     },
                     write: |settings_content, value, _| {
                         settings_content
@@ -9335,8 +9441,8 @@ fn ai_page(cx: &App) -> SettingsPage {
 
         items.extend([
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动压缩",
-                description: "自动matically compact the agent's context when it grows too large, summarizing earlier messages to free up room in the model's context window.",
+                title: localization::static_text("settings.ai.auto_compact.title"),
+                description: localization::static_text("settings.ai.auto_compact.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.auto_compact.enabled"),
@@ -9362,8 +9468,10 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动压缩阈值",
-                description: "自动压缩的触发时机。像 \"90%\" 这样的百分比字符串会按上下文窗口计算。正整数表示已使用多少 token 后压缩，负整数表示上下文窗口还剩多少 token 时压缩。",
+                title: localization::static_text("settings.ai.auto_compact_threshold.title"),
+                description: localization::static_text(
+                    "settings.ai.auto_compact_threshold.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.auto_compact.threshold"),
@@ -9398,10 +9506,14 @@ fn ai_page(cx: &App) -> SettingsPage {
 
     fn context_servers_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("上下文服务器"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.ai.context_servers.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "上下文服务器超时",
-                description: "默认 timeout in seconds for context server tool calls. Can be overridden per-server in context_servers configuration.",
+                title: localization::static_text("settings.ai.context_server_timeout.title"),
+                description: localization::static_text(
+                    "settings.ai.context_server_timeout.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("context_server_timeout"),
@@ -9420,8 +9532,10 @@ fn ai_page(cx: &App) -> SettingsPage {
 
     fn edit_prediction_display_sub_section() -> [SettingsPageItem; 1] {
         [SettingsPageItem::SettingItem(SettingItem {
-            title: "显示模式",
-            description: "何时在缓冲区中显示编辑预测预览。即时模式会以内联方式显示，轻量模式只在按住修饰键时显示。",
+            title: localization::static_text("settings.ai.edit_prediction_display_mode.title"),
+            description: localization::static_text(
+                "settings.ai.edit_prediction_display_mode.description",
+            ),
             field: Box::new(SettingField {
                 organization_override: None,
                 json_path: Some("edit_prediction.display_mode"),
@@ -9449,7 +9563,7 @@ fn ai_page(cx: &App) -> SettingsPage {
     }
 
     SettingsPage {
-        title: "AI",
+        title: localization::static_text("settings.ai.page.title"),
         items: concat_sections![
             general_section(),
             agent_configuration_section(cx),
@@ -9547,10 +9661,12 @@ fn language_settings_field_mut<T>(
 fn language_settings_data() -> Box<[SettingsPageItem]> {
     fn indentation_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("缩进"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.indentation.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "制表符宽度",
-                description: "一个制表符占用的列数。",
+                title: localization::static_text("settings.language.tab_size.title"),
+                description: localization::static_text("settings.language.tab_size.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).tab_size"), // TODO(cameron): not JQ syntax because not URL-safe
@@ -9569,8 +9685,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "硬制表符",
-                description: "是否使用制表符缩进行，而不是使用多个空格。",
+                title: localization::static_text("settings.language.hard_tabs.title"),
+                description: localization::static_text("settings.language.hard_tabs.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).hard_tabs"),
@@ -9589,8 +9705,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动缩进",
-                description: "控制输入时的自动缩进行为。",
+                title: localization::static_text("settings.language.auto_indent.title"),
+                description: localization::static_text("settings.language.auto_indent.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).auto_indent"),
@@ -9609,8 +9725,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "粘贴时自动缩进",
-                description: "是否根据上下文调整粘贴内容的缩进。",
+                title: localization::static_text("settings.language.auto_indent_on_paste.title"),
+                description: localization::static_text(
+                    "settings.language.auto_indent_on_paste.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).auto_indent_on_paste"),
@@ -9633,10 +9751,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn wrapping_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("换行"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.wrapping.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "软换行",
-                description: "如何soft-wrap long lines of text。",
+                title: localization::static_text("settings.language.soft_wrap.title"),
+                description: localization::static_text("settings.language.soft_wrap.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).soft_wrap"),
@@ -9655,8 +9775,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示换行引导线",
-                description: "在编辑器中显示换行参考线。",
+                title: localization::static_text("settings.language.show_wrap_guides.title"),
+                description: localization::static_text(
+                    "settings.language.show_wrap_guides.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).show_wrap_guides"),
@@ -9675,8 +9797,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "首选行长度",
-                description: "启用软换行的缓冲区在哪一列换行。",
+                title: localization::static_text("settings.language.preferred_line_length.title"),
+                description: localization::static_text(
+                    "settings.language.preferred_line_length.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).preferred_line_length"),
@@ -9695,8 +9819,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "换行引导线",
-                description: "在编辑器中显示换行参考线的字符列数。",
+                title: localization::static_text("settings.language.wrap_guides.title"),
+                description: localization::static_text("settings.language.wrap_guides.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -9722,8 +9846,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "允许重新换行",
-                description: "控制此语言允许在哪些位置使用 `editor::rewrap` 操作。",
+                title: localization::static_text("settings.language.allow_rewrap.title"),
+                description: localization::static_text(
+                    "settings.language.allow_rewrap.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).allow_rewrap"),
@@ -9746,10 +9872,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn indent_guides_section() -> [SettingsPageItem; 6] {
         [
-            SettingsPageItem::SectionHeader("缩进引导线"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.indent_guides.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用",
-                description: "在编辑器中显示缩进引导线。",
+                title: localization::static_text("settings.language.indent_guides.enabled.title"),
+                description: localization::static_text(
+                    "settings.language.indent_guides.enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).indent_guides.enabled"),
@@ -9771,8 +9901,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "引导线宽度",
-                description: "缩进引导线宽度，单位为像素，范围 1 到 10。",
+                title: localization::static_text(
+                    "settings.language.indent_guides.line_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.indent_guides.line_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).indent_guides.line_width"),
@@ -9794,8 +9928,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "活动引导线宽度",
-                description: "活动缩进引导线宽度，单位为像素，范围 1 到 10。",
+                title: localization::static_text(
+                    "settings.language.indent_guides.active_line_width.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.indent_guides.active_line_width.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).indent_guides.active_line_width"),
@@ -9820,8 +9958,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "着色",
-                description: "决定缩进引导线的着色方式。",
+                title: localization::static_text("settings.language.indent_guides.coloring.title"),
+                description: localization::static_text(
+                    "settings.language.indent_guides.coloring.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).indent_guides.coloring"),
@@ -9843,8 +9983,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "背景着色",
-                description: "决定缩进引导线背景的着色方式。",
+                title: localization::static_text(
+                    "settings.language.indent_guides.background_coloring.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.indent_guides.background_coloring.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).indent_guides.background_coloring"),
@@ -9872,10 +10016,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn formatting_section() -> [SettingsPageItem; 8] {
         [
-            SettingsPageItem::SectionHeader("格式化"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.formatting.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "保存时格式化",
-                description: "保存前是否格式化缓冲区。",
+                title: localization::static_text("settings.language.format_on_save.title"),
+                description: localization::static_text(
+                    "settings.language.format_on_save.description",
+                ),
                 field: Box::new(
                     // TODO(settings_ui): this setting should just be a bool
                     SettingField {
@@ -9901,8 +10049,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "保存时移除行尾空白",
-                description: "保存前是否移除缓冲区各行末尾的空白字符。",
+                title: localization::static_text(
+                    "settings.language.remove_trailing_whitespace_on_save.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.remove_trailing_whitespace_on_save.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).remove_trailing_whitespace_on_save"),
@@ -9921,8 +10073,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "保存时确保末尾换行",
-                description: "保存时是否确保缓冲区末尾有且只有一个换行符。",
+                title: localization::static_text(
+                    "settings.language.ensure_final_newline_on_save.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.ensure_final_newline_on_save.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).ensure_final_newline_on_save"),
@@ -9941,8 +10097,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "行尾格式",
-                description: "新文件以及格式化、保存操作中的换行符处理方式。",
+                title: localization::static_text("settings.language.line_ending.title"),
+                description: localization::static_text("settings.language.line_ending.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).line_ending"),
@@ -9964,8 +10120,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "格式化器",
-                description: "如何perform a buffer format。",
+                title: localization::static_text("settings.language.formatter.title"),
+                description: localization::static_text("settings.language.formatter.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -9991,8 +10147,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用 On Type Format",
-                description: "输入 LSP 服务器能力定义的每个 \"trigger\" 符号后，是否使用额外的 LSP 请求来格式化并修正代码",
+                title: localization::static_text("settings.language.use_on_type_format.title"),
+                description: localization::static_text(
+                    "settings.language.use_on_type_format.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).use_on_type_format"),
@@ -10011,8 +10169,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "格式化时的代码操作",
-                description: "格式化时额外运行的代码操作。",
+                title: localization::static_text("settings.language.code_actions_on_format.title"),
+                description: localization::static_text(
+                    "settings.language.code_actions_on_format.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10042,10 +10202,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn autoclose_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("自动闭合"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.autoclose.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用自动闭合",
-                description: "是否自动输入闭合字符。例如输入 '(' 时，Zed 会在正确位置自动添加 ')'。",
+                title: localization::static_text("settings.language.use_autoclose.title"),
+                description: localization::static_text(
+                    "settings.language.use_autoclose.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).use_autoclose"),
@@ -10064,8 +10228,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "使用自动包围",
-                description: "是否自动用字符包围选中文本。例如选中文本后输入 '('，Zed 会自动用 () 包围文本。",
+                title: localization::static_text("settings.language.use_auto_surround.title"),
+                description: localization::static_text(
+                    "settings.language.use_auto_surround.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).use_auto_surround"),
@@ -10084,8 +10250,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "始终将括号视为已自动闭合",
-                description: "控制闭合字符是否始终可跳过并自动移除，无论它们是如何插入的。",
+                title: localization::static_text(
+                    "settings.language.always_treat_brackets_as_autoclosed.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.always_treat_brackets_as_autoclosed.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).always_treat_brackets_as_autoclosed"),
@@ -10104,8 +10274,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "JSX 标签自动闭合",
-                description: "是否自动闭合 JSX 标签。",
+                title: localization::static_text("settings.language.jsx_tag_auto_close.title"),
+                description: localization::static_text(
+                    "settings.language.jsx_tag_auto_close.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).jsx_tag_auto_close"),
@@ -10129,10 +10301,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn whitespace_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("空白字符"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.whitespace.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示空白字符",
-                description: "是否在编辑器中显示制表符和空格。",
+                title: localization::static_text("settings.language.show_whitespaces.title"),
+                description: localization::static_text(
+                    "settings.language.show_whitespaces.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).show_whitespaces"),
@@ -10151,8 +10327,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "空格显示符",
-                description: "启用 show_whitespaces 时用于显示空格的可见字符（默认：\"•\"）",
+                title: localization::static_text("settings.language.space_char.title"),
+                description: localization::static_text("settings.language.space_char.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10178,8 +10354,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "制表符显示符",
-                description: "启用 show_whitespaces 时用于显示制表符的可见字符（默认：\"→\"）",
+                title: localization::static_text("settings.language.tab_char.title"),
+                description: localization::static_text("settings.language.tab_char.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10209,10 +10385,16 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn completions_section() -> [SettingsPageItem; 8] {
         [
-            SettingsPageItem::SectionHeader("补全"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.completion.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "输入时显示补全",
-                description: "在编辑器中输入时，是否无需显式请求就弹出补全菜单。",
+                title: localization::static_text(
+                    "settings.language.show_completions_on_input.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.show_completions_on_input.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).show_completions_on_input"),
@@ -10231,8 +10413,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示补全文档",
-                description: "是否在补全菜单中以内联或并排方式显示条目文档。",
+                title: localization::static_text(
+                    "settings.language.show_completion_documentation.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.show_completion_documentation.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).show_completion_documentation"),
@@ -10251,8 +10437,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "单词",
-                description: "控制单词补全方式。",
+                title: localization::static_text("settings.language.words.title"),
+                description: localization::static_text("settings.language.words.description"),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).completions.words"),
@@ -10271,8 +10457,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "单词最小长度",
-                description: "补全查询达到多少字符后自动显示基于单词的补全。",
+                title: localization::static_text("settings.language.words_min_length.title"),
+                description: localization::static_text(
+                    "settings.language.words_min_length.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).completions.words_min_length"),
@@ -10294,8 +10482,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "补全菜单滚动条",
-                description: "何时在补全菜单中显示滚动条。",
+                title: localization::static_text(
+                    "settings.language.completion_menu_scrollbar.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.completion_menu_scrollbar.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("editor.completion_menu_scrollbar"),
@@ -10310,8 +10502,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "补全详情对齐",
-                description: "代码补全上下文菜单中的详情文本靠左还是靠右对齐。",
+                title: localization::static_text(
+                    "settings.language.completion_detail_alignment.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.completion_detail_alignment.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("editor.completion_detail_alignment"),
@@ -10326,8 +10522,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "补全菜单项类型",
-                description: "如何display the LSP item kind (function, method, variable, etc.) of each entry in the completions menu。",
+                title: localization::static_text(
+                    "settings.language.completion_menu_item_kind.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.completion_menu_item_kind.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("editor.completion_menu_item_kind"),
@@ -10346,10 +10546,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn inlay_hints_section() -> [SettingsPageItem; 10] {
         [
-            SettingsPageItem::SectionHeader("内联提示"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.inlay_hints.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用",
-                description: "用于开关提示的全局设置。",
+                title: localization::static_text("settings.language.inlay_hints.enabled.title"),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.enabled"),
@@ -10368,8 +10572,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示值提示",
-                description: "调试时开关内联值的全局设置。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.show_value_hints.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.show_value_hints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.show_value_hints"),
@@ -10391,8 +10599,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示类型提示",
-                description: "是否显示类型提示。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.show_type_hints.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.show_type_hints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.show_type_hints"),
@@ -10411,8 +10623,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示参数提示",
-                description: "是否显示参数提示。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.show_parameter_hints.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.show_parameter_hints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.show_parameter_hints"),
@@ -10434,8 +10650,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示其他提示",
-                description: "是否显示其他提示。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.show_other_hints.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.show_other_hints.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.show_other_hints"),
@@ -10457,8 +10677,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "显示背景",
-                description: "为内嵌提示显示背景。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.show_background.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.show_background.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.show_background"),
@@ -10477,8 +10701,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "编辑防抖毫秒数",
-                description: "缓冲区编辑后是否延迟更新内嵌提示（设为 0 可关闭延迟）。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.edit_debounce_ms.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.edit_debounce_ms.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.edit_debounce_ms"),
@@ -10500,8 +10728,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "滚动防抖毫秒数",
-                description: "缓冲区滚动后是否延迟更新内嵌提示（设为 0 可关闭延迟）。",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.scroll_debounce_ms.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.scroll_debounce_ms.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).inlay_hints.scroll_debounce_ms"),
@@ -10523,8 +10755,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "按修饰键时切换",
-                description: "切换s inlay hints (hides or shows) when the user presses the modifiers specified.",
+                title: localization::static_text(
+                    "settings.language.inlay_hints.toggle_on_modifiers_press.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.inlay_hints.toggle_on_modifiers_press.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10563,10 +10799,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn tasks_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("任务"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.tasks.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用",
-                description: "是否为该语言启用任务。",
+                title: localization::static_text("settings.language.tasks.enabled.title"),
+                description: localization::static_text(
+                    "settings.language.tasks.enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).tasks.enabled"),
@@ -10585,8 +10825,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "变量",
-                description: "为特定语言设置的额外任务变量。",
+                title: localization::static_text("settings.language.tasks.variables.title"),
+                description: localization::static_text(
+                    "settings.language.tasks.variables.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10612,8 +10854,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "优先使用 LSP",
-                description: "使用LSP tasks over Zed language extension tasks。",
+                title: localization::static_text("settings.language.tasks.prefer_lsp.title"),
+                description: localization::static_text(
+                    "settings.language.tasks.prefer_lsp.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).tasks.prefer_lsp"),
@@ -10636,10 +10880,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn miscellaneous_section() -> [SettingsPageItem; 7] {
         [
-            SettingsPageItem::SectionHeader("其他"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.miscellaneous.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用单词差异",
-                description: "是否在编辑器中启用单词级差异高亮。启用后，修改行中的变更单词会被高亮，方便查看具体变化。",
+                title: localization::static_text("settings.language.word_diff_enabled.title"),
+                description: localization::static_text(
+                    "settings.language.word_diff_enabled.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).word_diff_enabled"),
@@ -10658,8 +10906,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "调试器",
-                description: "该语言的首选调试器。",
+                title: localization::static_text("settings.language.debuggers.title"),
+                description: localization::static_text("settings.language.debuggers.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10685,8 +10933,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "中键粘贴",
-                description: "启用middle-click paste on Linux。",
+                title: localization::static_text("settings.language.middle_click_paste.title"),
+                description: localization::static_text(
+                    "settings.language.middle_click_paste.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).editor.middle_click_paste"),
@@ -10699,8 +10949,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "换行时延续注释",
-                description: "上一行是注释时，新行是否也以注释开头。",
+                title: localization::static_text(
+                    "settings.language.extend_comment_on_newline.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.extend_comment_on_newline.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).extend_comment_on_newline"),
@@ -10719,8 +10973,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "括号着色",
-                description: "是否在编辑器中为括号着色。",
+                title: localization::static_text("settings.language.colorize_brackets.title"),
+                description: localization::static_text(
+                    "settings.language.colorize_brackets.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).colorize_brackets"),
@@ -10739,8 +10995,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Vim/Emacs 模型行支持",
-                description: "搜索模型行的行数（设为 0 可关闭）。",
+                title: localization::static_text("settings.language.modeline_lines.title"),
+                description: localization::static_text(
+                    "settings.language.modeline_lines.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("modeline_lines"),
@@ -10758,8 +11016,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
     fn global_only_miscellaneous_sub_section() -> [SettingsPageItem; 4] {
         [
             SettingsPageItem::SettingItem(SettingItem {
-                title: "图片查看器",
-                description: "图片文件大小的单位。",
+                title: localization::static_text("settings.language.image_viewer.unit.title"),
+                description: localization::static_text(
+                    "settings.language.image_viewer.unit.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("image_viewer.unit"),
@@ -10779,8 +11039,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "限制 Markdown 预览宽度",
-                    description: "是否限制 Markdown 预览内容的最大宽度，并在窗格较宽时居中显示。",
+                    title: localization::static_text(
+                        "settings.language.markdown_preview.limit_content_width.title",
+                    ),
+                    description: localization::static_text(
+                        "settings.language.markdown_preview.limit_content_width.description",
+                    ),
                     field: Box::new(SettingField::<bool> {
                         organization_override: None,
                         json_path: Some("markdown_preview.limit_content_width"),
@@ -10812,8 +11076,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                     vec![],
                     vec![SettingItem {
                         files: USER,
-                        title: "最大宽度",
-                        description: "最大 content width in pixels. Content will be centered when the pane is wider than this value.",
+                        title: localization::static_text(
+                            "settings.language.markdown_preview.max_width.title",
+                        ),
+                        description: localization::static_text(
+                            "settings.language.markdown_preview.max_width.description",
+                        ),
                         field: Box::new(SettingField {
                             organization_override: None,
                             json_path: Some("markdown_preview.max_width"),
@@ -10836,8 +11104,12 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 ],
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "自动替换表情短码",
-                description: "是否自动将 emoji 短代码替换为 emoji 字符。",
+                title: localization::static_text(
+                    "settings.language.auto_replace_emoji_shortcode.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.auto_replace_emoji_shortcode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("message_editor.auto_replace_emoji_shortcode"),
@@ -10860,8 +11132,10 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "拖放目标尺寸",
-                description: "编辑器中用于将拖入文件打开为拆分窗格的投放区域相对大小。",
+                title: localization::static_text("settings.language.drop_target_size.title"),
+                description: localization::static_text(
+                    "settings.language.drop_target_size.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("drop_target_size"),
@@ -10879,8 +11153,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
     let is_global = active_language().is_none();
 
     let code_lens_item = [SettingsPageItem::SettingItem(SettingItem {
-        title: "代码透镜",
-        description: "是否以及如何显示语言服务器提供的代码透镜。",
+        title: localization::static_text("settings.language.code_lens.title"),
+        description: localization::static_text("settings.language.code_lens.description"),
         field: Box::new(SettingField {
             organization_override: None,
             json_path: Some("code_lens"),
@@ -10894,8 +11168,8 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
     })];
 
     let lsp_document_colors_item = [SettingsPageItem::SettingItem(SettingItem {
-        title: "LSP 文档颜色",
-        description: "如何render LSP color previews in the editor。",
+        title: localization::static_text("settings.language.lsp_document_colors.title"),
+        description: localization::static_text("settings.language.lsp_document_colors.description"),
         field: Box::new(SettingField {
             organization_override: None,
             json_path: Some("lsp_document_colors"),
@@ -10946,10 +11220,14 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
 fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
     fn lsp_section() -> [SettingsPageItem; 9] {
         [
-            SettingsPageItem::SectionHeader("LSP"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.lsp.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用语言服务器",
-                description: "是否使用语言服务器提供代码智能。",
+                title: localization::static_text("settings.language.enable_language_server.title"),
+                description: localization::static_text(
+                    "settings.language.enable_language_server.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).enable_language_server"),
@@ -10968,8 +11246,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "语言服务器",
-                description: "该语言要使用或禁用的语言服务器列表。",
+                title: localization::static_text("settings.language.language_servers.title"),
+                description: localization::static_text(
+                    "settings.language.language_servers.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -10995,8 +11275,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "联动编辑",
-                description: "如果语言服务器支持，是否对关联范围执行联动编辑。例如编辑开始 <html> 标签时，结束 </html> 标签也会同步编辑。",
+                title: localization::static_text("settings.language.linked_edits.title"),
+                description: localization::static_text(
+                    "settings.language.linked_edits.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).linked_edits"),
@@ -11015,8 +11297,12 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "跳转定义回退",
-                description: "语言服务器返回空的“转到定义”结果后，是否继续尝试其他方式。",
+                title: localization::static_text(
+                    "settings.language.go_to_definition_fallback.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.go_to_definition_fallback.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("go_to_definition_fallback"),
@@ -11031,8 +11317,12 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "跳转定义滚动策略",
-                description: "如何scroll the target into view when navigating to a definition or reference。",
+                title: localization::static_text(
+                    "settings.language.go_to_definition_scroll_strategy.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.go_to_definition_scroll_strategy.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("go_to_definition_scroll_strategy"),
@@ -11050,7 +11340,7 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "语义标记",
+                title: localization::static_text("settings.language.semantic_tokens.title"),
                 description: {
                     static DESCRIPTION: OnceLock<&'static str> = OnceLock::new();
                     DESCRIPTION.get_or_init(|| {
@@ -11086,8 +11376,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "LSP 折叠范围",
-                description: "启用后使用语言服务器提供的折叠范围，而不是基于缩进折叠。",
+                title: localization::static_text("settings.language.document_folding_ranges.title"),
+                description: localization::static_text(
+                    "settings.language.document_folding_ranges.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).document_folding_ranges"),
@@ -11106,8 +11398,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "LSP 文档符号",
-                description: "启用后使用语言服务器的文档符号生成大纲和面包屑，而不是使用 tree-sitter。",
+                title: localization::static_text("settings.language.document_symbols.title"),
+                description: localization::static_text(
+                    "settings.language.document_symbols.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).document_symbols"),
@@ -11130,10 +11424,14 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn lsp_completions_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("LSP 补全"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.lsp_completions.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "启用",
-                description: "是否获取 LSP 补全。",
+                title: localization::static_text("settings.language.completions.lsp.title"),
+                description: localization::static_text(
+                    "settings.language.completions.lsp.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).completions.lsp"),
@@ -11152,8 +11450,12 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "获取超时（毫秒）",
-                description: "获取 LSP 补全时，等待特定服务器响应的时长（设为 0 表示无限等待）。",
+                title: localization::static_text(
+                    "settings.language.completions.lsp_fetch_timeout_ms.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.completions.lsp_fetch_timeout_ms.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).completions.lsp_fetch_timeout_ms"),
@@ -11175,8 +11477,12 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "插入模式",
-                description: "控制 LSP 补全的插入方式。",
+                title: localization::static_text(
+                    "settings.language.completions.lsp_insert_mode.title",
+                ),
+                description: localization::static_text(
+                    "settings.language.completions.lsp_insert_mode.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).completions.lsp_insert_mode"),
@@ -11199,10 +11505,12 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn debugger_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("调试器"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.debugger.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "调试器",
-                description: "该语言的首选调试器。",
+                title: localization::static_text("settings.language.debugger.title"),
+                description: localization::static_text("settings.language.debugger.description"),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -11232,10 +11540,14 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
 
     fn prettier_section() -> [SettingsPageItem; 5] {
         [
-            SettingsPageItem::SectionHeader("Prettier"),
+            SettingsPageItem::SectionHeader(localization::static_text(
+                "settings.language.prettier.section",
+            )),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "允许",
-                description: "启用s or disables formatting with Prettier for a given language.",
+                title: localization::static_text("settings.language.prettier.allowed.title"),
+                description: localization::static_text(
+                    "settings.language.prettier.allowed.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).prettier.allowed"),
@@ -11254,8 +11566,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "解析器",
-                description: "强制 Prettier 集成在格式化该语言文件时使用指定解析器名称。",
+                title: localization::static_text("settings.language.prettier.parser.title"),
+                description: localization::static_text(
+                    "settings.language.prettier.parser.description",
+                ),
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("languages.$(language).prettier.parser"),
@@ -11274,8 +11588,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "插件",
-                description: "强制 Prettier 集成在格式化该语言文件时使用指定插件。",
+                title: localization::static_text("settings.language.prettier.plugins.title"),
+                description: localization::static_text(
+                    "settings.language.prettier.plugins.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -11301,8 +11617,10 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
                 files: USER | PROJECT,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "选项",
-                description: "默认 Prettier options, in the format as in package.json section for Prettier.",
+                title: localization::static_text("settings.language.prettier.options.title"),
+                description: localization::static_text(
+                    "settings.language.prettier.options.description",
+                ),
                 field: Box::new(
                     SettingField {
                         organization_override: None,
@@ -11340,19 +11658,31 @@ fn non_editor_language_settings_data() -> Box<[SettingsPageItem]> {
 
 fn edit_prediction_language_settings_section() -> [SettingsPageItem; 5] {
     [
-        SettingsPageItem::SectionHeader("编辑预测"),
+        SettingsPageItem::SectionHeader(localization::static_text(
+            "settings.language.edit_prediction.section",
+        )),
         SettingsPageItem::SubPageLink(SubPageLink {
-            title: "配置提供商".into(),
+            title: localization::static_text("settings.language.edit_prediction.providers.title")
+                .into(),
             r#type: Default::default(),
             json_path: Some("edit_predictions.providers"),
-            description: Some("设置不同的编辑预测提供商，作为 Zed 内置 Zeta 模型的补充。".into()),
+            description: Some(
+                localization::static_text(
+                    "settings.language.edit_prediction.providers.description",
+                )
+                .into(),
+            ),
             in_json: false,
             files: USER,
             render: render_edit_prediction_setup_page,
         }),
         SettingsPageItem::SettingItem(SettingItem {
-            title: "数据收集",
-            description: "控制使用 Zed 编辑预测时是否允许收集训练数据。只有检测为开源项目中的文件才会被收集。默认值沿用之前通过状态栏开关设置的偏好；若没有保存偏好，则为 false。",
+            title: localization::static_text(
+                "settings.language.edit_prediction.allow_data_collection.title",
+            ),
+            description: localization::static_text(
+                "settings.language.edit_prediction.allow_data_collection.description",
+            ),
             field: Box::new(SettingField {
                 organization_override: Some(|org_settings| {
                     const DATA_COLLECTION_DISABLED: EditPredictionDataCollectionChoice =
@@ -11387,8 +11717,10 @@ fn edit_prediction_language_settings_section() -> [SettingsPageItem; 5] {
             files: USER,
         }),
         SettingsPageItem::SettingItem(SettingItem {
-            title: "显示编辑预测",
-            description: "控制编辑预测是立即显示还是手动显示。",
+            title: localization::static_text("settings.language.show_edit_predictions.title"),
+            description: localization::static_text(
+                "settings.language.show_edit_predictions.description",
+            ),
             field: Box::new(SettingField {
                 organization_override: None,
                 json_path: Some("languages.$(language).show_edit_predictions"),
@@ -11407,8 +11739,12 @@ fn edit_prediction_language_settings_section() -> [SettingsPageItem; 5] {
             files: USER | PROJECT,
         }),
         SettingsPageItem::SettingItem(SettingItem {
-            title: "在语言作用域中禁用",
-            description: "控制是否在指定语言作用域中显示编辑预测。",
+            title: localization::static_text(
+                "settings.language.edit_predictions_disabled_in.title",
+            ),
+            description: localization::static_text(
+                "settings.language.edit_predictions_disabled_in.description",
+            ),
             field: Box::new(
                 SettingField {
                     organization_override: None,
